@@ -4,10 +4,10 @@
 This dataset contains crawled documentation from https://docs.anthropic.com/en/docs/claude-code/, formatted for LLM training and RAG systems.
 
 ## Dataset Statistics
-- **Total Pages**: 1
-- **Total Words**: 416
-- **Total Chunks**: 1
-- **Crawled**: 2025-06-23 16:00:48
+- **Total Pages**: 28
+- **Total Words**: 27070
+- **Total Chunks**: 28
+- **Crawled**: 2025-06-23 16:14:19
 
 ## Directory Structure
 
