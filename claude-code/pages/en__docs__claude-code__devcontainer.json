@@ -1,0 +1,41 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/claude-code/devcontainer",
+  "title": "Development containers - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nDeployment\nDevelopment containers\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nGetting started\nOverview\nSet up\nQuickstart\nMemory management\nCommon workflows\nBuild with Claude\nAdd Claude Code to your IDE\nModel Context Protocol (MCP)\nGitHub Actions\nClaude Code SDK\nTroubleshooting\nDeployment\nOverview\nAmazon Bedrock\nGoogle Vertex AI\nCorporate proxy\nLLM gateway\nDevelopment containers\nAdministration\nIdentity and Access Management\nSecurity\nMonitoring\nCosts\nReference\nCLI reference\nInteractive mode\nSlash commands\nSettings\nResources\nData usage\nLegal and compliance\nThe preconfigured\ndevcontainer setup\nworks seamlessly with VS Code’s Remote - Containers extension and similar tools.\nThe container’s enhanced security measures (isolation and firewall rules) allow you to run\nclaude --dangerously-skip-permissions\nto bypass permission prompts for unattended operation. We’ve included a\nreference implementation\nthat you can customize for your needs.\nWhile the devcontainer provides substantial protections, no system is\ncompletely immune to all attacks. Always maintain good security practices and\nmonitor Claude’s activities.\n​\nKey features\nProduction-ready Node.js\n: Built on Node.js 20 with essential development dependencies\nSecurity by design\n: Custom firewall restricting network access to only necessary services\nDeveloper-friendly tools\n: Includes git, ZSH with productivity enhancements, fzf, and more\nSeamless VS Code integration\n: Pre-configured extensions and optimized settings\nSession persistence\n: Preserves command history and configurations between container restarts\nWorks everywhere\n: Compatible with macOS, Windows, and Linux development environments\n​\nGetting started in 4 steps\nInstall VS Code and the Remote - Containers extension\nClone the\nClaude Code reference implementation\nrepository\nOpen the repository in VS Code\nWhen prompted, click “Reopen in Container” (or use Command Palette: Cmd+Shift+P → “Remote-Containers: Reopen in Container”)\n​\nConfiguration breakdown\nThe devcontainer setup consists of three primary components:\ndevcontainer.json\n: Controls container settings, extensions, and volume mounts\nDockerfile\n: Defines the container image and installed tools\ninit-firewall.sh\n: Establishes network security rules\n​\nSecurity features\nThe container implements a multi-layered security approach with its firewall configuration:\nPrecise access control\n: Restricts outbound connections to whitelisted domains only (npm registry, GitHub, Anthropic API, etc.)\nDefault-deny policy\n: Blocks all other external network access\nStartup verification\n: Validates firewall rules when the container initializes\nIsolation\n: Creates a secure development environment separated from your main system\n​\nCustomization options\nThe devcontainer configuration is designed to be adaptable to your needs:\nAdd or remove VS Code extensions based on your workflow\nModify resource allocations for different hardware environments\nAdjust network access permissions\nCustomize shell configurations and developer tooling\n​\nExample use cases\n​\nSecure client work\nUse devcontainers to isolate different client projects, ensuring code and credentials never mix between environments.\n​\nTeam onboarding\nNew team members can get a fully configured development environment in minutes, with all necessary tools and settings pre-installed.\n​\nConsistent CI/CD environments\nMirror your devcontainer configuration in CI/CD pipelines to ensure development and production environments match.\n​\nRelated resources\nVS Code devcontainers documentation\nClaude Code security best practices\nCorporate proxy configuration\nWas this page helpful?\nYes\nNo\nLLM gateway\nIdentity and Access Management\nOn this page\nKey features\nGetting started in 4 steps\nConfiguration breakdown\nSecurity features\nCustomization options\nExample use cases\nSecure client work\nTeam onboarding\nConsistent CI/CD environments\nRelated resources",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/costs",
+      "text": "Costs"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/cli-reference",
+      "text": "CLI reference"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/interactive-mode",
+      "text": "Interactive mode"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/slash-commands",
+      "text": "Slash commands"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/settings",
+      "text": "Settings"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/data-usage",
+      "text": "Data usage"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/legal-and-compliance",
+      "text": "Legal and compliance"
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:30.223834",
+    "word_count": 537,
+    "link_count": 7,
+    "content_length": 4036
+  }
+}
