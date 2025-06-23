@@ -1,0 +1,233 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/about-claude/pricing",
+  "title": "Pricing - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nModels & pricing\nPricing\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nFirst steps\nIntro to Claude\nGet started\nModels & pricing\nModels overview\nChoosing a model\nMigrating to Claude 4\nModel deprecations\nPricing\nLearn about Claude\nBuilding with Claude\nFeatures overview\nContext windows\nGlossary\nCapabilities\nPrompt caching\nExtended thinking\nStreaming Messages\nBatch processing\nCitations\nMultilingual support\nToken counting\nEmbeddings\nVision\nPDF support\nFiles API\nGoogle Sheets add-on\nTools\nOverview\nHow to implement tool use\nToken-efficient tool use\nFine-grained tool streaming\nBash tool\nCode execution tool\nComputer use tool\nText editor tool\nWeb search tool\nModel Context Protocol (MCP)\nMCP connector\nRemote MCP servers\nUse cases\nOverview\nTicket routing\nCustomer support agent\nContent moderation\nLegal summarization\nPrompt engineering\nOverview\nClaude 4 best practices\nPrompt generator\nUse prompt templates\nPrompt improver\nBe clear and direct\nUse examples (multishot prompting)\nLet Claude think (CoT)\nUse XML tags\nGive Claude a role (system prompts)\nPrefill Claude's response\nChain complex prompts\nLong context tips\nExtended thinking tips\nTest & evaluate\nDefine success criteria\nDevelop test cases\nUsing the Evaluation Tool\nReducing latency\nStrengthen guardrails\nReduce hallucinations\nIncrease output consistency\nMitigate jailbreaks\nStreaming refusals\nReduce prompt leak\nKeep Claude in character\nLegal center\nAnthropic Privacy Policy\nSecurity and compliance\nThis page provides detailed pricing information for Anthropic’s models and features. All prices are in USD.\nFor the most current pricing information, please visit\nanthropic.com/pricing\n.\n​\nModel pricing\nThe following table shows pricing for all Claude models across different usage tiers:\nModel\nBase Input Tokens\n5m Cache Writes\n1h Cache Writes\nCache Hits & Refreshes\nOutput Tokens\nClaude Opus 4\n$15 / MTok\n$18.75 / MTok\n$30 / MTok\n$1.50 / MTok\n$75 / MTok\nClaude Sonnet 4\n$3 / MTok\n$3.75 / MTok\n$6 / MTok\n$0.30 / MTok\n$15 / MTok\nClaude Sonnet 3.7\n$3 / MTok\n$3.75 / MTok\n$6 / MTok\n$0.30 / MTok\n$15 / MTok\nClaude Sonnet 3.5\n$3 / MTok\n$3.75 / MTok\n$6 / MTok\n$0.30 / MTok\n$15 / MTok\nClaude Haiku 3.5\n$0.80 / MTok\n$1 / MTok\n$1.6 / MTok\n$0.08 / MTok\n$4 / MTok\nClaude Opus 3\n$15 / MTok\n$18.75 / MTok\n$30 / MTok\n$1.50 / MTok\n$75 / MTok\nClaude Haiku 3\n$0.25 / MTok\n$0.30 / MTok\n$0.50 / MTok\n$0.03 / MTok\n$1.25 / MTok\nMTok = Million tokens. The “Base Input Tokens” column shows standard input pricing, “Cache Writes” and “Cache Hits” are specific to\nprompt caching\n, and “Output Tokens” shows output pricing.\n​\nFeature-specific pricing\n​\nBatch processing\nThe Batch API allows asynchronous processing of large volumes of requests with a 50% discount on both input and output tokens.\nModel\nBatch input\nBatch output\nClaude Opus 4\n$7.50 / MTok\n$37.50 / MTok\nClaude Sonnet 4\n$1.50 / MTok\n$7.50 / MTok\nClaude Sonnet 3.7\n$1.50 / MTok\n$7.50 / MTok\nClaude Sonnet 3.5\n$1.50 / MTok\n$7.50 / MTok\nClaude Haiku 3.5\n$0.40 / MTok\n$2 / MTok\nClaude Opus 3\n$7.50 / MTok\n$37.50 / MTok\nClaude Haiku 3\n$0.125 / MTok\n$0.625 / MTok\nFor more information about batch processing, see our\nbatch processing documentation\n.\n​\nTool use pricing\nTool use requests are priced based on:\nThe total number of input tokens sent to the model (including in the\ntools\nparameter)\nThe number of output tokens generated\nFor server-side tools, additional usage-based pricing (e.g., web search charges per search performed)\nClient-side tools are priced the same as any other Claude API request, while server-side tools may incur additional charges based on their specific usage.\nThe additional tokens from tool use come from:\nThe\ntools\nparameter in API requests (tool names, descriptions, and schemas)\ntool_use\ncontent blocks in API requests and responses\ntool_result\ncontent blocks in API requests\nWhen you use\ntools\n, we also automatically include a special system prompt for the model which enables tool use. The number of tool use tokens required for each model are listed below (excluding the additional tokens listed above). Note that the table assumes at least 1 tool is provided. If no\ntools\nare provided, then a tool choice of\nnone\nuses 0 additional system prompt tokens.\nModel\nTool choice\nTool use system prompt token count\nClaude Opus 4\nauto\n,\nnone\nany\n,\ntool\n346 tokens\n313 tokens\nClaude Sonnet 4\nauto\n,\nnone\nany\n,\ntool\n346 tokens\n313 tokens\nClaude Sonnet 3.7\nauto\n,\nnone\nany\n,\ntool\n346 tokens\n313 tokens\nClaude Sonnet 3.5 (Oct)\nauto\n,\nnone\nany\n,\ntool\n346 tokens\n313 tokens\nClaude Sonnet 3.5 (June)\nauto\n,\nnone\nany\n,\ntool\n294 tokens\n261 tokens\nClaude Haiku 3.5\nauto\n,\nnone\nany\n,\ntool\n264 tokens\n340 tokens\nClaude Opus 3\nauto\n,\nnone\nany\n,\ntool\n530 tokens\n281 tokens\nClaude Sonnet 3\nauto\n,\nnone\nany\n,\ntool\n159 tokens\n235 tokens\nClaude Haiku 3\nauto\n,\nnone\nany\n,\ntool\n264 tokens\n340 tokens\nThese token counts are added to your normal input and output tokens to calculate the total cost of a request.\nFor current per-model prices, refer to our\nmodel pricing\nsection above.\nFor more information about tool use implementation and best practices, see our\ntool use documentation\n.\n​\nSpecific tool pricing\n​\nBash tool\nThe bash tool adds\n245 input tokens\nto your API calls.\nAdditional tokens are consumed by:\nCommand outputs (stdout/stderr)\nError messages\nLarge file contents\nSee\ntool use pricing\nfor complete pricing details.\n​\nCode execution tool\nThe code execution tool usage is tracked separately from token usage. Execution time is a minimum of 5 minutes.\nIf files are included in the request, execution time is billed even if the tool is not used due to files being preloaded onto the container.\nPricing\n: $0.05 per session-hour.\n​\nText editor tool\nThe text editor tool uses the same pricing structure as other tools used with Claude. It follows the standard input and output token pricing based on the Claude model you’re using.\nIn addition to the base tokens, the following additional input tokens are needed for the text editor tool:\nTool\nAdditional input tokens\ntext_editor_20250429\n(Claude 4)\n700 tokens\ntext_editor_20250124\n(Claude Sonnet 3.7)\n700 tokens\ntext_editor_20241022\n(Claude Sonnet 3.5)\n700 tokens\nSee\ntool use pricing\nfor complete pricing details.\n​\nWeb search tool\nWeb search usage is charged in addition to token usage:\n\"usage\"\n:\n{\n\"input_tokens\"\n:\n105\n,\n\"output_tokens\"\n:\n6039\n,\n\"cache_read_input_tokens\"\n:\n7123\n,\n\"cache_creation_input_tokens\"\n:\n7345\n,\n\"server_tool_use\"\n:\n{\n\"web_search_requests\"\n:\n1\n}\n}\nWeb search is available on the Anthropic API for\n$10 per 1,000 searches\n, plus standard token costs for search-generated content. Web search results retrieved throughout a conversation are counted as input tokens, in search iterations executed during a single turn and in subsequent conversation turns.\nEach web search counts as one use, regardless of the number of results returned. If an error occurs during web search, the web search will not be billed.\n​\nComputer use tool\nComputer use follows the standard\ntool use pricing\n. When using the computer use tool:\nSystem prompt overhead\n: The computer use beta adds 466-499 tokens to the system prompt\nComputer use tool token usage\n:\nModel\nInput tokens per tool definition\nClaude 4 / Sonnet 3.7\n735 tokens\nClaude Sonnet 3.5\n683 tokens\nAdditional token consumption\n:\nScreenshot images (see\nVision pricing\n)\nTool execution results returned to Claude\nIf you’re also using bash or text editor tools alongside computer use, those tools have their own token costs as documented in their respective pages.\n​\nAgent use case pricing examples\nUnderstanding pricing for agent applications is crucial when building with Claude. These real-world examples can help you estimate costs for different agent patterns.\n​\nCustomer support agent example\nWhen building a customer support agent, here’s how costs might break down:\nExample calculation for processing 10,000 support tickets:\nAverage ~3,700 tokens per conversation\nUsing Claude Sonnet 4 at\n3\n/\nM\nT\no\nk\ni\nn\np\nu\nt\n,\n3/MTok input,\n3/\nMT\no\nkin\np\nu\nt\n,\n15/MTok output\nTotal cost: ~$22.20 per 10,000 tickets\nFor a detailed walkthrough of this calculation, see our\ncustomer support agent guide\n.\n​\nGeneral agent workflow pricing\nFor more complex agent architectures with multiple steps:\nInitial request processing\nTypical input: 500-1,000 tokens\nProcessing cost: ~$0.003 per request\nMemory and context retrieval\nRetrieved context: 2,000-5,000 tokens\nCost per retrieval: ~$0.015 per operation\nAction planning and execution\nPlanning tokens: 1,000-2,000\nExecution feedback: 500-1,000\nCombined cost: ~$0.045 per action\nFor a comprehensive guide on agent pricing patterns, see our\nagent use cases guide\n.\n​\nCost optimization strategies\nWhen building agents with Claude:\nUse appropriate models\n: Choose Haiku for simple tasks, Sonnet for complex reasoning\nImplement prompt caching\n: Reduce costs for repeated context\nBatch operations\n: Use the Batch API for non-time-sensitive tasks\nMonitor usage patterns\n: Track token consumption to identify optimization opportunities\nFor high-volume agent applications, consider contacting our\nenterprise sales team\nfor custom pricing arrangements.\n​\nAdditional pricing considerations\n​\nRate limits\nRate limits vary by usage tier and affect how many requests you can make:\nTier 1\n: Entry-level usage with basic limits\nTier 2\n: Increased limits for growing applications\nTier 3\n: Higher limits for established applications\nTier 4\n: Maximum standard limits\nEnterprise\n: Custom limits available\nFor detailed rate limit information, see our\nrate limits documentation\n.\n​\nVolume discounts\nVolume discounts may be available for high-volume users. These are negotiated on a case-by-case basis.\nStandard tiers use the pricing shown above\nEnterprise customers can\ncontact sales\nfor custom pricing\nAcademic and research discounts may be available\n​\nEnterprise pricing\nFor enterprise customers with specific needs:\nCustom rate limits\nVolume discounts\nDedicated support\nCustom terms\nContact our sales team at\nsales@anthropic.com\nor through the\nAnthropic Console\nto discuss enterprise pricing options.\n​\nBilling and payment\nBilling is calculated monthly based on actual usage\nPayments are processed in USD\nCredit card and invoicing options available\nUsage tracking available in the\nAnthropic Console\n​\nFrequently asked questions\nHow is token usage calculated?\nTokens are pieces of text that models process. As a rough estimate, 1 token is approximately 4 characters or 0.75 words in English. The exact count varies by language and content type.\nAre there free tiers or trials?\nNew users receive a small amount of free credits to test the API.\nContact sales\nfor information about extended trials for enterprise evaluation.\nHow do discounts stack?\nBatch API and prompt caching discounts can be combined. For example, using both features together provides significant cost savings compared to standard API calls.\nWhat payment methods are accepted?\nWe accept major credit cards for standard accounts. Enterprise customers can arrange invoicing and other payment methods.\nFor additional questions about pricing, contact\nsupport@anthropic.com\n.\nWas this page helpful?\nYes\nNo\nModel deprecations\nBuilding with Claude\nOn this page\nModel pricing\nFeature-specific pricing\nBatch processing\nTool use pricing\nSpecific tool pricing\nBash tool\nCode execution tool\nText editor tool\nWeb search tool\nComputer use tool\nAgent use case pricing examples\nCustomer support agent example\nGeneral agent workflow pricing\nCost optimization strategies\nAdditional pricing considerations\nRate limits\nVolume discounts\nEnterprise pricing\nBilling and payment\nFrequently asked questions",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/glossary",
+      "text": "Glossary"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching",
+      "text": "Prompt caching"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking",
+      "text": "Extended thinking"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/streaming",
+      "text": "Streaming Messages"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/batch-processing",
+      "text": "Batch processing"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/citations",
+      "text": "Citations"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/multilingual-support",
+      "text": "Multilingual support"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/token-counting",
+      "text": "Token counting"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/embeddings",
+      "text": "Embeddings"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/vision",
+      "text": "Vision"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/pdf-support",
+      "text": "PDF support"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/files",
+      "text": "Files API"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/claude-for-sheets",
+      "text": "Google Sheets add-on"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use",
+      "text": "How to implement tool use"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/token-efficient-tool-use",
+      "text": "Token-efficient tool use"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/fine-grained-tool-streaming",
+      "text": "Fine-grained tool streaming"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/bash-tool",
+      "text": "Bash tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/code-execution-tool",
+      "text": "Code execution tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/computer-use-tool",
+      "text": "Computer use tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/text-editor-tool",
+      "text": "Text editor tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+      "text": "Web search tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/mcp-connector",
+      "text": "MCP connector"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/remote-mcp-servers",
+      "text": "Remote MCP servers"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/ticket-routing",
+      "text": "Ticket routing"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/customer-support-chat",
+      "text": "Customer support agent"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/content-moderation",
+      "text": "Content moderation"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/legal-summarization",
+      "text": "Legal summarization"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices",
+      "text": "Claude 4 best practices"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-generator",
+      "text": "Prompt generator"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-templates-and-variables",
+      "text": "Use prompt templates"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-improver",
+      "text": "Prompt improver"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct",
+      "text": "Be clear and direct"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/multishot-prompting",
+      "text": "Use examples (multishot prompting)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought",
+      "text": "Let Claude think (CoT)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags",
+      "text": "Use XML tags"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts",
+      "text": "Give Claude a role (system prompts)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prefill-claudes-response",
+      "text": "Prefill Claude's response"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-prompts",
+      "text": "Chain complex prompts"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/long-context-tips",
+      "text": "Long context tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/extended-thinking-tips",
+      "text": "Extended thinking tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/define-success",
+      "text": "Define success criteria"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests",
+      "text": "Develop test cases"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/eval-tool",
+      "text": "Using the Evaluation Tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-latency",
+      "text": "Reducing latency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+      "text": "Reduce hallucinations"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/increase-consistency",
+      "text": "Increase output consistency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+      "text": "Mitigate jailbreaks"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals",
+      "text": "Streaming refusals"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak",
+      "text": "Reduce prompt leak"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/keep-claude-in-character",
+      "text": "Keep Claude in character"
+    },
+    {
+      "url": "https://docs.anthropic.com/_sites/docs.anthropic.com/en/docs/about-claude/pricing",
+      "text": "model pricing"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides",
+      "text": "agent use cases guide"
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:35.612004",
+    "word_count": 1887,
+    "link_count": 55,
+    "content_length": 11733
+  }
+}
