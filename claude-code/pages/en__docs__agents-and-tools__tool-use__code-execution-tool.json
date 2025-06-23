@@ -1,0 +1,129 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/code-execution-tool",
+  "title": "Code execution tool - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nTools\nCode execution tool\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nFirst steps\nIntro to Claude\nGet started\nModels & pricing\nModels overview\nChoosing a model\nMigrating to Claude 4\nModel deprecations\nPricing\nLearn about Claude\nBuilding with Claude\nFeatures overview\nContext windows\nGlossary\nCapabilities\nPrompt caching\nExtended thinking\nStreaming Messages\nBatch processing\nCitations\nMultilingual support\nToken counting\nEmbeddings\nVision\nPDF support\nFiles API\nGoogle Sheets add-on\nTools\nOverview\nHow to implement tool use\nToken-efficient tool use\nFine-grained tool streaming\nBash tool\nCode execution tool\nComputer use tool\nText editor tool\nWeb search tool\nModel Context Protocol (MCP)\nMCP connector\nRemote MCP servers\nUse cases\nOverview\nTicket routing\nCustomer support agent\nContent moderation\nLegal summarization\nPrompt engineering\nOverview\nClaude 4 best practices\nPrompt generator\nUse prompt templates\nPrompt improver\nBe clear and direct\nUse examples (multishot prompting)\nLet Claude think (CoT)\nUse XML tags\nGive Claude a role (system prompts)\nPrefill Claude's response\nChain complex prompts\nLong context tips\nExtended thinking tips\nTest & evaluate\nDefine success criteria\nDevelop test cases\nUsing the Evaluation Tool\nReducing latency\nStrengthen guardrails\nReduce hallucinations\nIncrease output consistency\nMitigate jailbreaks\nStreaming refusals\nReduce prompt leak\nKeep Claude in character\nLegal center\nAnthropic Privacy Policy\nSecurity and compliance\nThe code execution tool allows Claude to execute Python code in a secure, sandboxed environment.\nClaude can analyze data, create visualizations, perform complex calculations, and process uploaded\nfiles directly within the API conversation.\nThe code execution tool is currently in beta.\nThis feature requires the\nbeta header\n:\n\"anthropic-beta\": \"code-execution-2025-05-22\"\n​\nSupported models\nThe code execution tool is available on:\nClaude Opus 4 (\nclaude-opus-4-20250514\n)\nClaude Sonnet 4 (\nclaude-sonnet-4-20250514\n)\nClaude Sonnet 3.7 (\nclaude-3-7-sonnet-20250219\n)\nClaude Haiku 3.5 (\nclaude-3-5-haiku-latest\n)\n​\nQuick start\nHere’s a simple example that asks Claude to perform a calculation:\nShell\nPython\nTypeScript\ncurl\nhttps://api.anthropic.com/v1/messages\n\\\n--header\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n--header\n\"anthropic-version: 2023-06-01\"\n\\\n--header\n\"anthropic-beta: code-execution-2025-05-22\"\n\\\n--header\n\"content-type: application/json\"\n\\\n--data\n'\n{\n\"model\"\n:\n\"claude-opus-4-20250514\"\n,\n\"max_tokens\"\n:\n4096\n,\n\"messages\"\n:\n[\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n\"Calculate the mean and standard deviation of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\"\n}\n]\n,\n\"tools\"\n:\n[\n{\n\"type\"\n:\n\"code_execution_20250522\"\n,\n\"name\"\n:\n\"code_execution\"\n}\n]\n}\n'\n​\nHow code execution works\nWhen you add the code execution tool to your API request:\nClaude evaluates whether code execution would help answer your question\nClaude writes and executes Python code in a secure sandbox environment\nCode execution may occur multiple times throughout a single request\nClaude provides results with any generated charts, calculations, or analysis\n​\nTool definition\nThe code execution tool requires no additional parameters:\nJSON\n{\n\"type\"\n:\n\"code_execution_20250522\"\n,\n\"name\"\n:\n\"code_execution\"\n}\n​\nResponse format\nHere’s an example response with code execution:\n{\n\"role\"\n:\n\"assistant\"\n,\n\"container\"\n:\n{\n\"id\"\n:\n\"container_011CPR5CNjB747bTd36fQLFk\"\n,\n\"expires_at\"\n:\n\"2025-05-23T21:13:31.749448Z\"\n}\n,\n\"content\"\n:\n[\n{\n\"type\"\n:\n\"text\"\n,\n\"text\"\n:\n\"I'll calculate the mean and standard deviation for you.\"\n}\n,\n{\n\"type\"\n:\n\"server_tool_use\"\n,\n\"id\"\n:\n\"srvtoolu_01A2B3C4D5E6F7G8H9I0J1K2\"\n,\n\"name\"\n:\n\"code_execution\"\n,\n\"input\"\n:\n{\n\"code\"\n:\n\"import numpy as np\\ndata = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\\nmean = np.mean(data)\\nstd = np.std(data)\\nprint(f\\\"Mean: {mean}\\\")\\nprint(f\\\"Standard deviation: {std}\\\")\"\n}\n}\n,\n{\n\"type\"\n:\n\"code_execution_tool_result\"\n,\n\"tool_use_id\"\n:\n\"srvtoolu_01A2B3C4D5E6F7G8H9I0J1K2\"\n,\n\"content\"\n:\n{\n\"type\"\n:\n\"code_execution_result\"\n,\n\"stdout\"\n:\n\"Mean: 5.5\\nStandard deviation: 2.8722813232690143\\n\"\n,\n\"stderr\"\n:\n\"\"\n,\n\"return_code\"\n:\n0\n}\n}\n,\n{\n\"type\"\n:\n\"text\"\n,\n\"text\"\n:\n\"The mean of the dataset is 5.5 and the standard deviation is approximately 2.87.\"\n}\n]\n,\n\"id\"\n:\n\"msg_01BqK2v4FnRs4xTjgL8EuZxz\"\n,\n\"model\"\n:\n\"claude-opus-4-20250514\"\n,\n\"stop_reason\"\n:\n\"end_turn\"\n,\n\"usage\"\n:\n{\n\"input_tokens\"\n:\n45\n,\n\"output_tokens\"\n:\n187\n,\n}\n}\n​\nResults\nCode execution results include:\nstdout\n: Output from print statements and successful execution\nstderr\n: Error messages if code execution fails\nreturn_code\n(0 for success, non-zero for failure)\n{\n\"type\"\n:\n\"code_execution_tool_result\"\n,\n\"tool_use_id\"\n:\n\"srvtoolu_01ABC123\"\n,\n\"content\"\n:\n{\n\"type\"\n:\n\"code_execution_result\"\n,\n\"stdout\"\n:\n\"\"\n,\n\"stderr\"\n:\n\"NameError: name 'undefined_variable' is not defined\"\n,\n\"return_code\"\n:\n1\n}\n}\n​\nErrors\nIf there is an error using the tool there will be a\ncode_execution_tool_result_error\n{\n\"type\"\n:\n\"code_execution_tool_result\"\n,\n\"tool_use_id\"\n:\n\"srvtoolu_01VfmxgZ46TiHbmXgy928hQR\"\n,\n\"content\"\n:\n{\n\"type\"\n:\n\"code_execution_tool_result_error\"\n,\n\"error_code\"\n:\n\"unavailable\"\n}\n}\nPossible errors include\nunavailable\n: The code execution tool is unavailable\ncode_execution_exceeded\n: Execution time exceeded the maximum allowed\ncontainer_expired\n: The container is expired and not available\n​\npause_turn\nstop reason\nThe response may include a\npause_turn\nstop reason, which indicates that the API paused a long-running turn. You may\nprovide the response back as-is in a subsequent request to let Claude continue its turn, or modify the content if you\nwish to interrupt the conversation.\n​\nWorking with Files in Code Execution\nCode execution can analyze files uploaded via the Files API, such as CSV files, Excel files, and other data formats.\nThis allows Claude to read, process, and generate insights from your data. You can pass multiple files per request.\nUsing the Files API with Code Execution requires two beta headers:\n\"anthropic-beta\": \"code-execution-2025-05-22,files-api-2025-04-14\"\n​\nSupported file types\nThe Python environment is capable of working with but not limited to the following file types\nCSV\nExcel (.xlsx, .xls)\nJSON\nXML\nImages (JPEG, PNG, GIF, WebP)\nText files (.txt, .md, .py, etc)\n​\nLoading files for code execution\nUpload your file\nusing the\nFiles API\nReference the file\nin your message using a\ncontainer_upload\ncontent block\nInclude the code execution tool\nin your API request\nShell\nPython\nTypeScript\n# First, upload a file\ncurl\nhttps://api.anthropic.com/v1/files\n\\\n--header\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n--header\n\"anthropic-version: 2023-06-01\"\n\\\n--header\n\"anthropic-beta: files-api-2025-04-14\"\n\\\n--form\n'file=@\"data.csv\"'\n\\\n# Then use the file_id with code execution\ncurl\nhttps://api.anthropic.com/v1/messages\n\\\n--header\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n--header\n\"anthropic-version: 2023-06-01\"\n\\\n--header\n\"anthropic-beta: code-execution-2025-05-22,files-api-2025-04-14\"\n\\\n--header\n\"content-type: application/json\"\n\\\n--data\n'\n{\n\"model\"\n:\n\"claude-opus-4-20250514\"\n,\n\"max_tokens\"\n:\n4096\n,\n\"messages\"\n:\n[\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n[\n{\n\"type\"\n:\n\"text\"\n,\n\"text\"\n:\n\"Analyze this CSV data\"\n}\n,\n{\n\"type\"\n:\n\"container_upload\"\n,\n\"file_id\"\n:\n\"file_abc123\"\n}\n]\n}\n]\n,\n\"tools\"\n:\n[\n{\n\"type\"\n:\n\"code_execution_20250522\"\n,\n\"name\"\n:\n\"code_execution\"\n}\n]\n}\n'\n​\nRetrieving files created by code execution\nWhen Claude creates files during code execution (e.g., saving matplotlib plots, generating CSVs), you can retrieve these files using the Files API:\nPython\nTypeScript\nfrom\nanthropic\nimport\nAnthropic\n# Initialize the client\nclient\n=\nAnthropic\n(\n)\n# Request code execution that creates files\nresponse\n=\nclient\n.\nbeta\n.\nmessages\n.\ncreate\n(\nmodel\n=\n\"claude-opus-4-20250514\"\n,\nbetas\n=\n[\n\"code-execution-2025-05-22\"\n,\n\"files-api-2025-04-14\"\n]\n,\nmax_tokens\n=\n4096\n,\nmessages\n=\n[\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n\"Create a matplotlib visualization and save it as output.png\"\n}\n]\n,\ntools\n=\n[\n{\n\"type\"\n:\n\"code_execution_20250522\"\n,\n\"name\"\n:\n\"code_execution\"\n}\n]\n)\n# Extract file IDs from the response\ndef\nextract_file_ids\n(\nresponse\n)\n:\nfile_ids\n=\n[\n]\nfor\nitem\nin\nresponse\n.\ncontent\n:\nif\nitem\n.\ntype\n==\n'code_execution_tool_result'\n:\ncontent_item\n=\nitem\n.\ncontent\nif\ncontent_item\n.\nget\n(\n'type'\n)\n==\n'code_execution_result'\n:\nfor\nfile\nin\ncontent_item\n.\nget\n(\n'content'\n,\n[\n]\n)\n:\nfile_ids\n.\nappend\n(\nfile\n[\n'file_id'\n]\n)\nreturn\nfile_ids\n# Download the created files\nfor\nfile_id\nin\nextract_file_ids\n(\nresponse\n)\n:\nfile_metadata\n=\nclient\n.\nbeta\n.\nfiles\n.\nretrieve_metadata\n(\nfile_id\n)\nfile_content\n=\nclient\n.\nbeta\n.\nfiles\n.\ndownload\n(\nfile_id\n)\nfile_content\n.\nwrite_to_file\n(\nfile_metadata\n.\nfilename\n)\nprint\n(\nf\"Downloaded:\n{\nfile_metadata\n.\nfilename\n}\n\"\n)\n​\nContainers\nThe code execution tool runs in a secure, containerized environment designed specifically for Python code execution.\n​\nRuntime environment\nPython version\n: 3.11.12\nOperating system\n: Linux-based container\nArchitecture\n: x86_64 (AMD64)\n​\nResource limits\nMemory\n: 1GiB RAM\nDisk space\n: 5GiB workspace storage\nCPU\n: 1 CPU\n​\nNetworking and security\nInternet access\n: Completely disabled for security\nExternal connections\n: No outbound network requests permitted\nSandbox isolation\n: Full isolation from host system and other containers\nFile access\n: Limited to workspace directory only\nWorkspace scoping\n: Like\nFiles\n, containers are scoped to the workspace of the API key\nExpiration\n: Containers expire 1 hour after creation\n​\nPre-installed libraries\nThe sandboxed Python environment includes these commonly used libraries:\nData Science\n: pandas, numpy, scipy, scikit-learn, statsmodels\nVisualization\n: matplotlib\nFile Processing\n: pyarrow, openpyxl, xlrd, pillow\nMath & Computing\n: sympy, mpmath\nUtilities\n: tqdm, python-dateutil, pytz, joblib\n​\nContainer reuse\nYou can reuse an existing container across multiple API requests by providing the container ID from a previous response.\nThis allows you to maintain created files between requests.\n​\nExample\nPython\nTypeScript\nShell\nimport\nos\nfrom\nanthropic\nimport\nAnthropic\n# Initialize the client\nclient\n=\nAnthropic\n(\napi_key\n=\nos\n.\ngetenv\n(\n\"ANTHROPIC_API_KEY\"\n)\n)\n# First request: Create a file with a random number\nresponse1\n=\nclient\n.\nbeta\n.\nmessages\n.\ncreate\n(\nmodel\n=\n\"claude-opus-4-20250514\"\n,\nbetas\n=\n[\n\"code-execution-2025-05-22\"\n]\n,\nmax_tokens\n=\n4096\n,\nmessages\n=\n[\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n\"Write a file with a random number and save it to '/tmp/number.txt'\"\n}\n]\n,\ntools\n=\n[\n{\n\"type\"\n:\n\"code_execution_20250522\"\n,\n\"name\"\n:\n\"code_execution\"\n}\n]\n)\n# Extract the container ID from the first response\ncontainer_id\n=\nresponse1\n.\ncontainer\n.\nid\n# Second request: Reuse the container to read the file\nresponse2\n=\nclient\n.\nbeta\n.\nmessages\n.\ncreate\n(\ncontainer\n=\ncontainer_id\n,\n# Reuse the same container\nmodel\n=\n\"claude-opus-4-20250514\"\n,\nbetas\n=\n[\n\"code-execution-2025-05-22\"\n]\n,\nmax_tokens\n=\n4096\n,\nmessages\n=\n[\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n\"Read the number from '/tmp/number.txt' and calculate its square\"\n}\n]\n,\ntools\n=\n[\n{\n\"type\"\n:\n\"code_execution_20250522\"\n,\n\"name\"\n:\n\"code_execution\"\n}\n]\n)\n​\nStreaming\nWith streaming enabled, you’ll receive code execution events as they occur:\nevent\n:\ncontent_block_start\ndata\n:\n{\n\"type\"\n:\n\"content_block_start\"\n,\n\"index\"\n:\n1\n,\n\"content_block\"\n:\n{\n\"type\"\n:\n\"server_tool_use\"\n,\n\"id\"\n:\n\"srvtoolu_xyz789\"\n,\n\"name\"\n:\n\"code_execution\"\n}\n}\n// Code execution streamed\nevent\n:\ncontent_block_delta\ndata\n:\n{\n\"type\"\n:\n\"content_block_delta\"\n,\n\"index\"\n:\n1\n,\n\"delta\"\n:\n{\n\"type\"\n:\n\"input_json_delta\"\n,\n\"partial_json\"\n:\n\"{\\\"code\\\":\\\"import pandas as pd\\\\ndf = pd.read_csv('data.csv')\\\\nprint(df.head())\\\"}\"\n}\n}\n// Pause while code executes\n// Execution results streamed\nevent\n:\ncontent_block_start\ndata\n:\n{\n\"type\"\n:\n\"content_block_start\"\n,\n\"index\"\n:\n2\n,\n\"content_block\"\n:\n{\n\"type\"\n:\n\"code_execution_tool_result\"\n,\n\"tool_use_id\"\n:\n\"srvtoolu_xyz789\"\n,\n\"content\"\n:\n{\n\"stdout\"\n:\n\"   A  B  C\\n0  1  2  3\\n1  4  5  6\"\n,\n\"stderr\"\n:\n\"\"\n}\n}\n}\n​\nBatch requests\nYou can include the code execution tool in the\nMessages Batches API\n. Code execution tool calls through the Messages Batches API are priced the same as those in regular Messages API requests.\n​\nUsage and pricing\nThe code execution tool usage is tracked separately from token usage. Execution time is a minimum of 5 minutes.\nIf files are included in the request, execution time is billed even if the tool is not used due to files being preloaded onto the container.\nPricing\n: $0.05 per session-hour.\nWas this page helpful?\nYes\nNo\nBash tool\nComputer use tool\nOn this page\nSupported models\nQuick start\nHow code execution works\nTool definition\nResponse format\nResults\nErrors\npause_turn stop reason\nWorking with Files in Code Execution\nSupported file types\nLoading files for code execution\nRetrieving files created by code execution\nContainers\nRuntime environment\nResource limits\nNetworking and security\nPre-installed libraries\nContainer reuse\nExample\nStreaming\nBatch requests\nUsage and pricing",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/ticket-routing",
+      "text": "Ticket routing"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/customer-support-chat",
+      "text": "Customer support agent"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/content-moderation",
+      "text": "Content moderation"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/legal-summarization",
+      "text": "Legal summarization"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices",
+      "text": "Claude 4 best practices"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-generator",
+      "text": "Prompt generator"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-templates-and-variables",
+      "text": "Use prompt templates"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-improver",
+      "text": "Prompt improver"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct",
+      "text": "Be clear and direct"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/multishot-prompting",
+      "text": "Use examples (multishot prompting)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought",
+      "text": "Let Claude think (CoT)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags",
+      "text": "Use XML tags"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts",
+      "text": "Give Claude a role (system prompts)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prefill-claudes-response",
+      "text": "Prefill Claude's response"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-prompts",
+      "text": "Chain complex prompts"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/long-context-tips",
+      "text": "Long context tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/extended-thinking-tips",
+      "text": "Extended thinking tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/define-success",
+      "text": "Define success criteria"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests",
+      "text": "Develop test cases"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/eval-tool",
+      "text": "Using the Evaluation Tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-latency",
+      "text": "Reducing latency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+      "text": "Reduce hallucinations"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/increase-consistency",
+      "text": "Increase output consistency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+      "text": "Mitigate jailbreaks"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals",
+      "text": "Streaming refusals"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak",
+      "text": "Reduce prompt leak"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/keep-claude-in-character",
+      "text": "Keep Claude in character"
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:43.978353",
+    "word_count": 1987,
+    "link_count": 29,
+    "content_length": 13051
+  }
+}
