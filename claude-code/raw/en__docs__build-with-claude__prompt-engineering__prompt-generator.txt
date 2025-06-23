@@ -1,0 +1,132 @@
+URL: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-generator
+TITLE: Automatically generate first draft prompt templates - Anthropic
+SCRAPED: 2025-06-23T15:07:48.237384
+WORD_COUNT: 472
+LINKS_FOUND: 18
+================================================================================
+
+Anthropic
+home page
+English
+Search...
+Search...
+Navigation
+Prompt engineering
+Automatically generate first draft prompt templates
+Welcome
+Developer Guide
+API Guide
+Claude Code
+Model Context Protocol (MCP)
+Resources
+Release Notes
+Documentation
+Developer Discord
+Support
+First steps
+Intro to Claude
+Get started
+Models & pricing
+Models overview
+Choosing a model
+Migrating to Claude 4
+Model deprecations
+Pricing
+Learn about Claude
+Building with Claude
+Features overview
+Context windows
+Glossary
+Capabilities
+Prompt caching
+Extended thinking
+Streaming Messages
+Batch processing
+Citations
+Multilingual support
+Token counting
+Embeddings
+Vision
+PDF support
+Files API
+Google Sheets add-on
+Tools
+Overview
+How to implement tool use
+Token-efficient tool use
+Fine-grained tool streaming
+Bash tool
+Code execution tool
+Computer use tool
+Text editor tool
+Web search tool
+Model Context Protocol (MCP)
+MCP connector
+Remote MCP servers
+Use cases
+Overview
+Ticket routing
+Customer support agent
+Content moderation
+Legal summarization
+Prompt engineering
+Overview
+Claude 4 best practices
+Prompt generator
+Use prompt templates
+Prompt improver
+Be clear and direct
+Use examples (multishot prompting)
+Let Claude think (CoT)
+Use XML tags
+Give Claude a role (system prompts)
+Prefill Claude's response
+Chain complex prompts
+Long context tips
+Extended thinking tips
+Test & evaluate
+Define success criteria
+Develop test cases
+Using the Evaluation Tool
+Reducing latency
+Strengthen guardrails
+Reduce hallucinations
+Increase output consistency
+Mitigate jailbreaks
+Streaming refusals
+Reduce prompt leak
+Keep Claude in character
+Legal center
+Anthropic Privacy Policy
+Security and compliance
+Our prompt generator is compatible with all Claude models, including those with extended thinking capabilities. For prompting tips specific to extended thinking models, see
+here
+.
+Sometimes, the hardest part of using an AI model is figuring out how to prompt it effectively. To help with this, we’ve created a prompt generation tool that guides Claude to generate high-quality prompt templates tailored to your specific tasks. These templates follow many of our prompt engineering best practices.
+The prompt generator is particularly useful as a tool for solving the “blank page problem” to give you a jumping-off point for further testing and iteration.
+Try the prompt generator now directly on the
+Console
+.
+If you’re interested in analyzing the underlying prompt and architecture, check out our
+prompt generator Google Colab notebook
+. There, you can easily run the code to have Claude construct prompts on your behalf.
+Note that to run the Colab notebook, you will need an
+API key
+.
+​
+Next steps
+Start prompt engineering
+Get inspired by a curated selection of prompts for various tasks and use cases.
+Prompt library
+Get inspired by a curated selection of prompts for various tasks and use cases.
+GitHub prompting tutorial
+An example-filled tutorial that covers the prompt engineering concepts found in our docs.
+Google Sheets prompting tutorial
+A lighter weight version of our prompt engineering tutorial via an interactive spreadsheet.
+Was this page helpful?
+Yes
+No
+Claude 4 best practices
+Use prompt templates
+On this page
+Next steps
