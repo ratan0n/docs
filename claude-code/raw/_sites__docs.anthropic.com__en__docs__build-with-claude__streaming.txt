@@ -1,0 +1,41 @@
+URL: https://docs.anthropic.com/_sites/docs.anthropic.com/en/docs/build-with-claude/streaming
+TITLE: Home - Anthropic
+SCRAPED: 2025-06-23T15:08:02.173097
+WORD_COUNT: 136
+LINKS_FOUND: 0
+================================================================================
+
+Anthropic
+home page
+English
+Search...
+Search...
+Navigation
+Welcome
+Developer Guide
+API Guide
+Claude Code
+Model Context Protocol (MCP)
+Resources
+Release Notes
+Build with
+Learn how to get started with the Anthropic API and Claude.
+Ask Claude about docs…
+Get started
+Make your first API call in minutes.
+API reference
+Integrate and scale using our API and SDKs.
+Anthropic Console
+Craft and test powerful prompts directly in your browser.
+Release notes
+Learn about changes and new features in Claude and the API.
+Upgrade to Claude 4
+Upgrade to the latest model to access new tools and features available in Claude 4.
+Features overview
+Explore the advanced features and capabilities now available in Claude.
+Anthropic Courses
+Explore Anthropic’s educational courses and projects.
+Anthropic Cookbook
+See replicable code samples and implementations.
+Anthropic Quickstarts
+Deployable applications built with our API.
