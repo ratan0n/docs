@@ -1,0 +1,85 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct",
+  "title": "Be clear, direct, and detailed - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nPrompt engineering\nBe clear, direct, and detailed\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nFirst steps\nIntro to Claude\nGet started\nModels & pricing\nModels overview\nChoosing a model\nMigrating to Claude 4\nModel deprecations\nPricing\nLearn about Claude\nBuilding with Claude\nFeatures overview\nContext windows\nGlossary\nCapabilities\nPrompt caching\nExtended thinking\nStreaming Messages\nBatch processing\nCitations\nMultilingual support\nToken counting\nEmbeddings\nVision\nPDF support\nFiles API\nGoogle Sheets add-on\nTools\nOverview\nHow to implement tool use\nToken-efficient tool use\nFine-grained tool streaming\nBash tool\nCode execution tool\nComputer use tool\nText editor tool\nWeb search tool\nModel Context Protocol (MCP)\nMCP connector\nRemote MCP servers\nUse cases\nOverview\nTicket routing\nCustomer support agent\nContent moderation\nLegal summarization\nPrompt engineering\nOverview\nClaude 4 best practices\nPrompt generator\nUse prompt templates\nPrompt improver\nBe clear and direct\nUse examples (multishot prompting)\nLet Claude think (CoT)\nUse XML tags\nGive Claude a role (system prompts)\nPrefill Claude's response\nChain complex prompts\nLong context tips\nExtended thinking tips\nTest & evaluate\nDefine success criteria\nDevelop test cases\nUsing the Evaluation Tool\nReducing latency\nStrengthen guardrails\nReduce hallucinations\nIncrease output consistency\nMitigate jailbreaks\nStreaming refusals\nReduce prompt leak\nKeep Claude in character\nLegal center\nAnthropic Privacy Policy\nSecurity and compliance\nWhile these tips apply broadly to all Claude models, you can find prompting tips specific to extended thinking models\nhere\n.\nWhen interacting with Claude, think of it as a brilliant but very new employee (with amnesia) who needs explicit instructions. Like any new employee, Claude does not have context on your norms, styles, guidelines, or preferred ways of working.\nThe more precisely you explain what you want, the better Claude’s response will be.\nThe golden rule of clear prompting\nShow your prompt to a colleague, ideally someone who has minimal context on the task, and ask them to follow the instructions. If they’re confused, Claude will likely be too.\n​\nHow to be clear, contextual, and specific\nGive Claude contextual information:\nJust like you might be able to better perform on a task if you knew more context, Claude will perform better if it has more contextual information. Some examples of contextual information:\nWhat the task results will be used for\nWhat audience the output is meant for\nWhat workflow the task is a part of, and where this task belongs in that workflow\nThe end goal of the task, or what a successful task completion looks like\nBe specific about what you want Claude to do:\nFor example, if you want Claude to output only code and nothing else, say so.\nProvide instructions as sequential steps:\nUse numbered lists or bullet points to better ensure that Claude carries out the task the exact way you want it to.\n​\nExamples\nExample: Anonymizing customer feedback\nNotice that Claude still makes mistakes in the unclear prompting example, such as leaving in a customer’s name.\nRole\nUnclear Prompt\nClear Prompt\nUser\nPlease remove all personally identifiable information from these customer feedback messages: {{FEEDBACK_DATA}}\nYour task is to anonymize customer feedback for our quarterly review.\nInstructions:\n1. Replace all customer names with “CUSTOMER_[ID]” (e.g., “Jane Doe” → “CUSTOMER_001”).\n2. Replace email addresses with “EMAIL_[ID]@example.com”.\n3. Redact phone numbers as “PHONE_[ID]“.\n4. If a message mentions a specific product (e.g., “AcmeCloud”), leave it intact.\n5. If no PII is found, copy the message verbatim.\n6. Output only the processed messages, separated by ”---”.\nData to process: {{FEEDBACK_DATA}}\nAssistant (Claude’s response)\nHere are the anonymized customer feedback messages:\n1. I’ve been using your software for years, and it’s been great. But lately, AcmeCloud has been crashing a lot. Fix it!\n2. XXX, your customer support rep, was incredibly helpful. He guided me through the whole process. My email is XXX if you want to send a survey.\n3. I’m John Smith, and I’m not happy. I’ve been on hold for 2 hours trying to reach someone at XXX. This is unacceptable!\nCUSTOMER_001: I’ve been using your software for years, and it’s been great. But lately, AcmeCloud has been crashing a lot. Fix it!\n---\nCUSTOMER_002: CUSTOMER_SERVICE_001, your customer support rep, was incredibly helpful. He guided me through the whole process. My email is\nEMAIL_002@example.com\nif you want to send a survey.\n---\nCUSTOMER_003: I’m CUSTOMER_003, and I’m not happy. I’ve been on hold for 2 hours trying to reach someone at PHONE_001. This is unacceptable!\nExample: Crafting a marketing email campaign\nNotice that Claude makes up details to fill in the gaps where it lacks context with the vague prompt.\nRole\nVague Prompt\nSpecific Prompt\nUser\nWrite a marketing email for our new AcmeCloud features.\nYour task is to craft a targeted marketing email for our Q3 AcmeCloud feature release.\nInstructions:\n1. Write for this target audience: Mid-size tech companies (100-500 employees) upgrading from on-prem to cloud.\n2. Highlight 3 key new features: advanced data encryption, cross-platform sync, and real-time collaboration.\n3. Tone: Professional yet approachable. Emphasize security, efficiency, and teamwork.\n4. Include a clear CTA: Free 30-day trial with priority onboarding.\n5. Subject line: Under 50 chars, mention “security” and “collaboration”.\n6. Personalization: Use {{COMPANY_NAME}} and {{CONTACT_NAME}} variables.\nStructure:\n1. Subject line\n2. Email body (150-200 words)\n3. CTA button text\nAssistant (Claude’s response)\nHere’s a draft marketing email for our new features:\nSubject: Boost Your Business with AcmeCloud’s Latest Features\nDear Valued Customer,\nWe’re excited to introduce three powerful features to AcmeCloud that will revolutionize your workflow:\n1. Real-Time Collaboration: Work on documents simultaneously with your team. No more version control issues!\n2. AI-Powered Insights: Make data-driven decisions with AI that analyzes trends and automates tasks.\n3. Advanced Security Suite: End-to-end encryption, multi-factor auth, and threat detection keep your data safe.\nLimited Offer: Upgrade now for a 20% first-year discount. Plus, refer a friend for an extra 10% off!\nBest,\nThe AcmeCloud Team\nSubject line: AcmeCloud: Enterprise security meets real-time teamwork\nEmail body:\nDear {{CONTACT_NAME}},\nAt {{COMPANY_NAME}}, you’re scaling fast and eyeing the cloud. But with growth comes the challenge of keeping data secure while fostering collaboration. That’s where AcmeCloud’s Q3 release comes in, tailor-made for tech innovators like you.\n1. Fort Knox for Your Files: Military-grade encryption now safeguards your data, both in motion and at rest. Your intellectual property stays yours, period.\n2. Sync Without Borders: Windows, Mac, or Linux—AcmeCloud speaks all languages. Unified version control means no more “final_v2_REALLY_FINAL.doc”.\n3. Collaborate at Light Speed: Ditch the attachment ping-pong. Now your devs, designers, and data scientists co-create in real-time, slashing time-to-market.\nDon’t just take our word for it. Experience the AcmeCloud difference with our 30-day trial. And because we know time is your most precious asset, we’re throwing in priority onboarding.\nElevate Your Team Now - Free 30-Day Trial\nExample: Incident response\nNotice that Claude outputs superfluous text and different formating with the vague prompt.\nRole\nVague Prompt\nDetailed Prompt\nUser\nAnalyze this AcmeCloud outage report and summarize the key points.\n{{REPORT}}\nAnalyze this AcmeCloud outage report. Skip the preamble. Keep your response terse and write only the bare bones necessary information. List only:\n1) Cause\n2) Duration\n3) Impacted services\n4) Number of affected users\n5) Estimated revenue loss.\nHere’s the report: {{REPORT}}\nAssistant (Claude’s response)\nHere’s a summary of the key points from the AcmeCloud outage report:\nOn May 15th, a misconfigured load balancer update caused significant traffic routing issues, resulting in a service outage from 09:15 to 13:52 UTC. The 4-hour 37-minute disruption impacted our core file syncing service and admin dashboard, rendering them inaccessible. Additionally, the mobile app experienced partial functionality loss. Approximately 68% of our user base, totaling 1.3 million users, were affected. Based on our Service Level Agreements (SLAs) and average revenue per user, we estimate a financial impact of $420,000 in service credits and potential customer churn.\n1) Cause: Misconfigured load balancer update\n2) Duration: 4h 37m (09:15-13:52 UTC, May 15)\n3) Impacted: Core sync, admin dashboard (down); mobile app (partial)\n4) Affected users: 1.3M (68% of base)\n5) Est. revenue loss: $420,000\nPrompt library\nGet inspired by a curated selection of prompts for various tasks and use cases.\nGitHub prompting tutorial\nAn example-filled tutorial that covers the prompt engineering concepts found in our docs.\nGoogle Sheets prompting tutorial\nA lighter weight version of our prompt engineering tutorial via an interactive spreadsheet.\nWas this page helpful?\nYes\nNo\nPrompt improver\nUse examples (multishot prompting)\nOn this page\nHow to be clear, contextual, and specific\nExamples",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought",
+      "text": "Let Claude think (CoT)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags",
+      "text": "Use XML tags"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts",
+      "text": "Give Claude a role (system prompts)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prefill-claudes-response",
+      "text": "Prefill Claude's response"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-prompts",
+      "text": "Chain complex prompts"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/long-context-tips",
+      "text": "Long context tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/extended-thinking-tips",
+      "text": "Extended thinking tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/define-success",
+      "text": "Define success criteria"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests",
+      "text": "Develop test cases"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/eval-tool",
+      "text": "Using the Evaluation Tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-latency",
+      "text": "Reducing latency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+      "text": "Reduce hallucinations"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/increase-consistency",
+      "text": "Increase output consistency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+      "text": "Mitigate jailbreaks"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals",
+      "text": "Streaming refusals"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak",
+      "text": "Reduce prompt leak"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/keep-claude-in-character",
+      "text": "Keep Claude in character"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/resources/prompt-library/library",
+      "text": "Prompt libraryGet inspired by a curated selection of prompts for various tasks and use cases."
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:48.558874",
+    "word_count": 1416,
+    "link_count": 18,
+    "content_length": 9421
+  }
+}
