@@ -1,0 +1,185 @@
+URL: https://docs.anthropic.com/en/docs/about-claude/models/choosing-a-model
+TITLE: Choosing the right model - Anthropic
+SCRAPED: 2025-06-23T15:07:35.384884
+WORD_COUNT: 775
+LINKS_FOUND: 53
+================================================================================
+
+Anthropic
+home page
+English
+Search...
+Search...
+Navigation
+Models & pricing
+Choosing the right model
+Welcome
+Developer Guide
+API Guide
+Claude Code
+Model Context Protocol (MCP)
+Resources
+Release Notes
+Documentation
+Developer Discord
+Support
+First steps
+Intro to Claude
+Get started
+Models & pricing
+Models overview
+Choosing a model
+Migrating to Claude 4
+Model deprecations
+Pricing
+Learn about Claude
+Building with Claude
+Features overview
+Context windows
+Glossary
+Capabilities
+Prompt caching
+Extended thinking
+Streaming Messages
+Batch processing
+Citations
+Multilingual support
+Token counting
+Embeddings
+Vision
+PDF support
+Files API
+Google Sheets add-on
+Tools
+Overview
+How to implement tool use
+Token-efficient tool use
+Fine-grained tool streaming
+Bash tool
+Code execution tool
+Computer use tool
+Text editor tool
+Web search tool
+Model Context Protocol (MCP)
+MCP connector
+Remote MCP servers
+Use cases
+Overview
+Ticket routing
+Customer support agent
+Content moderation
+Legal summarization
+Prompt engineering
+Overview
+Claude 4 best practices
+Prompt generator
+Use prompt templates
+Prompt improver
+Be clear and direct
+Use examples (multishot prompting)
+Let Claude think (CoT)
+Use XML tags
+Give Claude a role (system prompts)
+Prefill Claude's response
+Chain complex prompts
+Long context tips
+Extended thinking tips
+Test & evaluate
+Define success criteria
+Develop test cases
+Using the Evaluation Tool
+Reducing latency
+Strengthen guardrails
+Reduce hallucinations
+Increase output consistency
+Mitigate jailbreaks
+Streaming refusals
+Reduce prompt leak
+Keep Claude in character
+Legal center
+Anthropic Privacy Policy
+Security and compliance
+​
+Establish key criteria
+When choosing a Claude model, we recommend first evaluating these factors:
+Capabilities:
+What specific features or capabilities will you need the model to have in order to meet your needs?
+Speed:
+How quickly does the model need to respond in your application?
+Cost:
+What’s your budget for both development and production usage?
+Knowing these answers in advance will make narrowing down and deciding which model to use much easier.
+​
+Choose the best model to start with
+There are two general approaches you can use to start testing which Claude model best works for your needs.
+​
+Option 1: Start with a fast, cost-effective model
+For many applications, starting with a faster, more cost-effective model like Claude 3.5 Haiku can be the optimal approach:
+Begin implementation with Claude 3.5 Haiku
+Test your use case thoroughly
+Evaluate if performance meets your requirements
+Upgrade only if necessary for specific capability gaps
+This approach allows for quick iteration, lower development costs, and is often sufficient for many common applications. This approach is best for:
+Initial prototyping and development
+Applications with tight latency requirements
+Cost-sensitive implementations
+High-volume, straightforward tasks
+​
+Option 2: Start with the most capable model
+For complex tasks where intelligence and advanced capabilities are paramount, you may want to start with the most capable model and then consider optimizing to more efficient models down the line:
+Implement with Claude Opus 4 or Claude Sonnet 4
+Optimize your prompts for these models
+Evaluate if performance meets your requirements
+Consider increasing efficiency by downgrading intelligence over time with greater workflow optimization
+This approach is best for:
+Complex reasoning tasks
+Scientific or mathematical applications
+Tasks requiring nuanced understanding
+Applications where accuracy outweighs cost considerations
+Advanced coding
+​
+Model selection matrix
+When you need…
+We recommend starting with…
+Example use cases
+Highest intelligence and reasoning, superior capabilities for the most complex tasks, such as multi agent coding
+Claude Opus 4
+Multi agent frameworks, complex codebase refactoring, nuanced creative writing, complex financial or scientific analysis
+Balance of intelligence and speed, strong performance but with faster response times
+Claude Sonnet 4
+Complex customer chatbot inquiries, complex code generation, straightforward agentic loops, data analysis
+Fast responses at lower cost, optimized for high volume, straightforward appications with no need for extended thinking
+Claude 3.5 Haiku
+Basic customer support, high volume formulaic content generation, straightforward data extraction
+​
+Decide whether to upgrade or change models
+To determine if you need to upgrade or change models, you should:
+Create benchmark tests
+specific to your use case - having a good evaluation set is the most important step in the process
+Test with your actual prompts and data
+Compare performance across models for:
+Accuracy of responses
+Response quality
+Handling of edge cases
+Weigh performance and cost tradeoffs
+​
+Next steps
+Model comparison chart
+See detailed specifications and pricing for the latest Claude models
+Migrate to Claude 4
+Follow the checklist for an easy migration to Claude 4
+Start building
+Get started with your first API call
+Was this page helpful?
+Yes
+No
+Models overview
+Migrating to Claude 4
+On this page
+Establish key criteria
+Choose the best model to start with
+Option 1: Start with a fast, cost-effective model
+Option 2: Start with the most capable model
+Model selection matrix
+Decide whether to upgrade or change models
+Next steps
