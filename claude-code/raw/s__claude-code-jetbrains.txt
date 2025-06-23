@@ -1,8 +1,0 @@
-URL: https://docs.anthropic.com/s/claude-code-jetbrains
-TITLE: Claude Code [Beta] - IntelliJ IDEs Plugin | Marketplace
-SCRAPED: 2025-06-23T15:07:55.415004
-WORD_COUNT: 0
-LINKS_FOUND: 0
-================================================================================
-
-[No text content extracted]
