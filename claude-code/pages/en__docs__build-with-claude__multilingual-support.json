@@ -1,0 +1,181 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/build-with-claude/multilingual-support",
+  "title": "Multilingual support - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nCapabilities\nMultilingual support\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nFirst steps\nIntro to Claude\nGet started\nModels & pricing\nModels overview\nChoosing a model\nMigrating to Claude 4\nModel deprecations\nPricing\nLearn about Claude\nBuilding with Claude\nFeatures overview\nContext windows\nGlossary\nCapabilities\nPrompt caching\nExtended thinking\nStreaming Messages\nBatch processing\nCitations\nMultilingual support\nToken counting\nEmbeddings\nVision\nPDF support\nFiles API\nGoogle Sheets add-on\nTools\nOverview\nHow to implement tool use\nToken-efficient tool use\nFine-grained tool streaming\nBash tool\nCode execution tool\nComputer use tool\nText editor tool\nWeb search tool\nModel Context Protocol (MCP)\nMCP connector\nRemote MCP servers\nUse cases\nOverview\nTicket routing\nCustomer support agent\nContent moderation\nLegal summarization\nPrompt engineering\nOverview\nClaude 4 best practices\nPrompt generator\nUse prompt templates\nPrompt improver\nBe clear and direct\nUse examples (multishot prompting)\nLet Claude think (CoT)\nUse XML tags\nGive Claude a role (system prompts)\nPrefill Claude's response\nChain complex prompts\nLong context tips\nExtended thinking tips\nTest & evaluate\nDefine success criteria\nDevelop test cases\nUsing the Evaluation Tool\nReducing latency\nStrengthen guardrails\nReduce hallucinations\nIncrease output consistency\nMitigate jailbreaks\nStreaming refusals\nReduce prompt leak\nKeep Claude in character\nLegal center\nAnthropic Privacy Policy\nSecurity and compliance\n​\nOverview\nClaude demonstrates robust multilingual capabilities, with particularly strong performance in zero-shot tasks across languages. The model maintains consistent relative performance across both widely-spoken and lower-resource languages, making it a reliable choice for multilingual applications.\nNote that Claude is capable in many languages beyond those benchmarked below. We encourage testing with any languages relevant to your specific use cases.\n​\nPerformance data\nBelow are the zero-shot chain-of-thought evaluation scores for Claude 4, Claude 3.7 Sonnet and Claude 3.5 models across different languages, shown as a percent relative to English performance (100%):\nLanguage\nClaude Opus 4\n1\nClaude Sonnet 4\n1\nClaude Sonnet 3.7\n1\nClaude Sonnet 3.5 v2\nClaude Haiku 3.5\nEnglish (baseline, fixed to 100%)\n100%\n100%\n100%\n100%\n100%\nSpanish\n98.0%\n97.5%\n97.6%\n96.9%\n94.6%\nPortuguese (Brazil)\n97.3%\n97.2%\n97.3%\n96.0%\n94.6%\nItalian\n97.5%\n97.3%\n97.2%\n95.6%\n95.0%\nFrench\n97.7%\n97.1%\n96.9%\n96.2%\n95.3%\nIndonesian\n97.2%\n96.2%\n96.3%\n94.0%\n91.2%\nGerman\n97.1%\n94.7%\n96.2%\n94.0%\n92.5%\nArabic\n96.9%\n96.1%\n95.4%\n92.5%\n84.7%\nChinese (Simplified)\n96.7%\n95.9%\n95.3%\n92.8%\n90.9%\nKorean\n96.4%\n95.9%\n95.2%\n92.8%\n89.1%\nJapanese\n96.2%\n95.6%\n95.0%\n92.7%\n90.8%\nHindi\n96.7%\n95.8%\n94.2%\n89.3%\n80.1%\nBengali\n95.2%\n94.4%\n92.4%\n85.9%\n72.9%\nSwahili\n89.5%\n87.1%\n89.2%\n83.9%\n64.7%\nYoruba\n78.9%\n76.4%\n76.7%\n64.9%\n46.1%\n1\nWith\nextended thinking\n.\nThese metrics are based on\nMMLU (Massive Multitask Language Understanding)\nEnglish test sets that were translated into 14 additional languages by professional human translators, as documented in\nOpenAI’s simple-evals repository\n. The use of human translators for this evaluation ensures high-quality translations, particularly important for languages with fewer digital resources.\n​\nBest practices\nWhen working with multilingual content:\nProvide clear language context\n: While Claude can detect the target language automatically, explicitly stating the desired input/output language improves reliability. For enhanced fluency, you can prompt Claude to use “idiomatic speech as if it were a native speaker.”\nUse native scripts\n: Submit text in its native script rather than transliteration for optimal results\nConsider cultural context\n: Effective communication often requires cultural and regional awareness beyond pure translation\nWe also suggest following our general\nprompt engineering guidelines\nto better improve Claude’s performance.\n​\nLanguage support considerations\nClaude processes input and generates output in most world languages that use standard Unicode characters\nPerformance varies by language, with particularly strong capabilities in widely-spoken languages\nEven in languages with fewer digital resources, Claude maintains meaningful capabilities\nPrompt Engineering Guide\nMaster the art of prompt crafting to get the most out of Claude.\nPrompt Library\nFind a wide range of pre-crafted prompts for various tasks and industries. Perfect for inspiration or quick starts.\nWas this page helpful?\nYes\nNo\nCitations\nToken counting\nOn this page\nOverview\nPerformance data\nBest practices\nLanguage support considerations",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/claude-for-sheets",
+      "text": "Google Sheets add-on"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use",
+      "text": "How to implement tool use"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/token-efficient-tool-use",
+      "text": "Token-efficient tool use"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/fine-grained-tool-streaming",
+      "text": "Fine-grained tool streaming"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/bash-tool",
+      "text": "Bash tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/code-execution-tool",
+      "text": "Code execution tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/computer-use-tool",
+      "text": "Computer use tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/text-editor-tool",
+      "text": "Text editor tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+      "text": "Web search tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/mcp-connector",
+      "text": "MCP connector"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/remote-mcp-servers",
+      "text": "Remote MCP servers"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/ticket-routing",
+      "text": "Ticket routing"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/customer-support-chat",
+      "text": "Customer support agent"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/content-moderation",
+      "text": "Content moderation"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/legal-summarization",
+      "text": "Legal summarization"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices",
+      "text": "Claude 4 best practices"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-generator",
+      "text": "Prompt generator"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-templates-and-variables",
+      "text": "Use prompt templates"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-improver",
+      "text": "Prompt improver"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct",
+      "text": "Be clear and direct"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/multishot-prompting",
+      "text": "Use examples (multishot prompting)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought",
+      "text": "Let Claude think (CoT)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags",
+      "text": "Use XML tags"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts",
+      "text": "Give Claude a role (system prompts)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prefill-claudes-response",
+      "text": "Prefill Claude's response"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-prompts",
+      "text": "Chain complex prompts"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/long-context-tips",
+      "text": "Long context tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/extended-thinking-tips",
+      "text": "Extended thinking tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/define-success",
+      "text": "Define success criteria"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests",
+      "text": "Develop test cases"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/eval-tool",
+      "text": "Using the Evaluation Tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-latency",
+      "text": "Reducing latency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+      "text": "Reduce hallucinations"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/increase-consistency",
+      "text": "Increase output consistency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+      "text": "Mitigate jailbreaks"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals",
+      "text": "Streaming refusals"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak",
+      "text": "Reduce prompt leak"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/keep-claude-in-character",
+      "text": "Keep Claude in character"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/resources/prompt-library",
+      "text": "Prompt LibraryFind a wide range of pre-crafted prompts for various tasks and industries. Perfect for"
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:39.919936",
+    "word_count": 672,
+    "link_count": 42,
+    "content_length": 4764
+  }
+}
