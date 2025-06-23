@@ -1,0 +1,177 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/build-with-claude/embeddings",
+  "title": "Embeddings - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nCapabilities\nEmbeddings\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nFirst steps\nIntro to Claude\nGet started\nModels & pricing\nModels overview\nChoosing a model\nMigrating to Claude 4\nModel deprecations\nPricing\nLearn about Claude\nBuilding with Claude\nFeatures overview\nContext windows\nGlossary\nCapabilities\nPrompt caching\nExtended thinking\nStreaming Messages\nBatch processing\nCitations\nMultilingual support\nToken counting\nEmbeddings\nVision\nPDF support\nFiles API\nGoogle Sheets add-on\nTools\nOverview\nHow to implement tool use\nToken-efficient tool use\nFine-grained tool streaming\nBash tool\nCode execution tool\nComputer use tool\nText editor tool\nWeb search tool\nModel Context Protocol (MCP)\nMCP connector\nRemote MCP servers\nUse cases\nOverview\nTicket routing\nCustomer support agent\nContent moderation\nLegal summarization\nPrompt engineering\nOverview\nClaude 4 best practices\nPrompt generator\nUse prompt templates\nPrompt improver\nBe clear and direct\nUse examples (multishot prompting)\nLet Claude think (CoT)\nUse XML tags\nGive Claude a role (system prompts)\nPrefill Claude's response\nChain complex prompts\nLong context tips\nExtended thinking tips\nTest & evaluate\nDefine success criteria\nDevelop test cases\nUsing the Evaluation Tool\nReducing latency\nStrengthen guardrails\nReduce hallucinations\nIncrease output consistency\nMitigate jailbreaks\nStreaming refusals\nReduce prompt leak\nKeep Claude in character\nLegal center\nAnthropic Privacy Policy\nSecurity and compliance\n​\nBefore implementing embeddings\nWhen selecting an embeddings provider, there are several factors you can consider depending on your needs and preferences:\nDataset size & domain specificity: size of the model training dataset and its relevance to the domain you want to embed. Larger or more domain-specific data generally produces better in-domain embeddings\nInference performance: embedding lookup speed and end-to-end latency. This is a particularly important consideration for large scale production deployments\nCustomization: options for continued training on private data, or specialization of models for very specific domains. This can improve performance on unique vocabularies\n​\nHow to get embeddings with Anthropic\nAnthropic does not offer its own embedding model. One embeddings provider that has a wide variety of options and capabilities encompassing all of the above considerations is Voyage AI.\nVoyage AI makes state-of-the-art embedding models and offers customized models for specific industry domains such as finance and healthcare, or bespoke fine-tuned models for individual customers.\nThe rest of this guide is for Voyage AI, but we encourage you to assess a variety of embeddings vendors to find the best fit for your specific use case.\n​\nAvailable Models\nVoyage recommends using the following text embedding models:\nModel\nContext Length\nEmbedding Dimension\nDescription\nvoyage-3-large\n32,000\n1024 (default), 256, 512, 2048\nThe best general-purpose and multilingual retrieval quality. See\nblog post\nfor details.\nvoyage-3.5\n32,000\n1024 (default), 256, 512, 2048\nOptimized for general-purpose and multilingual retrieval quality. See\nblog post\nfor details.\nvoyage-3.5-lite\n32,000\n1024 (default), 256, 512, 2048\nOptimized for latency and cost. See\nblog post\nfor details.\nvoyage-code-3\n32,000\n1024 (default), 256, 512, 2048\nOptimized for\ncode\nretrieval. See\nblog post\nfor details.\nvoyage-finance-2\n32,000\n1024\nOptimized for\nfinance\nretrieval and RAG. See\nblog post\nfor details.\nvoyage-law-2\n16,000\n1024\nOptimized for\nlegal\nand\nlong-context\nretrieval and RAG. Also improved performance across all domains. See\nblog post\nfor details.\nAdditionally, the following multimodal embedding models are recommended:\nModel\nContext Length\nEmbedding Dimension\nDescription\nvoyage-multimodal-3\n32000\n1024\nRich multimodal embedding model that can vectorize interleaved text and content-rich images, such as screenshots of PDFs, slides, tables, figures, and more. See\nblog post\nfor details.\nNeed help deciding which text embedding model to use? Check out the\nFAQ\n.\n​\nGetting started with Voyage AI\nTo access Voyage embeddings:\nSign up on Voyage AI’s website\nObtain an API key\nSet the API key as an environment variable for convenience:\nexport\nVOYAGE_API_KEY\n=\n\"<your secret key>\"\nYou can obtain the embeddings by either using the official\nvoyageai\nPython package\nor HTTP requests, as described below.\n​\nVoyage Python library\nThe\nvoyageai\npackage can be installed using the following command:\npip\ninstall\n-U\nvoyageai\nThen, you can create a client object and start using it to embed your texts:\nimport\nvoyageai\nvo\n=\nvoyageai\n.\nClient\n(\n)\n# This will automatically use the environment variable VOYAGE_API_KEY.\n# Alternatively, you can use vo = voyageai.Client(api_key=\"<your secret key>\")\ntexts\n=\n[\n\"Sample text 1\"\n,\n\"Sample text 2\"\n]\nresult\n=\nvo\n.\nembed\n(\ntexts\n,\nmodel\n=\n\"voyage-3.5\"\n,\ninput_type\n=\n\"document\"\n)\nprint\n(\nresult\n.\nembeddings\n[\n0\n]\n)\nprint\n(\nresult\n.\nembeddings\n[\n1\n]\n)\nresult.embeddings\nwill be a list of two embedding vectors, each containing 1024 floating-point numbers. After running the above code, the two embeddings will be printed on the screen:\n[-0.013131560757756233, 0.019828535616397858, ...]   # embedding for \"Sample text 1\"\n[-0.0069352793507277966, 0.020878976210951805, ...]  # embedding for \"Sample text 2\"\nWhen creating the embeddings, you can specify a few other arguments to the\nembed()\nfunction.\nFor more information on the Voyage python package, see\nthe Voyage documentation\n.\n​\nVoyage HTTP API\nYou can also get embeddings by requesting Voyage HTTP API. For example, you can send an HTTP request through the\ncurl\ncommand in a terminal:\ncurl\nhttps://api.voyageai.com/v1/embeddings\n\\\n-H\n\"Content-Type: application/json\"\n\\\n-H\n\"Authorization: Bearer\n$VOYAGE_API_KEY\n\"\n\\\n-d\n'\n{\n\"input\"\n:\n[\n\"Sample text 1\"\n,\n\"Sample text 2\"\n]\n,\n\"model\"\n:\n\"voyage-3.5\"\n}\n'\nThe response you would get is a JSON object containing the embeddings and the token usage:\n{\n\"object\"\n:\n\"list\"\n,\n\"data\"\n:\n[\n{\n\"embedding\"\n:\n[\n-0.013131560757756233\n,\n0.019828535616397858\n,\n...\n]\n,\n\"index\"\n:\n0\n}\n,\n{\n\"embedding\"\n:\n[\n-0.0069352793507277966\n,\n0.020878976210951805\n,\n...\n]\n,\n\"index\"\n:\n1\n}\n]\n,\n\"model\"\n:\n\"voyage-3.5\"\n,\n\"usage\"\n:\n{\n\"total_tokens\"\n:\n10\n}\n}\nFor more information on the Voyage HTTP API, see\nthe Voyage documentation\n.\n​\nAWS Marketplace\nVoyage embeddings are available on\nAWS Marketplace\n. Instructions for accessing Voyage on AWS are available\nhere\n.\n​\nQuickstart example\nNow that we know how to get embeddings, let’s see a brief example.\nSuppose we have a small corpus of six documents to retrieve from\ndocuments\n=\n[\n\"The Mediterranean diet emphasizes fish, olive oil, and vegetables, believed to reduce chronic diseases.\"\n,\n\"Photosynthesis in plants converts light energy into glucose and produces essential oxygen.\"\n,\n\"20th-century innovations, from radios to smartphones, centered on electronic advancements.\"\n,\n\"Rivers provide water, irrigation, and habitat for aquatic species, vital for ecosystems.\"\n,\n\"Apple's conference call to discuss fourth fiscal quarter results and business updates is scheduled for Thursday, November 2, 2023 at 2:00 p.m. PT / 5:00 p.m. ET.\"\n,\n\"Shakespeare's works, like 'Hamlet' and 'A Midsummer Night's Dream,' endure in literature.\"\n]\nWe will first use Voyage to convert each of them into an embedding vector\nimport\nvoyageai\nvo\n=\nvoyageai\n.\nClient\n(\n)\n# Embed the documents\ndoc_embds\n=\nvo\n.\nembed\n(\ndocuments\n,\nmodel\n=\n\"voyage-3.5\"\n,\ninput_type\n=\n\"document\"\n)\n.\nembeddings\nThe embeddings will allow us to do semantic search / retrieval in the vector space. Given an example query,\nquery\n=\n\"When is Apple's conference call scheduled?\"\nwe convert it into an embedding, and conduct a nearest neighbor search to find the most relevant document based on the distance in the embedding space.\nimport\nnumpy\nas\nnp\n# Embed the query\nquery_embd\n=\nvo\n.\nembed\n(\n[\nquery\n]\n,\nmodel\n=\n\"voyage-3.5\"\n,\ninput_type\n=\n\"query\"\n)\n.\nembeddings\n[\n0\n]\n# Compute the similarity\n# Voyage embeddings are normalized to length 1, therefore dot-product\n# and cosine similarity are the same.\nsimilarities\n=\nnp\n.\ndot\n(\ndoc_embds\n,\nquery_embd\n)\nretrieved_id\n=\nnp\n.\nargmax\n(\nsimilarities\n)\nprint\n(\ndocuments\n[\nretrieved_id\n]\n)\nNote that we use\ninput_type=\"document\"\nand\ninput_type=\"query\"\nfor embedding the document and query, respectively. More specification can be found\nhere\n.\nThe output would be the 5th document, which is indeed the most relevant to the query:\nApple's conference call to discuss fourth fiscal quarter results and business updates is scheduled for Thursday, November 2, 2023 at 2:00 p.m. PT / 5:00 p.m. ET.\nIf you are looking for a detailed set of cookbooks on how to do RAG with embeddings, including vector databases, check out our\nRAG cookbook\n.\n​\nFAQ\nWhy do Voyage embeddings have superior quality?\nEmbedding models rely on powerful neural networks to capture and compress semantic context, similar to generative models. Voyage’s team of experienced AI researchers optimizes every component of the embedding process, including:\nModel architecture\nData collection\nLoss functions\nOptimizer selection\nLearn more about Voyage’s technical approach on their\nblog\n.\nWhat embedding models are available and which should I use?\nFor general-purpose embedding, we recommend:\nvoyage-3-large\n: Best quality\nvoyage-3.5-lite\n: Lowest latency and cost\nvoyage-3.5\n: Balanced performance with superior retrieval quality at a competitive price point\nFor retrieval, use the\ninput_type\nparameter to specify whether the text is a query or document type.\nDomain-specific models:\nLegal tasks:\nvoyage-law-2\nCode and programming documentation:\nvoyage-code-3\nFinance-related tasks:\nvoyage-finance-2\nWhich similarity function should I use?\nYou can use Voyage embeddings with either dot-product similarity, cosine similarity, or Euclidean distance. An explanation about embedding similarity can be found\nhere\n.\nVoyage AI embeddings are normalized to length 1, which means that:\nCosine similarity is equivalent to dot-product similarity, while the latter can be computed more quickly.\nCosine similarity and Euclidean distance will result in the identical rankings.\nWhat is the relationship between characters, words, and tokens?\nPlease see this\npage\n.\nWhen and how should I use the input_type parameter?\nFor all retrieval tasks and use cases (e.g., RAG), we recommend that the\ninput_type\nparameter be used to specify whether the input text is a query or document. Do not omit\ninput_type\nor set\ninput_type=None\n. Specifying whether input text is a query or document can create better dense vector representations for retrieval, which can lead to better retrieval quality.\nWhen using the\ninput_type\nparameter, special prompts are prepended to the input text prior to embedding. Specifically:\n📘\nPrompts associated with\ninput_type\nFor a query, the prompt is “Represent the query for retrieving supporting documents: “.\nFor a document, the prompt is “Represent the document for retrieval: “.\nExample\nWhen\ninput_type=\"query\"\n, a query like “When is Apple’s conference call scheduled?” will become “\nRepresent the query for retrieving supporting documents:\nWhen is Apple’s conference call scheduled?”\nWhen\ninput_type=\"document\"\n, a query like “Apple’s conference call to discuss fourth fiscal quarter results and business updates is scheduled for Thursday, November 2, 2023 at 2:00 p.m. PT / 5:00 p.m. ET.” will become “\nRepresent the document for retrieval:\nApple’s conference call to discuss fourth fiscal quarter results and business updates is scheduled for Thursday, November 2, 2023 at 2:00 p.m. PT / 5:00 p.m. ET.”\nvoyage-large-2-instruct\n, as the name suggests, is trained to be responsive to additional instructions that are prepended to the input text. For classification, clustering, or other\nMTEB\nsubtasks, please use the instructions\nhere\n.\nWhat quantization options are available?\nQuantization in embeddings converts high-precision values, like 32-bit single-precision floating-point numbers, to lower-precision formats such as 8-bit integers or 1-bit binary values, reducing storage, memory, and costs by 4x and 32x, respectively. Supported Voyage models enable quantization by specifying the output data type with the\noutput_dtype\nparameter:\nfloat\n: Each returned embedding is a list of 32-bit (4-byte) single-precision floating-point numbers. This is the default and provides the highest precision / retrieval accuracy.\nint8\nand\nuint8\n: Each returned embedding is a list of 8-bit (1-byte) integers ranging from -128 to 127 and 0 to 255, respectively.\nbinary\nand\nubinary\n: Each returned embedding is a list of 8-bit integers that represent bit-packed, quantized single-bit embedding values:\nint8\nfor\nbinary\nand\nuint8\nfor\nubinary\n. The length of the returned list of integers is 1/8 of the actual dimension of the embedding. The binary type uses the offset binary method, which you can learn more about in the FAQ below.\nBinary quantization example\nConsider the following eight embedding values: -0.03955078, 0.006214142, -0.07446289, -0.039001465, 0.0046463013, 0.00030612946, -0.08496094, and 0.03994751. With binary quantization, values less than or equal to zero will be quantized to a binary zero, and positive values to a binary one, resulting in the following binary sequence: 0, 1, 0, 0, 1, 1, 0, 1. These eight bits are then packed into a single 8-bit integer, 01001101 (with the leftmost bit as the most significant bit).\nubinary\n: The binary sequence is directly converted and represented as the unsigned integer (\nuint8\n) 77.\nbinary\n: The binary sequence is represented as the signed integer (\nint8\n) -51, calculated using the offset binary method (77 - 128 = -51).\nHow can I truncate Matryoshka embeddings?\nMatryoshka learning creates embeddings with coarse-to-fine representations within a single vector. Voyage models, such as\nvoyage-code-3\n, that support multiple output dimensions generate such Matryoshka embeddings. You can truncate these vectors by keeping the leading subset of dimensions. For example, the following Python code demonstrates how to truncate 1024-dimensional vectors to 256 dimensions:\nimport\nvoyageai\nimport\nnumpy\nas\nnp\ndef\nembd_normalize\n(\nv\n:\nnp\n.\nndarray\n)\n-\n>\nnp\n.\nndarray\n:\n\"\"\n\"\nNormalize the rows of a 2D numpy array to unit vectors by dividing each row by its Euclidean\nnorm\n.\nRaises a ValueError\nif\nany\nrow has a norm of zero to prevent division by zero\n.\n\"\"\n\"\nrow_norms\n=\nnp\n.\nlinalg\n.\nnorm\n(\nv\n,\naxis\n=\n1\n,\nkeepdims\n=\nTrue\n)\nif\nnp\n.\nany\n(\nrow_norms\n==\n0\n)\n:\nraise\nValueError\n(\n\"Cannot normalize rows with a norm of zero.\"\n)\nreturn\nv\n/\nrow_norms\nvo\n=\nvoyageai\n.\nClient\n(\n)\n# Generate voyage-code-3 vectors, which by default are 1024-dimensional floating-point numbers\nembd\n=\nvo\n.\nembed\n(\n[\n'Sample text 1'\n,\n'Sample text 2'\n]\n,\nmodel\n=\n'voyage-code-3'\n)\n.\nembeddings\n# Set shorter dimension\nshort_dim\n=\n256\n# Resize and normalize vectors to shorter dimension\nresized_embd\n=\nembd_normalize\n(\nnp\n.\narray\n(\nembd\n)\n[\n:\n,\n:\nshort_dim\n]\n)\n.\ntolist\n(\n)\n​\nPricing\nVisit Voyage’s\npricing page\nfor the most up to date pricing details.\nWas this page helpful?\nYes\nNo\nToken counting\nVision\nOn this page\nBefore implementing embeddings\nHow to get embeddings with Anthropic\nAvailable Models\nGetting started with Voyage AI\nVoyage Python library\nVoyage HTTP API\nAWS Marketplace\nQuickstart example\nFAQ\nPricing",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/claude-for-sheets",
+      "text": "Google Sheets add-on"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use",
+      "text": "How to implement tool use"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/token-efficient-tool-use",
+      "text": "Token-efficient tool use"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/fine-grained-tool-streaming",
+      "text": "Fine-grained tool streaming"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/bash-tool",
+      "text": "Bash tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/code-execution-tool",
+      "text": "Code execution tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/computer-use-tool",
+      "text": "Computer use tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/text-editor-tool",
+      "text": "Text editor tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+      "text": "Web search tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/mcp-connector",
+      "text": "MCP connector"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/remote-mcp-servers",
+      "text": "Remote MCP servers"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/ticket-routing",
+      "text": "Ticket routing"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/customer-support-chat",
+      "text": "Customer support agent"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/content-moderation",
+      "text": "Content moderation"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/legal-summarization",
+      "text": "Legal summarization"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices",
+      "text": "Claude 4 best practices"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-generator",
+      "text": "Prompt generator"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-templates-and-variables",
+      "text": "Use prompt templates"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-improver",
+      "text": "Prompt improver"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct",
+      "text": "Be clear and direct"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/multishot-prompting",
+      "text": "Use examples (multishot prompting)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought",
+      "text": "Let Claude think (CoT)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags",
+      "text": "Use XML tags"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts",
+      "text": "Give Claude a role (system prompts)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prefill-claudes-response",
+      "text": "Prefill Claude's response"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-prompts",
+      "text": "Chain complex prompts"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/long-context-tips",
+      "text": "Long context tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/extended-thinking-tips",
+      "text": "Extended thinking tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/define-success",
+      "text": "Define success criteria"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests",
+      "text": "Develop test cases"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/eval-tool",
+      "text": "Using the Evaluation Tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-latency",
+      "text": "Reducing latency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+      "text": "Reduce hallucinations"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/increase-consistency",
+      "text": "Increase output consistency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+      "text": "Mitigate jailbreaks"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals",
+      "text": "Streaming refusals"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak",
+      "text": "Reduce prompt leak"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/keep-claude-in-character",
+      "text": "Keep Claude in character"
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:39.841010",
+    "word_count": 2413,
+    "link_count": 41,
+    "content_length": 15452
+  }
+}
