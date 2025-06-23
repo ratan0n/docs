@@ -1,0 +1,93 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/claude-code/setup",
+  "title": "Set up Claude Code - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nGetting started\nSet up Claude Code\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nGetting started\nOverview\nSet up\nQuickstart\nMemory management\nCommon workflows\nBuild with Claude\nAdd Claude Code to your IDE\nModel Context Protocol (MCP)\nGitHub Actions\nClaude Code SDK\nTroubleshooting\nDeployment\nOverview\nAmazon Bedrock\nGoogle Vertex AI\nCorporate proxy\nLLM gateway\nDevelopment containers\nAdministration\nIdentity and Access Management\nSecurity\nMonitoring\nCosts\nReference\nCLI reference\nInteractive mode\nSlash commands\nSettings\nResources\nData usage\nLegal and compliance\n​\nSystem requirements\nOperating Systems\n: macOS 10.15+, Ubuntu 20.04+/Debian 10+, or Windows via WSL\nHardware\n: 4GB RAM minimum\nSoftware\n:\nNode.js 18+\ngit\n2.23+ (optional)\nGitHub\nor\nGitLab\nCLI for PR workflows (optional)\nNetwork\n: Internet connection required for authentication and AI processing\nLocation\n: Available only in\nsupported countries\n​\nInstall and authenticate\n1\nInstall Claude Code\nInstall\nNodeJS 18+\n, then run:\nnpm\ninstall\n-g\n@anthropic-ai/claude-code\nDo NOT use\nsudo npm install -g\nas this can lead to permission issues and\nsecurity risks. If you encounter permission errors, see\nconfigure Claude\nCode\nfor recommended solutions.\n2\nNavigate to your project\ncd\nyour-project-directory\n3\nStart Claude Code\nclaude\n4\nComplete authentication\nClaude Code offers multiple authentication options:\nAnthropic Console\n: The default option. Connect through the Anthropic Console and\ncomplete the OAuth process. Requires active billing at\nconsole.anthropic.com\n.\nClaude App (with Pro or Max plan)\n: Subscribe to Claude’s\nPro or Max plan\nfor a unified subscription that includes both Claude Code and the web interface. Get more value at the same price point while managing your account in one place. Log in with your Claude.ai account. During launch, choose the option that matches your subscription type.\nEnterprise platforms\n: Configure Claude Code to use\nAmazon Bedrock or Google Vertex AI\nfor enterprise deployments with your existing cloud infrastructure.\n​\nInitialize your project\nFor first-time users, we recommend:\n1\nStart Claude Code\nclaude\n2\nRun a simple command\n> summarize this project\n3\nGenerate a CLAUDE.md project guide\n/init\n4\nCommit the generated CLAUDE.md file\nAsk Claude to commit the generated CLAUDE.md file to your repository.\n​\nTroubleshooting\n​\nTroubleshooting WSL installation\nCurrently, Claude Code does not run directly in Windows, and instead requires WSL.\nYou might encounter the following issues in WSL:\nOS/platform detection issues\n: If you receive an error during installation, WSL may be using Windows\nnpm\n. Try:\nRun\nnpm config set os linux\nbefore installation\nInstall with\nnpm install -g @anthropic-ai/claude-code --force --no-os-check\n(Do NOT use\nsudo\n)\nNode not found errors\n: If you see\nexec: node: not found\nwhen running\nclaude\n, your WSL environment may be using a Windows installation of Node.js. You can confirm this with\nwhich npm\nand\nwhich node\n, which should point to Linux paths starting with\n/usr/\nrather than\n/mnt/c/\n. To fix this, try installing Node via your Linux distribution’s package manager or via\nnvm\n.\n​\nOptimize your terminal setup\nClaude Code works best when your terminal is properly configured. Follow these guidelines to optimize your experience.\nSupported shells\n:\nBash\nZsh\nFish\n​\nThemes and appearance\nClaude cannot control the theme of your terminal. That’s handled by your terminal application. You can match Claude Code’s theme to your terminal during onboarding or any time via the\n/config\ncommand\n​\nLine breaks\nYou have several options for entering linebreaks into Claude Code:\nQuick escape\n: Type\n\\\nfollowed by Enter to create a newline\nKeyboard shortcut\n: Press Option+Enter (Meta+Enter) with proper configuration\nTo set up Option+Enter in your terminal:\nFor Mac Terminal.app:\nOpen Settings → Profiles → Keyboard\nCheck “Use Option as Meta Key”\nFor iTerm2 and VSCode terminal:\nOpen Settings → Profiles → Keys\nUnder General, set Left/Right Option key to “Esc+”\nTip for iTerm2 and VSCode users\n: Run\n/terminal-setup\nwithin Claude Code to automatically configure Shift+Enter as a more intuitive alternative.\n​\nNotification setup\nNever miss when Claude completes a task with proper notification configuration:\n​\nTerminal bell notifications\nEnable sound alerts when tasks complete:\nclaude config\nset\n--global\npreferredNotifChannel terminal_bell\nFor macOS users\n: Don’t forget to enable notification permissions in System Settings → Notifications → [Your Terminal App].\n​\niTerm 2 system notifications\nFor iTerm 2 alerts when tasks complete:\nOpen iTerm 2 Preferences\nNavigate to Profiles → Terminal\nEnable “Silence bell” and Filter Alerts → “Send escape sequence-generated alerts”\nSet your preferred notification delay\nNote that these notifications are specific to iTerm 2 and not available in the default macOS Terminal.\n​\nHandling large inputs\nWhen working with extensive code or long instructions:\nAvoid direct pasting\n: Claude Code may struggle with very long pasted content\nUse file-based workflows\n: Write content to a file and ask Claude to read it\nBe aware of VS Code limitations\n: The VS Code terminal is particularly prone to truncating long pastes\n​\nVim Mode\nClaude Code supports a subset of Vim keybindings that can be enabled with\n/vim\nor configured via\n/config\n.\nThe supported subset includes:\nMode switching:\nEsc\n(to NORMAL),\ni\n/\nI\n,\na\n/\nA\n,\no\n/\nO\n(to INSERT)\nNavigation:\nh\n/\nj\n/\nk\n/\nl\n,\nw\n/\ne\n/\nb\n,\n0\n/\n$\n/\n^\n,\ngg\n/\nG\nEditing:\nx\n,\ndw\n/\nde\n/\ndb\n/\ndd\n/\nD\n,\ncw\n/\nce\n/\ncb\n/\ncc\n/\nC\n,\n.\n(repeat)\nWas this page helpful?\nYes\nNo\nOverview\nQuickstart\nOn this page\nSystem requirements\nInstall and authenticate\nInitialize your project\nTroubleshooting\nTroubleshooting WSL installation\nOptimize your terminal setup\nThemes and appearance\nLine breaks\nNotification setup\nTerminal bell notifications\niTerm 2 system notifications\nHandling large inputs\nVim Mode",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/github-actions",
+      "text": "GitHub Actions"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/sdk",
+      "text": "Claude Code SDK"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/troubleshooting",
+      "text": "Troubleshooting"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/third-party-integrations",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/amazon-bedrock",
+      "text": "Amazon Bedrock"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/google-vertex-ai",
+      "text": "Google Vertex AI"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/corporate-proxy",
+      "text": "Corporate proxy"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/llm-gateway",
+      "text": "LLM gateway"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/devcontainer",
+      "text": "Development containers"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/iam",
+      "text": "Identity and Access Management"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/security",
+      "text": "Security"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/monitoring-usage",
+      "text": "Monitoring"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/costs",
+      "text": "Costs"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/cli-reference",
+      "text": "CLI reference"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/interactive-mode",
+      "text": "Interactive mode"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/slash-commands",
+      "text": "Slash commands"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/settings",
+      "text": "Settings"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/data-usage",
+      "text": "Data usage"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/legal-and-compliance",
+      "text": "Legal and compliance"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/bedrock-vertex-proxies",
+      "text": "Amazon Bedrock or Google Vertex AI"
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:26.777614",
+    "word_count": 959,
+    "link_count": 20,
+    "content_length": 6033
+  }
+}
