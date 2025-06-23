@@ -1,0 +1,12 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/claude-code/legal-and-compliance",
+  "title": "Legal and compliance - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nResources\nLegal and compliance\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nGetting started\nOverview\nSet up\nQuickstart\nMemory management\nCommon workflows\nBuild with Claude\nAdd Claude Code to your IDE\nModel Context Protocol (MCP)\nGitHub Actions\nClaude Code SDK\nTroubleshooting\nDeployment\nOverview\nAmazon Bedrock\nGoogle Vertex AI\nCorporate proxy\nLLM gateway\nDevelopment containers\nAdministration\nIdentity and Access Management\nSecurity\nMonitoring\nCosts\nReference\nCLI reference\nInteractive mode\nSlash commands\nSettings\nResources\nData usage\nLegal and compliance\n​\nLegal agreements\n​\nLicense\nClaude Code is provided under Anthropic’s\nCommercial Terms of Service\n.\n​\nCommercial agreements\nWhether you’re using Anthropic’s API directly (1P) or accessing it through AWS Bedrock or Google Vertex (3P), your existing commercial agreement will apply to Claude Code usage, unless we’ve mutually agreed otherwise.\n​\nCompliance\n​\nHealthcare compliance (BAA)\nIf a customer has a Business Associate Agreement (BAA) with us, and wants to use Claude Code, the BAA will automatically extend to cover Claude Code if the customer has executed a BAA and has Zero Data Retention (ZDR) activated. The BAA will be applicable to that customer’s API traffic flowing through Claude Code.\n​\nSecurity and trust\n​\nTrust and safety\nYou can find more information in the\nAnthropic Trust Center\nand\nTransparency Hub\n.\n​\nSecurity vulnerability reporting\nAnthropic manages our security program through HackerOne.\nUse this form to report vulnerabilities\n.\n© Anthropic PBC. All rights reserved. Use is subject to Anthropic’s\nCommercial Terms of Service\n.\nWas this page helpful?\nYes\nNo\nData usage\nOn this page\nLegal agreements\nLicense\nCommercial agreements\nCompliance\nHealthcare compliance (BAA)\nSecurity and trust\nTrust and safety\nSecurity vulnerability reporting",
+  "links": [],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:33.539906",
+    "word_count": 289,
+    "link_count": 0,
+    "content_length": 1977
+  }
+}
