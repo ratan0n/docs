@@ -1,0 +1,153 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/bash-tool",
+  "title": "Bash tool - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nTools\nBash tool\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nFirst steps\nIntro to Claude\nGet started\nModels & pricing\nModels overview\nChoosing a model\nMigrating to Claude 4\nModel deprecations\nPricing\nLearn about Claude\nBuilding with Claude\nFeatures overview\nContext windows\nGlossary\nCapabilities\nPrompt caching\nExtended thinking\nStreaming Messages\nBatch processing\nCitations\nMultilingual support\nToken counting\nEmbeddings\nVision\nPDF support\nFiles API\nGoogle Sheets add-on\nTools\nOverview\nHow to implement tool use\nToken-efficient tool use\nFine-grained tool streaming\nBash tool\nCode execution tool\nComputer use tool\nText editor tool\nWeb search tool\nModel Context Protocol (MCP)\nMCP connector\nRemote MCP servers\nUse cases\nOverview\nTicket routing\nCustomer support agent\nContent moderation\nLegal summarization\nPrompt engineering\nOverview\nClaude 4 best practices\nPrompt generator\nUse prompt templates\nPrompt improver\nBe clear and direct\nUse examples (multishot prompting)\nLet Claude think (CoT)\nUse XML tags\nGive Claude a role (system prompts)\nPrefill Claude's response\nChain complex prompts\nLong context tips\nExtended thinking tips\nTest & evaluate\nDefine success criteria\nDevelop test cases\nUsing the Evaluation Tool\nReducing latency\nStrengthen guardrails\nReduce hallucinations\nIncrease output consistency\nMitigate jailbreaks\nStreaming refusals\nReduce prompt leak\nKeep Claude in character\nLegal center\nAnthropic Privacy Policy\nSecurity and compliance\nThe bash tool enables Claude to execute shell commands in a persistent bash session, allowing system operations, script execution, and command-line automation.\n​\nOverview\nThe bash tool provides Claude with:\nPersistent bash session that maintains state\nAbility to run any shell command\nAccess to environment variables and working directory\nCommand chaining and scripting capabilities\n​\nTool versions\nModel\nTool Version\nClaude 4 & Sonnet 3.7\nbash_20250124\nClaude Sonnet 3.5\nbash_20241022\nClaude Sonnet 3.5 requires the\ncomputer-use-2024-10-22\nbeta header when using the bash tool.\nThe bash tool is generally available in Claude 4 and Sonnet 3.7.\n​\nUse cases\nDevelopment workflows\n: Run build commands, tests, and development tools\nSystem automation\n: Execute scripts, manage files, automate tasks\nData processing\n: Process files, run analysis scripts, manage datasets\nEnvironment setup\n: Install packages, configure environments\n​\nQuick start\nPython\nShell\nimport\nanthropic\nclient\n=\nanthropic\n.\nAnthropic\n(\n)\nresponse\n=\nclient\n.\nmessages\n.\ncreate\n(\nmodel\n=\n\"claude-sonnet-4-20250514\"\n,\nmax_tokens\n=\n1024\n,\ntools\n=\n[\n{\n\"type\"\n:\n\"bash_20250124\"\n,\n\"name\"\n:\n\"bash\"\n}\n]\n,\nmessages\n=\n[\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n\"List all Python files in the current directory.\"\n}\n]\n)\n​\nHow it works\nThe bash tool maintains a persistent session:\nClaude determines what command to run\nYou execute the command in a bash shell\nReturn the output (stdout and stderr) to Claude\nSession state persists between commands (environment variables, working directory)\n​\nParameters\nParameter\nRequired\nDescription\ncommand\nYes*\nThe bash command to run\nrestart\nNo\nSet to\ntrue\nto restart the bash session\n*Required unless using\nrestart\nExample usage\n// Run a command\n{\n\"command\"\n:\n\"ls -la *.py\"\n}\n// Restart the session\n{\n\"restart\"\n:\ntrue\n}\n​\nExample: Multi-step automation\nClaude can chain commands to complete complex tasks:\n# User request\n\"Install the requests library and create a simple Python script that fetches a joke from an API, then run it.\"\n# Claude's tool uses:\n# 1. Install package\n{\n\"command\"\n:\n\"pip install requests\"\n}\n# 2. Create script\n{\n\"command\"\n:\n\"cat > fetch_joke.py << 'EOF'\\nimport requests\\nresponse = requests.get('https://official-joke-api.appspot.com/random_joke')\\njoke = response.json()\\nprint(f\\\"Setup: {joke['setup']}\\\")\\nprint(f\\\"Punchline: {joke['punchline']}\\\")\\nEOF\"\n}\n# 3. Run script\n{\n\"command\"\n:\n\"python fetch_joke.py\"\n}\nThe session maintains state between commands, so files created in step 2 are available in step 3.\n​\nImplement the bash tool\nThe bash tool is implemented as a schema-less tool. When using this tool, you don’t need to provide an input schema as with other tools; the schema is built into Claude’s model and can’t be modified.\n1\nSet up a bash environment\nCreate a persistent bash session that Claude can interact with:\nimport\nsubprocess\nimport\nthreading\nimport\nqueue\nclass\nBashSession\n:\ndef\n__init__\n(\nself\n)\n:\nself\n.\nprocess\n=\nsubprocess\n.\nPopen\n(\n[\n'/bin/bash'\n]\n,\nstdin\n=\nsubprocess\n.\nPIPE\n,\nstdout\n=\nsubprocess\n.\nPIPE\n,\nstderr\n=\nsubprocess\n.\nPIPE\n,\ntext\n=\nTrue\n,\nbufsize\n=\n0\n)\nself\n.\noutput_queue\n=\nqueue\n.\nQueue\n(\n)\nself\n.\nerror_queue\n=\nqueue\n.\nQueue\n(\n)\nself\n.\n_start_readers\n(\n)\n2\nHandle command execution\nCreate a function to execute commands and capture output:\ndef\nexecute_command\n(\nself\n,\ncommand\n)\n:\n# Send command to bash\nself\n.\nprocess\n.\nstdin\n.\nwrite\n(\ncommand\n+\n'\\n'\n)\nself\n.\nprocess\n.\nstdin\n.\nflush\n(\n)\n# Capture output with timeout\noutput\n=\nself\n.\n_read_output\n(\ntimeout\n=\n10\n)\nreturn\noutput\n3\nProcess Claude's tool calls\nExtract and execute commands from Claude’s responses:\nfor\ncontent\nin\nresponse\n.\ncontent\n:\nif\ncontent\n.\ntype\n==\n\"tool_use\"\nand\ncontent\n.\nname\n==\n\"bash\"\n:\nif\ncontent\n.\ninput\n.\nget\n(\n\"restart\"\n)\n:\nbash_session\n.\nrestart\n(\n)\nresult\n=\n\"Bash session restarted\"\nelse\n:\ncommand\n=\ncontent\n.\ninput\n.\nget\n(\n\"command\"\n)\nresult\n=\nbash_session\n.\nexecute_command\n(\ncommand\n)\n# Return result to Claude\ntool_result\n=\n{\n\"type\"\n:\n\"tool_result\"\n,\n\"tool_use_id\"\n:\ncontent\n.\nid\n,\n\"content\"\n:\nresult\n}\n4\nImplement safety measures\nAdd validation and restrictions:\ndef\nvalidate_command\n(\ncommand\n)\n:\n# Block dangerous commands\ndangerous_patterns\n=\n[\n'rm -rf /'\n,\n'format'\n,\n':(){:|:&};:'\n]\nfor\npattern\nin\ndangerous_patterns\n:\nif\npattern\nin\ncommand\n:\nreturn\nFalse\n,\nf\"Command contains dangerous pattern:\n{\npattern\n}\n\"\n# Add more validation as needed\nreturn\nTrue\n,\nNone\n​\nHandle errors\nWhen implementing the bash tool, handle various error scenarios:\nCommand execution timeout\nIf a command takes too long to execute:\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n[\n{\n\"type\"\n:\n\"tool_result\"\n,\n\"tool_use_id\"\n:\n\"toolu_01A09q90qw90lq917835lq9\"\n,\n\"content\"\n:\n\"Error: Command timed out after 30 seconds\"\n,\n\"is_error\"\n:\ntrue\n}\n]\n}\nCommand not found\nIf a command doesn’t exist:\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n[\n{\n\"type\"\n:\n\"tool_result\"\n,\n\"tool_use_id\"\n:\n\"toolu_01A09q90qw90lq917835lq9\"\n,\n\"content\"\n:\n\"bash: nonexistentcommand: command not found\"\n,\n\"is_error\"\n:\ntrue\n}\n]\n}\nPermission denied\nIf there are permission issues:\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n[\n{\n\"type\"\n:\n\"tool_result\"\n,\n\"tool_use_id\"\n:\n\"toolu_01A09q90qw90lq917835lq9\"\n,\n\"content\"\n:\n\"bash: /root/sensitive-file: Permission denied\"\n,\n\"is_error\"\n:\ntrue\n}\n]\n}\n​\nFollow implementation best practices\nUse command timeouts\nImplement timeouts to prevent hanging commands:\ndef\nexecute_with_timeout\n(\ncommand\n,\ntimeout\n=\n30\n)\n:\ntry\n:\nresult\n=\nsubprocess\n.\nrun\n(\ncommand\n,\nshell\n=\nTrue\n,\ncapture_output\n=\nTrue\n,\ntext\n=\nTrue\n,\ntimeout\n=\ntimeout\n)\nreturn\nresult\n.\nstdout\n+\nresult\n.\nstderr\nexcept\nsubprocess\n.\nTimeoutExpired\n:\nreturn\nf\"Command timed out after\n{\ntimeout\n}\nseconds\"\nMaintain session state\nKeep the bash session persistent to maintain environment variables and working directory:\n# Commands run in the same session maintain state\ncommands\n=\n[\n\"cd /tmp\"\n,\n\"echo 'Hello' > test.txt\"\n,\n\"cat test.txt\"\n# This works because we're still in /tmp\n]\nHandle large outputs\nTruncate very large outputs to prevent token limit issues:\ndef\ntruncate_output\n(\noutput\n,\nmax_lines\n=\n100\n)\n:\nlines\n=\noutput\n.\nsplit\n(\n'\\n'\n)\nif\nlen\n(\nlines\n)\n>\nmax_lines\n:\ntruncated\n=\n'\\n'\n.\njoin\n(\nlines\n[\n:\nmax_lines\n]\n)\nreturn\nf\"\n{\ntruncated\n}\n\\n\\n... Output truncated (\n{\nlen\n(\nlines\n)\n}\ntotal lines) ...\"\nreturn\noutput\nLog all commands\nKeep an audit trail of executed commands:\nimport\nlogging\ndef\nlog_command\n(\ncommand\n,\noutput\n,\nuser_id\n)\n:\nlogging\n.\ninfo\n(\nf\"User\n{\nuser_id\n}\nexecuted:\n{\ncommand\n}\n\"\n)\nlogging\n.\ninfo\n(\nf\"Output:\n{\noutput\n[\n:\n200]\n}\n...\"\n)\n# Log first 200 chars\nSanitize outputs\nRemove sensitive information from command outputs:\ndef\nsanitize_output\n(\noutput\n)\n:\n# Remove potential secrets or credentials\nimport\nre\n# Example: Remove AWS credentials\noutput\n=\nre\n.\nsub\n(\nr'aws_access_key_id\\s*=\\s*\\S+'\n,\n'aws_access_key_id=***'\n,\noutput\n)\noutput\n=\nre\n.\nsub\n(\nr'aws_secret_access_key\\s*=\\s*\\S+'\n,\n'aws_secret_access_key=***'\n,\noutput\n)\nreturn\noutput\n​\nSecurity\nThe bash tool provides direct system access. Implement these essential safety measures:\nRunning in isolated environments (Docker/VM)\nImplementing command filtering and allowlists\nSetting resource limits (CPU, memory, disk)\nLogging all executed commands\n​\nKey recommendations\nUse\nulimit\nto set resource constraints\nFilter dangerous commands (\nsudo\n,\nrm -rf\n, etc.)\nRun with minimal user permissions\nMonitor and log all command execution\n​\nPricing\nThe bash tool adds\n245 input tokens\nto your API calls.\nAdditional tokens are consumed by:\nCommand outputs (stdout/stderr)\nError messages\nLarge file contents\nSee\ntool use pricing\nfor complete pricing details.\n​\nCommon patterns\n​\nDevelopment workflows\nRunning tests:\npytest && coverage report\nBuilding projects:\nnpm install && npm run build\nGit operations:\ngit status && git add . && git commit -m \"message\"\n​\nFile operations\nProcessing data:\nwc -l *.csv && ls -lh *.csv\nSearching files:\nfind . -name \"*.py\" | xargs grep \"pattern\"\nCreating backups:\ntar -czf backup.tar.gz ./data\n​\nSystem tasks\nChecking resources:\ndf -h && free -m\nProcess management:\nps aux | grep python\nEnvironment setup:\nexport PATH=$PATH:/new/path && echo $PATH\n​\nLimitations\nNo interactive commands\n: Cannot handle\nvim\n,\nless\n, or password prompts\nNo GUI applications\n: Command-line only\nSession scope\n: Persists within conversation, lost between API calls\nOutput limits\n: Large outputs may be truncated\nNo streaming\n: Results returned after completion\n​\nCombining with other tools\nThe bash tool is most powerful when combined with the\ntext editor\nand other tools.\n​\nNext steps\nTool use overview\nLearn about tool use with Claude\nText editor tool\nView and edit text files with Claude\nWas this page helpful?\nYes\nNo\nFine-grained tool streaming\nCode execution tool\nOn this page\nOverview\nTool versions\nUse cases\nQuick start\nHow it works\nParameters\nExample: Multi-step automation\nImplement the bash tool\nHandle errors\nFollow implementation best practices\nSecurity\nKey recommendations\nPricing\nCommon patterns\nDevelopment workflows\nFile operations\nSystem tasks\nLimitations\nCombining with other tools\nNext steps",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/code-execution-tool",
+      "text": "Code execution tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/computer-use-tool",
+      "text": "Computer use tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/text-editor-tool",
+      "text": "Text editor tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+      "text": "Web search tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/mcp-connector",
+      "text": "MCP connector"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/remote-mcp-servers",
+      "text": "Remote MCP servers"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/ticket-routing",
+      "text": "Ticket routing"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/customer-support-chat",
+      "text": "Customer support agent"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/content-moderation",
+      "text": "Content moderation"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/legal-summarization",
+      "text": "Legal summarization"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices",
+      "text": "Claude 4 best practices"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-generator",
+      "text": "Prompt generator"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-templates-and-variables",
+      "text": "Use prompt templates"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-improver",
+      "text": "Prompt improver"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct",
+      "text": "Be clear and direct"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/multishot-prompting",
+      "text": "Use examples (multishot prompting)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought",
+      "text": "Let Claude think (CoT)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags",
+      "text": "Use XML tags"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts",
+      "text": "Give Claude a role (system prompts)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prefill-claudes-response",
+      "text": "Prefill Claude's response"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-prompts",
+      "text": "Chain complex prompts"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/long-context-tips",
+      "text": "Long context tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/extended-thinking-tips",
+      "text": "Extended thinking tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/define-success",
+      "text": "Define success criteria"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests",
+      "text": "Develop test cases"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/eval-tool",
+      "text": "Using the Evaluation Tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-latency",
+      "text": "Reducing latency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+      "text": "Reduce hallucinations"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/increase-consistency",
+      "text": "Increase output consistency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+      "text": "Mitigate jailbreaks"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals",
+      "text": "Streaming refusals"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak",
+      "text": "Reduce prompt leak"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/keep-claude-in-character",
+      "text": "Keep Claude in character"
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:42.397498",
+    "word_count": 1713,
+    "link_count": 35,
+    "content_length": 10634
+  }
+}
