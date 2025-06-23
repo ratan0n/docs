@@ -1,0 +1,41 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/claude-code/corporate-proxy",
+  "title": "Corporate proxy configuration - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nDeployment\nCorporate proxy configuration\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nGetting started\nOverview\nSet up\nQuickstart\nMemory management\nCommon workflows\nBuild with Claude\nAdd Claude Code to your IDE\nModel Context Protocol (MCP)\nGitHub Actions\nClaude Code SDK\nTroubleshooting\nDeployment\nOverview\nAmazon Bedrock\nGoogle Vertex AI\nCorporate proxy\nLLM gateway\nDevelopment containers\nAdministration\nIdentity and Access Management\nSecurity\nMonitoring\nCosts\nReference\nCLI reference\nInteractive mode\nSlash commands\nSettings\nResources\nData usage\nLegal and compliance\nClaude Code supports standard HTTP/HTTPS proxy configurations through environment variables. This allows you to route all Claude Code traffic through your organization’s proxy servers for security, compliance, and monitoring purposes.\n​\nBasic proxy configuration\n​\nEnvironment variables\nClaude Code respects standard proxy environment variables:\n# HTTPS proxy (recommended)\nexport\nHTTPS_PROXY\n=\nhttps://proxy.example.com:8080\n# HTTP proxy (if HTTPS not available)\nexport\nHTTP_PROXY\n=\nhttp://proxy.example.com:8080\nClaude Code currently does not support the\nNO_PROXY\nenvironment variable. All traffic will be routed through the configured proxy.\nClaude Code does not support SOCKS proxies.\n​\nAuthentication\n​\nBasic authentication\nIf your proxy requires basic authentication, include credentials in the proxy URL:\nexport\nHTTPS_PROXY\n=\nhttp://username:password@proxy.example.com:8080\nAvoid hardcoding passwords in scripts. Use environment variables or secure credential storage instead.\nFor proxies requiring advanced authentication (NTLM, Kerberos, etc.), consider using an LLM Gateway service that supports your authentication method.\n​\nSSL certificate issues\nIf your proxy uses custom SSL certificates, you may encounter certificate errors.\nEnsure that you set the correct certificate bundle path:\nexport\nSSL_CERT_FILE\n=\n/path/to/certificate-bundle.crt\nexport\nNODE_EXTRA_CA_CERTS\n=\n/path/to/certificate-bundle.crt\n​\nNetwork access requirements\nClaude Code requires access to the following URLs:\napi.anthropic.com\n- Claude API endpoints\nstatsig.anthropic.com\n- Telemetry and metrics\nsentry.io\n- Error reporting\nEnsure these URLs are allowlisted in your proxy configuration and firewall rules. This is especially important when using Claude Code in containerized or restricted network environments.\n​\nAdditional resources\nClaude Code settings\nEnvironment variables reference\nTroubleshooting guide\nWas this page helpful?\nYes\nNo\nGoogle Vertex AI\nLLM gateway\nOn this page\nBasic proxy configuration\nEnvironment variables\nAuthentication\nBasic authentication\nSSL certificate issues\nNetwork access requirements\nAdditional resources",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/costs",
+      "text": "Costs"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/cli-reference",
+      "text": "CLI reference"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/interactive-mode",
+      "text": "Interactive mode"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/slash-commands",
+      "text": "Slash commands"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/settings",
+      "text": "Settings"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/data-usage",
+      "text": "Data usage"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/legal-and-compliance",
+      "text": "Legal and compliance"
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:30.332785",
+    "word_count": 361,
+    "link_count": 7,
+    "content_length": 2843
+  }
+}
