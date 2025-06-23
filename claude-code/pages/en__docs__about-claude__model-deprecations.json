@@ -1,0 +1,225 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/about-claude/model-deprecations",
+  "title": "Model deprecations - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nModels & pricing\nModel deprecations\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nFirst steps\nIntro to Claude\nGet started\nModels & pricing\nModels overview\nChoosing a model\nMigrating to Claude 4\nModel deprecations\nPricing\nLearn about Claude\nBuilding with Claude\nFeatures overview\nContext windows\nGlossary\nCapabilities\nPrompt caching\nExtended thinking\nStreaming Messages\nBatch processing\nCitations\nMultilingual support\nToken counting\nEmbeddings\nVision\nPDF support\nFiles API\nGoogle Sheets add-on\nTools\nOverview\nHow to implement tool use\nToken-efficient tool use\nFine-grained tool streaming\nBash tool\nCode execution tool\nComputer use tool\nText editor tool\nWeb search tool\nModel Context Protocol (MCP)\nMCP connector\nRemote MCP servers\nUse cases\nOverview\nTicket routing\nCustomer support agent\nContent moderation\nLegal summarization\nPrompt engineering\nOverview\nClaude 4 best practices\nPrompt generator\nUse prompt templates\nPrompt improver\nBe clear and direct\nUse examples (multishot prompting)\nLet Claude think (CoT)\nUse XML tags\nGive Claude a role (system prompts)\nPrefill Claude's response\nChain complex prompts\nLong context tips\nExtended thinking tips\nTest & evaluate\nDefine success criteria\nDevelop test cases\nUsing the Evaluation Tool\nReducing latency\nStrengthen guardrails\nReduce hallucinations\nIncrease output consistency\nMitigate jailbreaks\nStreaming refusals\nReduce prompt leak\nKeep Claude in character\nLegal center\nAnthropic Privacy Policy\nSecurity and compliance\nAs we launch safer and more capable models, we regularly retire older models. Applications relying on Anthropic models may need occasional updates to keep working. Impacted customers will always be notified by email and in our documentation.\nThis page lists all API deprecations, along with recommended replacements.\n​\nOverview\nAnthropic uses the following terms to describe the lifecycle of our models:\nActive\n: The model is fully supported and recommended for use.\nLegacy\n: The model will no longer receive updates and may be deprecated in the future.\nDeprecated\n: The model is no longer available for new customers but continues to be available for existing users until retirement. We assign a retirement date at this point.\nRetired\n: The model is no longer available for use. Requests to retired models will fail.\n​\nMigrating to replacements\nOnce a model is deprecated, please migrate all usage to a suitable replacement before the retirement date. Requests to models past the retirement date will fail.\nTo help measure the performance of replacement models on your tasks, we recommend thorough testing of your applications with the new models well before the retirement date.\nFor specific instructions on migrating from Claude 3.7 to Claude 4 models, see\nMigrating to Claude 4\n.\n​\nNotifications\nAnthropic notifies customers with active deployments for models with upcoming retirements. We provide at least 6 months\n†\nnotice before model retirement for publicly released models.\n​\nAuditing model usage\nTo help identify usage of deprecated models, customers can access an audit of their API usage. Follow these steps:\nGo to\nhttps://console.anthropic.com/settings/usage\nClick the “Export” button\nReview the downloaded CSV to see usage broken down by API key and model\nThis audit will help you locate any instances where your application is still using deprecated models, allowing you to prioritize updates to newer models before the retirement date.\n​\nModel status\nAll publicly released models are listed below with their status:\nAPI Model Name\nCurrent State\nDeprecated\nRetired\nclaude-1.0\nRetired\nSeptember 4, 2024\nNovember 6, 2024\nclaude-1.1\nRetired\nSeptember 4, 2024\nNovember 6, 2024\nclaude-1.2\nRetired\nSeptember 4, 2024\nNovember 6, 2024\nclaude-1.3\nRetired\nSeptember 4, 2024\nNovember 6, 2024\nclaude-instant-1.0\nRetired\nSeptember 4, 2024\nNovember 6, 2024\nclaude-instant-1.1\nRetired\nSeptember 4, 2024\nNovember 6, 2024\nclaude-instant-1.2\nRetired\nSeptember 4, 2024\nNovember 6, 2024\nclaude-2.0\nDeprecated\nJanuary 21, 2025\nN/A\nclaude-2.1\nDeprecated\nJanuary 21, 2025\nN/A\nclaude-3-sonnet-20240229\nDeprecated\nJanuary 21, 2025\nN/A\nclaude-3-haiku-20240307\nActive\nN/A\nN/A\nclaude-3-opus-20240229\nActive\nN/A\nN/A\nclaude-3-5-sonnet-20240620\nActive\nN/A\nN/A\nclaude-3-5-haiku-20241022\nActive\nN/A\nN/A\nclaude-3-5-sonnet-20241022\nActive\nN/A\nN/A\nclaude-3-7-sonnet-20250219\nActive\nN/A\nN/A\nclaude-sonnet-4-20250514\nActive\nN/A\nN/A\nclaude-opus-4-20250514\nActive\nN/A\nN/A\n​\nDeprecation history\nAll deprecations are listed below, with the most recent announcements at the top.\n​\n2025-01-21: Claude 2, Claude 2.1, and Claude Sonnet 3 models\nOn January 21, 2025, we notified developers using Claude 2, Claude 2.1, and Claude Sonnet 3 models of their upcoming retirements.\nRetirement Date\nDeprecated Model\nRecommended Replacement\nJuly 21, 2025\nclaude-2.0\nclaude-3-5-sonnet-20241022\nJuly 21, 2025\nclaude-2.1\nclaude-3-5-sonnet-20241022\nJuly 21, 2025\nclaude-3-sonnet-20240229\nclaude-3-5-sonnet-20241022\n​\n2024-09-04: Claude 1 and Instant models\nOn September 4, 2024, we notified developers using Claude 1 and Instant models of their upcoming retirements.\nRetirement Date\nDeprecated Model\nRecommended Replacement\nNovember 6, 2024\nclaude-1.0\nclaude-3-5-haiku-20241022\nNovember 6, 2024\nclaude-1.1\nclaude-3-5-haiku-20241022\nNovember 6, 2024\nclaude-1.2\nclaude-3-5-haiku-20241022\nNovember 6, 2024\nclaude-1.3\nclaude-3-5-haiku-20241022\nNovember 6, 2024\nclaude-instant-1.0\nclaude-3-5-haiku-20241022\nNovember 6, 2024\nclaude-instant-1.1\nclaude-3-5-haiku-20241022\nNovember 6, 2024\nclaude-instant-1.2\nclaude-3-5-haiku-20241022\n​\nBest practices\nRegularly check our documentation for updates on model deprecations.\nTest your applications with newer models well before the retirement date of your current model.\nUpdate your code to use the recommended replacement model as soon as possible.\nContact our support team if you need assistance with migration or have any questions.\n†\nThe Claude 1 family of models have a 60-day notice period due to their limited usage compared to our newer models.\nWas this page helpful?\nYes\nNo\nMigrating to Claude 4\nPricing\nOn this page\nOverview\nMigrating to replacements\nNotifications\nAuditing model usage\nModel status\nDeprecation history\n2025-01-21: Claude 2, Claude 2.1, and Claude Sonnet 3 models\n2024-09-04: Claude 1 and Instant models\nBest practices",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/glossary",
+      "text": "Glossary"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching",
+      "text": "Prompt caching"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking",
+      "text": "Extended thinking"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/streaming",
+      "text": "Streaming Messages"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/batch-processing",
+      "text": "Batch processing"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/citations",
+      "text": "Citations"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/multilingual-support",
+      "text": "Multilingual support"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/token-counting",
+      "text": "Token counting"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/embeddings",
+      "text": "Embeddings"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/vision",
+      "text": "Vision"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/pdf-support",
+      "text": "PDF support"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/files",
+      "text": "Files API"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/claude-for-sheets",
+      "text": "Google Sheets add-on"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use",
+      "text": "How to implement tool use"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/token-efficient-tool-use",
+      "text": "Token-efficient tool use"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/fine-grained-tool-streaming",
+      "text": "Fine-grained tool streaming"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/bash-tool",
+      "text": "Bash tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/code-execution-tool",
+      "text": "Code execution tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/computer-use-tool",
+      "text": "Computer use tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/text-editor-tool",
+      "text": "Text editor tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+      "text": "Web search tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/mcp-connector",
+      "text": "MCP connector"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/remote-mcp-servers",
+      "text": "Remote MCP servers"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/ticket-routing",
+      "text": "Ticket routing"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/customer-support-chat",
+      "text": "Customer support agent"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/content-moderation",
+      "text": "Content moderation"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/legal-summarization",
+      "text": "Legal summarization"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices",
+      "text": "Claude 4 best practices"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-generator",
+      "text": "Prompt generator"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-templates-and-variables",
+      "text": "Use prompt templates"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-improver",
+      "text": "Prompt improver"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct",
+      "text": "Be clear and direct"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/multishot-prompting",
+      "text": "Use examples (multishot prompting)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought",
+      "text": "Let Claude think (CoT)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags",
+      "text": "Use XML tags"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts",
+      "text": "Give Claude a role (system prompts)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prefill-claudes-response",
+      "text": "Prefill Claude's response"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-prompts",
+      "text": "Chain complex prompts"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/long-context-tips",
+      "text": "Long context tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/extended-thinking-tips",
+      "text": "Extended thinking tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/define-success",
+      "text": "Define success criteria"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests",
+      "text": "Develop test cases"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/eval-tool",
+      "text": "Using the Evaluation Tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-latency",
+      "text": "Reducing latency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+      "text": "Reduce hallucinations"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/increase-consistency",
+      "text": "Increase output consistency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+      "text": "Mitigate jailbreaks"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals",
+      "text": "Streaming refusals"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak",
+      "text": "Reduce prompt leak"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/keep-claude-in-character",
+      "text": "Keep Claude in character"
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:35.237401",
+    "word_count": 910,
+    "link_count": 53,
+    "content_length": 6456
+  }
+}
