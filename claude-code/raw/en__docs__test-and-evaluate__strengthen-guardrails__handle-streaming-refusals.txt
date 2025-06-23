@@ -1,0 +1,270 @@
+URL: https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals
+TITLE: Streaming refusals - Anthropic
+SCRAPED: 2025-06-23T15:07:53.345066
+WORD_COUNT: 689
+LINKS_FOUND: 0
+================================================================================
+
+Anthropic
+home page
+English
+Search...
+Search...
+Navigation
+Strengthen guardrails
+Streaming refusals
+Welcome
+Developer Guide
+API Guide
+Claude Code
+Model Context Protocol (MCP)
+Resources
+Release Notes
+Documentation
+Developer Discord
+Support
+First steps
+Intro to Claude
+Get started
+Models & pricing
+Models overview
+Choosing a model
+Migrating to Claude 4
+Model deprecations
+Pricing
+Learn about Claude
+Building with Claude
+Features overview
+Context windows
+Glossary
+Capabilities
+Prompt caching
+Extended thinking
+Streaming Messages
+Batch processing
+Citations
+Multilingual support
+Token counting
+Embeddings
+Vision
+PDF support
+Files API
+Google Sheets add-on
+Tools
+Overview
+How to implement tool use
+Token-efficient tool use
+Fine-grained tool streaming
+Bash tool
+Code execution tool
+Computer use tool
+Text editor tool
+Web search tool
+Model Context Protocol (MCP)
+MCP connector
+Remote MCP servers
+Use cases
+Overview
+Ticket routing
+Customer support agent
+Content moderation
+Legal summarization
+Prompt engineering
+Overview
+Claude 4 best practices
+Prompt generator
+Use prompt templates
+Prompt improver
+Be clear and direct
+Use examples (multishot prompting)
+Let Claude think (CoT)
+Use XML tags
+Give Claude a role (system prompts)
+Prefill Claude's response
+Chain complex prompts
+Long context tips
+Extended thinking tips
+Test & evaluate
+Define success criteria
+Develop test cases
+Using the Evaluation Tool
+Reducing latency
+Strengthen guardrails
+Reduce hallucinations
+Increase output consistency
+Mitigate jailbreaks
+Streaming refusals
+Reduce prompt leak
+Keep Claude in character
+Legal center
+Anthropic Privacy Policy
+Security and compliance
+Starting with Claude 4 models, streaming responses from Claude’s API return
+stop_reason
+:
+"refusal"
+when streaming classifiers intervene to handle potential policy violations. This new safety feature helps maintain content compliance during real-time streaming.
+​
+API response format
+When streaming classifiers detect content that violates our policies, the API returns this response:
+{
+"role"
+:
+"assistant"
+,
+"content"
+:
+[
+{
+"type"
+:
+"text"
+,
+"text"
+:
+"Hello.."
+}
+]
+,
+"stop_reason"
+:
+"refusal"
+}
+No additional refusal message is included. You must handle the response and provide appropriate user-facing messaging.
+​
+Reset context after refusal
+When you receive
+stop_reason
+:
+refusal
+, you must reset the conversation context
+by removing or updating the turn that was refused
+before continuing. Attempting to continue without resetting will result in continued refusals.
+Usage metrics are still provided in the response for billing purposes, even when the response is refused.
+You will be billed for output tokens up until the refusal.
+​
+Implementation guide
+Here’s how to detect and handle streaming refusals in your application:
+Shell
+Python
+TypeScript
+# Stream request and check for refusal
+response
+=
+$(
+curl
+-N
+https://api.anthropic.com/v1/messages
+\
+--header
+"anthropic-version: 2023-06-01"
+\
+--header
+"content-type: application/json"
+\
+--header
+"x-api-key:
+$ANTHROPIC_API_KEY
+"
+\
+--data
+'
+{
+"model"
+:
+"claude-opus-4-20250514"
+,
+"messages"
+:
+[
+{
+"role"
+:
+"user"
+,
+"content"
+:
+"Hello"
+}
+]
+,
+"max_tokens"
+:
+256
+,
+"stream"
+:
+true
+}
+'
+)
+# Check for refusal in the stream
+if
+echo
+"
+$response
+"
+|
+grep
+-q
+'"stop_reason":"refusal"'
+;
+then
+echo
+"Response refused - resetting conversation context"
+# Reset your conversation state here
+fi
+If you need to test refusal handling in your application, you can use this special test string as your prompt:
+ANTHROPIC_MAGIC_STRING_TRIGGER_REFUSAL_1FAEFB6177B4672DEE07F9D3AFC62588CCD2631EDCF22E8CCC1FB35B501C9C86
+​
+Current refusal types
+The API currently handles refusals in three different ways:
+Refusal Type
+Response Format
+When It Occurs
+Streaming classifier refusals
+stop_reason
+:
+refusal
+During streaming when content violates policies
+API input and copyright validation
+400 error codes
+When input fails validation checks
+Model-generated refusals
+Standard text responses
+When the model itself decides to refuse
+Future API versions will expand the
+stop_reason
+:
+refusal
+pattern to unify refusal handling across all types.
+​
+Best practices
+Monitor for refusals
+: Include
+stop_reason
+:
+refusal
+checks in your error handling
+Reset automatically
+: Implement automatic context reset when refusals are detected
+Provide custom messaging
+: Create user-friendly messages for better UX when refusals occur
+Track refusal patterns
+: Monitor refusal frequency to identify potential issues with your prompts
+​
+Migration notes
+Future models will expand this pattern to other refusal types
+Plan your error handling to accommodate future unification of refusal responses
+Was this page helpful?
+Yes
+No
+Mitigate jailbreaks
+Reduce prompt leak
+On this page
+API response format
+Reset context after refusal
+Implementation guide
+Current refusal types
+Best practices
+Migration notes
