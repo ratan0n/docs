@@ -1,0 +1,205 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/build-with-claude/batch-processing",
+  "title": "Batch processing - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nCapabilities\nBatch processing\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nFirst steps\nIntro to Claude\nGet started\nModels & pricing\nModels overview\nChoosing a model\nMigrating to Claude 4\nModel deprecations\nPricing\nLearn about Claude\nBuilding with Claude\nFeatures overview\nContext windows\nGlossary\nCapabilities\nPrompt caching\nExtended thinking\nStreaming Messages\nBatch processing\nCitations\nMultilingual support\nToken counting\nEmbeddings\nVision\nPDF support\nFiles API\nGoogle Sheets add-on\nTools\nOverview\nHow to implement tool use\nToken-efficient tool use\nFine-grained tool streaming\nBash tool\nCode execution tool\nComputer use tool\nText editor tool\nWeb search tool\nModel Context Protocol (MCP)\nMCP connector\nRemote MCP servers\nUse cases\nOverview\nTicket routing\nCustomer support agent\nContent moderation\nLegal summarization\nPrompt engineering\nOverview\nClaude 4 best practices\nPrompt generator\nUse prompt templates\nPrompt improver\nBe clear and direct\nUse examples (multishot prompting)\nLet Claude think (CoT)\nUse XML tags\nGive Claude a role (system prompts)\nPrefill Claude's response\nChain complex prompts\nLong context tips\nExtended thinking tips\nTest & evaluate\nDefine success criteria\nDevelop test cases\nUsing the Evaluation Tool\nReducing latency\nStrengthen guardrails\nReduce hallucinations\nIncrease output consistency\nMitigate jailbreaks\nStreaming refusals\nReduce prompt leak\nKeep Claude in character\nLegal center\nAnthropic Privacy Policy\nSecurity and compliance\nBatch processing is a powerful approach for handling large volumes of requests efficiently. Instead of processing requests one at a time with immediate responses, batch processing allows you to submit multiple requests together for asynchronous processing. This pattern is particularly useful when:\nYou need to process large volumes of data\nImmediate responses are not required\nYou want to optimize for cost efficiency\nYou’re running large-scale evaluations or analyses\nThe Message Batches API is our first implementation of this pattern.\n​\nMessage Batches API\nThe Message Batches API is a powerful, cost-effective way to asynchronously process large volumes of\nMessages\nrequests. This approach is well-suited to tasks that do not require immediate responses, with most batches finishing in less than 1 hour while reducing costs by 50% and increasing throughput.\nYou can\nexplore the API reference directly\n, in addition to this guide.\n​\nHow the Message Batches API works\nWhen you send a request to the Message Batches API:\nThe system creates a new Message Batch with the provided Messages requests.\nThe batch is then processed asynchronously, with each request handled independently.\nYou can poll for the status of the batch and retrieve results when processing has ended for all requests.\nThis is especially useful for bulk operations that don’t require immediate results, such as:\nLarge-scale evaluations: Process thousands of test cases efficiently.\nContent moderation: Analyze large volumes of user-generated content asynchronously.\nData analysis: Generate insights or summaries for large datasets.\nBulk content generation: Create large amounts of text for various purposes (e.g., product descriptions, article summaries).\n​\nBatch limitations\nA Message Batch is limited to either 100,000 Message requests or 256 MB in size, whichever is reached first.\nWe process each batch as fast as possible, with most batches completing within 1 hour. You will be able to access batch results when all messages have completed or after 24 hours, whichever comes first. Batches will expire if processing does not complete within 24 hours.\nBatch results are available for 29 days after creation. After that, you may still view the Batch, but its results will no longer be available for download.\nBatches are scoped to a\nWorkspace\n. You may view all batches—and their results—that were created within the Workspace that your API key belongs to.\nRate limits apply to both Batches API HTTP requests and the number of requests within a batch waiting to be processed. See\nMessage Batches API rate limits\n. Additionally, we may slow down processing based on current demand and your request volume. In that case, you may see more requests expiring after 24 hours.\nDue to high throughput and concurrent processing, batches may go slightly over your Workspace’s configured\nspend limit\n.\n​\nSupported models\nThe Message Batches API currently supports:\nClaude Opus 4 (\nclaude-opus-4-20250514\n)\nClaude Sonnet 4 (\nclaude-sonnet-4-20250514\n)\nClaude Sonnet 3.7 (\nclaude-3-7-sonnet-20250219\n)\nClaude Sonnet 3.5 (\nclaude-3-5-sonnet-20240620\nand\nclaude-3-5-sonnet-20241022\n)\nClaude Haiku 3.5 (\nclaude-3-5-haiku-20241022\n)\nClaude Haiku 3 (\nclaude-3-haiku-20240307\n)\nClaude Opus 3 (\nclaude-3-opus-20240229\n)\n​\nWhat can be batched\nAny request that you can make to the Messages API can be included in a batch. This includes:\nVision\nTool use\nSystem messages\nMulti-turn conversations\nAny beta features\nSince each request in the batch is processed independently, you can mix different types of requests within a single batch.\n​\nPricing\nThe Batches API offers significant cost savings. All usage is charged at 50% of the standard API prices.\nModel\nBatch input\nBatch output\nClaude Opus 4\n$7.50 / MTok\n$37.50 / MTok\nClaude Sonnet 4\n$1.50 / MTok\n$7.50 / MTok\nClaude Sonnet 3.7\n$1.50 / MTok\n$7.50 / MTok\nClaude Sonnet 3.5\n$1.50 / MTok\n$7.50 / MTok\nClaude Haiku 3.5\n$0.40 / MTok\n$2 / MTok\nClaude Opus 3\n$7.50 / MTok\n$37.50 / MTok\nClaude Haiku 3\n$0.125 / MTok\n$0.625 / MTok\n​\nHow to use the Message Batches API\n​\nPrepare and create your batch\nA Message Batch is composed of a list of requests to create a Message. The shape of an individual request is comprised of:\nA unique\ncustom_id\nfor identifying the Messages request\nA\nparams\nobject with the standard\nMessages API\nparameters\nYou can\ncreate a batch\nby passing this list into the\nrequests\nparameter:\nShell\nPython\nTypeScript\nJava\ncurl\nhttps://api.anthropic.com/v1/messages/batches\n\\\n--header\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n--header\n\"anthropic-version: 2023-06-01\"\n\\\n--header\n\"content-type: application/json\"\n\\\n--data\n\\\n'\n{\n\"requests\"\n:\n[\n{\n\"custom_id\"\n:\n\"my-first-request\"\n,\n\"params\"\n:\n{\n\"model\"\n:\n\"claude-opus-4-20250514\"\n,\n\"max_tokens\"\n:\n1024\n,\n\"messages\"\n:\n[\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n\"Hello, world\"\n}\n]\n}\n}\n,\n{\n\"custom_id\"\n:\n\"my-second-request\"\n,\n\"params\"\n:\n{\n\"model\"\n:\n\"claude-opus-4-20250514\"\n,\n\"max_tokens\"\n:\n1024\n,\n\"messages\"\n:\n[\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n\"Hi again, friend\"\n}\n]\n}\n}\n]\n}\n'\nIn this example, two separate requests are batched together for asynchronous processing. Each request has a unique\ncustom_id\nand contains the standard parameters you’d use for a Messages API call.\nTest your batch requests with the Messages API\nValidation of the\nparams\nobject for each message request is performed asynchronously, and validation errors are returned when processing of the entire batch has ended. You can ensure that you are building your input correctly by verifying your request shape with the\nMessages API\nfirst.\nWhen a batch is first created, the response will have a processing status of\nin_progress\n.\nJSON\n{\n\"id\"\n:\n\"msgbatch_01HkcTjaV5uDC8jWR4ZsDV8d\"\n,\n\"type\"\n:\n\"message_batch\"\n,\n\"processing_status\"\n:\n\"in_progress\"\n,\n\"request_counts\"\n:\n{\n\"processing\"\n:\n2\n,\n\"succeeded\"\n:\n0\n,\n\"errored\"\n:\n0\n,\n\"canceled\"\n:\n0\n,\n\"expired\"\n:\n0\n}\n,\n\"ended_at\"\n:\nnull\n,\n\"created_at\"\n:\n\"2024-09-24T18:37:24.100435Z\"\n,\n\"expires_at\"\n:\n\"2024-09-25T18:37:24.100435Z\"\n,\n\"cancel_initiated_at\"\n:\nnull\n,\n\"results_url\"\n:\nnull\n}\n​\nTracking your batch\nThe Message Batch’s\nprocessing_status\nfield indicates the stage of processing the batch is in. It starts as\nin_progress\n, then updates to\nended\nonce all the requests in the batch have finished processing, and results are ready. You can monitor the state of your batch by visiting the\nConsole\n, or using the\nretrieval endpoint\n:\nShell\nPython\nTypeScript\nJava\ncurl\nhttps://api.anthropic.com/v1/messages/batches/msgbatch_01HkcTjaV5uDC8jWR4ZsDV8d\n\\\n--header\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n--header\n\"anthropic-version: 2023-06-01\"\n\\\n|\nsed\n-E\n's/.*\"id\":\"([^\"]+)\".*\"processing_status\":\"([^\"]+)\".*/Batch \\1 processing status is \\2/'\nYou can\npoll\nthis endpoint to know when processing has ended.\n​\nRetrieving batch results\nOnce batch processing has ended, each Messages request in the batch will have a result. There are 4 result types:\nResult Type\nDescription\nsucceeded\nRequest was successful. Includes the message result.\nerrored\nRequest encountered an error and a message was not created. Possible errors include invalid requests and internal server errors. You will not be billed for these requests.\ncanceled\nUser canceled the batch before this request could be sent to the model. You will not be billed for these requests.\nexpired\nBatch reached its 24 hour expiration before this request could be sent to the model. You will not be billed for these requests.\nYou will see an overview of your results with the batch’s\nrequest_counts\n, which shows how many requests reached each of these four states.\nResults of the batch are available for download at the\nresults_url\nproperty on the Message Batch, and if the organization permission allows, in the Console. Because of the potentially large size of the results, it’s recommended to\nstream results\nback rather than download them all at once.\nShell\nPython\nTypeScript\nJava\n#!/bin/sh\ncurl\n\"https://api.anthropic.com/v1/messages/batches/msgbatch_01HkcTjaV5uDC8jWR4ZsDV8d\"\n\\\n--header\n\"anthropic-version: 2023-06-01\"\n\\\n--header\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n|\ngrep\n-o\n'\"results_url\":[[:space:]]*\"[^\"]*\"'\n\\\n|\ncut\n-d\n'\"'\n-f4\n\\\n|\nwhile\nread\n-r\nurl\n;\ndo\ncurl\n-s\n\"\n$url\n\"\n\\\n--header\n\"anthropic-version: 2023-06-01\"\n\\\n--header\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n|\nsed\n's/}{/}\\n{/g'\n\\\n|\nwhile\nIFS\n=\nread\n-r\nline\ndo\nresult_type\n=\n$(\necho\n\"\n$line\n\"\n|\nsed\n-n\n's/.*\"result\":[[:space:]]*{[[:space:]]*\"type\":[[:space:]]*\"\\([^\"]*\\)\".*/\\1/p'\n)\ncustom_id\n=\n$(\necho\n\"\n$line\n\"\n|\nsed\n-n\n's/.*\"custom_id\":[[:space:]]*\"\\([^\"]*\\)\".*/\\1/p'\n)\nerror_type\n=\n$(\necho\n\"\n$line\n\"\n|\nsed\n-n\n's/.*\"error\":[[:space:]]*{[[:space:]]*\"type\":[[:space:]]*\"\\([^\"]*\\)\".*/\\1/p'\n)\ncase\n\"\n$result_type\n\"\nin\n\"succeeded\"\n)\necho\n\"Success!\n$custom_id\n\"\n;\n;\n\"errored\"\n)\nif\n[\n\"\n$error_type\n\"\n=\n\"invalid_request\"\n]\n;\nthen\n# Request body must be fixed before re-sending request\necho\n\"Validation error:\n$custom_id\n\"\nelse\n# Request can be retried directly\necho\n\"Server error:\n$custom_id\n\"\nfi\n;\n;\n\"expired\"\n)\necho\n\"Expired:\n$line\n\"\n;\n;\nesac\ndone\ndone\nThe results will be in\n.jsonl\nformat, where each line is a valid JSON object representing the result of a single request in the Message Batch. For each streamed result, you can do something different depending on its\ncustom_id\nand result type. Here is an example set of results:\n.jsonl file\n{\n\"custom_id\"\n:\n\"my-second-request\"\n,\n\"result\"\n:\n{\n\"type\"\n:\n\"succeeded\"\n,\n\"message\"\n:\n{\n\"id\"\n:\n\"msg_014VwiXbi91y3JMjcpyGBHX5\"\n,\n\"type\"\n:\n\"message\"\n,\n\"role\"\n:\n\"assistant\"\n,\n\"model\"\n:\n\"claude-opus-4-20250514\"\n,\n\"content\"\n:\n[\n{\n\"type\"\n:\n\"text\"\n,\n\"text\"\n:\n\"Hello again! It's nice to see you. How can I assist you today? Is there anything specific you'd like to chat about or any questions you have?\"\n}\n]\n,\n\"stop_reason\"\n:\n\"end_turn\"\n,\n\"stop_sequence\"\n:\nnull\n,\n\"usage\"\n:\n{\n\"input_tokens\"\n:\n11\n,\n\"output_tokens\"\n:\n36\n}\n}\n}\n}\n{\n\"custom_id\"\n:\n\"my-first-request\"\n,\n\"result\"\n:\n{\n\"type\"\n:\n\"succeeded\"\n,\n\"message\"\n:\n{\n\"id\"\n:\n\"msg_01FqfsLoHwgeFbguDgpz48m7\"\n,\n\"type\"\n:\n\"message\"\n,\n\"role\"\n:\n\"assistant\"\n,\n\"model\"\n:\n\"claude-opus-4-20250514\"\n,\n\"content\"\n:\n[\n{\n\"type\"\n:\n\"text\"\n,\n\"text\"\n:\n\"Hello! How can I assist you today? Feel free to ask me any questions or let me know if there's anything you'd like to chat about.\"\n}\n]\n,\n\"stop_reason\"\n:\n\"end_turn\"\n,\n\"stop_sequence\"\n:\nnull\n,\n\"usage\"\n:\n{\n\"input_tokens\"\n:\n10\n,\n\"output_tokens\"\n:\n34\n}\n}\n}\n}\nIf your result has an error, its\nresult.error\nwill be set to our standard\nerror shape\n.\nBatch results may not match input order\nBatch results can be returned in any order, and may not match the ordering of requests when the batch was created. In the above example, the result for the second batch request is returned before the first. To correctly match results with their corresponding requests, always use the\ncustom_id\nfield.\n​\nUsing prompt caching with Message Batches\nThe Message Batches API supports prompt caching, allowing you to potentially reduce costs and processing time for batch requests. The pricing discounts from prompt caching and Message Batches can stack, providing even greater cost savings when both features are used together. However, since batch requests are processed asynchronously and concurrently, cache hits are provided on a best-effort basis. Users typically experience cache hit rates ranging from 30% to 98%, depending on their traffic patterns.\nTo maximize the likelihood of cache hits in your batch requests:\nInclude identical\ncache_control\nblocks in every Message request within your batch\nMaintain a steady stream of requests to prevent cache entries from expiring after their 5-minute lifetime\nStructure your requests to share as much cached content as possible\nExample of implementing prompt caching in a batch:\nShell\nPython\nTypeScript\nJava\ncurl\nhttps://api.anthropic.com/v1/messages/batches\n\\\n--header\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n--header\n\"anthropic-version: 2023-06-01\"\n\\\n--header\n\"content-type: application/json\"\n\\\n--data\n\\\n'\n{\n\"requests\"\n:\n[\n{\n\"custom_id\"\n:\n\"my-first-request\"\n,\n\"params\"\n:\n{\n\"model\"\n:\n\"claude-opus-4-20250514\"\n,\n\"max_tokens\"\n:\n1024\n,\n\"system\"\n:\n[\n{\n\"type\"\n:\n\"text\"\n,\n\"text\"\n:\n\"You are an AI assistant tasked with analyzing literary works. Your goal is to provide insightful commentary on themes, characters, and writing style.\n\\n\n\"\n}\n,\n{\n\"type\"\n:\n\"text\"\n,\n\"text\"\n:\n\"<the entire contents of Pride and Prejudice>\"\n,\n\"cache_control\"\n:\n{\n\"type\"\n:\n\"ephemeral\"\n}\n}\n]\n,\n\"messages\"\n:\n[\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n\"Analyze the major themes in Pride and Prejudice.\"\n}\n]\n}\n}\n,\n{\n\"custom_id\"\n:\n\"my-second-request\"\n,\n\"params\"\n:\n{\n\"model\"\n:\n\"claude-opus-4-20250514\"\n,\n\"max_tokens\"\n:\n1024\n,\n\"system\"\n:\n[\n{\n\"type\"\n:\n\"text\"\n,\n\"text\"\n:\n\"You are an AI assistant tasked with analyzing literary works. Your goal is to provide insightful commentary on themes, characters, and writing style.\n\\n\n\"\n}\n,\n{\n\"type\"\n:\n\"text\"\n,\n\"text\"\n:\n\"<the entire contents of Pride and Prejudice>\"\n,\n\"cache_control\"\n:\n{\n\"type\"\n:\n\"ephemeral\"\n}\n}\n]\n,\n\"messages\"\n:\n[\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n\"Write a summary of Pride and Prejudice.\"\n}\n]\n}\n}\n]\n}\n'\nIn this example, both requests in the batch include identical system messages and the full text of Pride and Prejudice marked with\ncache_control\nto increase the likelihood of cache hits.\n​\nBest practices for effective batching\nTo get the most out of the Batches API:\nMonitor batch processing status regularly and implement appropriate retry logic for failed requests.\nUse meaningful\ncustom_id\nvalues to easily match results with requests, since order is not guaranteed.\nConsider breaking very large datasets into multiple batches for better manageability.\nDry run a single request shape with the Messages API to avoid validation errors.\n​\nTroubleshooting common issues\nIf experiencing unexpected behavior:\nVerify that the total batch request size doesn’t exceed 256 MB. If the request size is too large, you may get a 413\nrequest_too_large\nerror.\nCheck that you’re using\nsupported models\nfor all requests in the batch.\nEnsure each request in the batch has a unique\ncustom_id\n.\nEnsure that it has been less than 29 days since batch\ncreated_at\n(not processing\nended_at\n) time. If over 29 days have passed, results will no longer be viewable.\nConfirm that the batch has not been canceled.\nNote that the failure of one request in a batch does not affect the processing of other requests.\n​\nBatch storage and privacy\nWorkspace isolation\n: Batches are isolated within the Workspace they are created in. They can only be accessed by API keys associated with that Workspace, or users with permission to view Workspace batches in the Console.\nResult availability\n: Batch results are available for 29 days after the batch is created, allowing ample time for retrieval and processing.\n​\nFAQ\nHow long does it take for a batch to process?\nBatches may take up to 24 hours for processing, but many will finish sooner. Actual processing time depends on the size of the batch, current demand, and your request volume. It is possible for a batch to expire and not complete within 24 hours.\nIs the Batches API available for all models?\nSee\nabove\nfor the list of supported models.\nCan I use the Message Batches API with other API features?\nYes, the Message Batches API supports all features available in the Messages API, including beta features. However, streaming is not supported for batch requests.\nHow does the Message Batches API affect pricing?\nThe Message Batches API offers a 50% discount on all usage compared to standard API prices. This applies to input tokens, output tokens, and any special tokens. For more on pricing, visit our\npricing page\n.\nCan I update a batch after it's been submitted?\nNo, once a batch has been submitted, it cannot be modified. If you need to make changes, you should cancel the current batch and submit a new one. Note that cancellation may not take immediate effect.\nAre there Message Batches API rate limits and do they interact with the Messages API rate limits?\nThe Message Batches API has HTTP requests-based rate limits in addition to limits on the number of requests in need of processing. See\nMessage Batches API rate limits\n. Usage of the Batches API does not affect rate limits in the Messages API.\nHow do I handle errors in my batch requests?\nWhen you retrieve the results, each request will have a\nresult\nfield indicating whether it\nsucceeded\n,\nerrored\n, was\ncanceled\n, or\nexpired\n. For\nerrored\nresults, additional error information will be provided. View the error response object in the\nAPI reference\n.\nHow does the Message Batches API handle privacy and data separation?\nThe Message Batches API is designed with strong privacy and data separation measures:\nBatches and their results are isolated within the Workspace in which they were created. This means they can only be accessed by API keys from that same Workspace.\nEach request within a batch is processed independently, with no data leakage between requests.\nResults are only available for a limited time (29 days), and follow our\ndata retention policy\n.\nDownloading batch results in the Console can be disabled on the organization-level or on a per-workspace basis.\nCan I use prompt caching in the Message Batches API?\nYes, it is possible to use prompt caching with Message Batches API. However, because asynchronous batch requests can be processed concurrently and in any order, cache hits are provided on a best-effort basis.\nWas this page helpful?\nYes\nNo\nStreaming Messages\nCitations\nOn this page\nMessage Batches API\nHow the Message Batches API works\nBatch limitations\nSupported models\nWhat can be batched\nPricing\nHow to use the Message Batches API\nPrepare and create your batch\nTracking your batch\nRetrieving batch results\nUsing prompt caching with Message Batches\nBest practices for effective batching\nTroubleshooting common issues\nBatch storage and privacy\nFAQ",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/multilingual-support",
+      "text": "Multilingual support"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/token-counting",
+      "text": "Token counting"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/embeddings",
+      "text": "Embeddings"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/vision",
+      "text": "Vision"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/pdf-support",
+      "text": "PDF support"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/files",
+      "text": "Files API"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/claude-for-sheets",
+      "text": "Google Sheets add-on"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use",
+      "text": "How to implement tool use"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/token-efficient-tool-use",
+      "text": "Token-efficient tool use"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/fine-grained-tool-streaming",
+      "text": "Fine-grained tool streaming"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/bash-tool",
+      "text": "Bash tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/code-execution-tool",
+      "text": "Code execution tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/computer-use-tool",
+      "text": "Computer use tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/text-editor-tool",
+      "text": "Text editor tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+      "text": "Web search tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/mcp-connector",
+      "text": "MCP connector"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/remote-mcp-servers",
+      "text": "Remote MCP servers"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/ticket-routing",
+      "text": "Ticket routing"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/customer-support-chat",
+      "text": "Customer support agent"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/content-moderation",
+      "text": "Content moderation"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/legal-summarization",
+      "text": "Legal summarization"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices",
+      "text": "Claude 4 best practices"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-generator",
+      "text": "Prompt generator"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-templates-and-variables",
+      "text": "Use prompt templates"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-improver",
+      "text": "Prompt improver"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct",
+      "text": "Be clear and direct"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/multishot-prompting",
+      "text": "Use examples (multishot prompting)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought",
+      "text": "Let Claude think (CoT)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags",
+      "text": "Use XML tags"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts",
+      "text": "Give Claude a role (system prompts)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prefill-claudes-response",
+      "text": "Prefill Claude's response"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-prompts",
+      "text": "Chain complex prompts"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/long-context-tips",
+      "text": "Long context tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/extended-thinking-tips",
+      "text": "Extended thinking tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/define-success",
+      "text": "Define success criteria"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests",
+      "text": "Develop test cases"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/eval-tool",
+      "text": "Using the Evaluation Tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-latency",
+      "text": "Reducing latency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+      "text": "Reduce hallucinations"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/increase-consistency",
+      "text": "Increase output consistency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+      "text": "Mitigate jailbreaks"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals",
+      "text": "Streaming refusals"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak",
+      "text": "Reduce prompt leak"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/keep-claude-in-character",
+      "text": "Keep Claude in character"
+    },
+    {
+      "url": "https://docs.anthropic.com/_sites/docs.anthropic.com/en/docs/build-with-claude/batch-processing",
+      "text": "supported models"
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:38.338301",
+    "word_count": 3091,
+    "link_count": 48,
+    "content_length": 19367
+  }
+}
