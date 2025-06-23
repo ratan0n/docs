@@ -1,0 +1,12 @@
+{
+  "url": "https://docs.anthropic.com/en/release-notes/claude-code",
+  "title": "Claude Code - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nRelease Notes\nClaude Code\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nRelease Notes\nOverview\nAPI\nClaude Apps\nSystem Prompts\nClaude Code\n​\nJune 18, 2025\nClaude Code now supports SSE and HTTP transports for MCP servers, enabling real-time communication\nUse\n/mcp\ncommand to authenticate with remote MCP servers via OAuth 2.0\nReference MCP resources with\n@server:protocol://path\nformat in your prompts\n​\nJune 11, 2025\nThe Claude Code SDK is now available in\nTypeScript\nand\nPython\n.\n​\nJune 4, 2025\nYou can now access Claude Code with both the\nPro and Max plans\n.\n​\nMay 22nd, 2025\nClaude Code is now generally available (GA)!\n​\nFebruary 24th, 2025\nClaude Code, the agentic command line tool, is now officially available in research preview.\nFor a full changelog, see\nCHANGELOG.md\nin the\nclaude-code\nrepo.\nWas this page helpful?\nYes\nNo\nSystem Prompts\nOn this page\nJune 18, 2025\nJune 11, 2025\nJune 4, 2025\nMay 22nd, 2025\nFebruary 24th, 2025",
+  "links": [],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:54.975265",
+    "word_count": 177,
+    "link_count": 0,
+    "content_length": 1086
+  }
+}
