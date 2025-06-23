@@ -1,0 +1,65 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/claude-code/google-vertex-ai",
+  "title": "Claude Code on Google Vertex AI - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nDeployment\nClaude Code on Google Vertex AI\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nGetting started\nOverview\nSet up\nQuickstart\nMemory management\nCommon workflows\nBuild with Claude\nAdd Claude Code to your IDE\nModel Context Protocol (MCP)\nGitHub Actions\nClaude Code SDK\nTroubleshooting\nDeployment\nOverview\nAmazon Bedrock\nGoogle Vertex AI\nCorporate proxy\nLLM gateway\nDevelopment containers\nAdministration\nIdentity and Access Management\nSecurity\nMonitoring\nCosts\nReference\nCLI reference\nInteractive mode\nSlash commands\nSettings\nResources\nData usage\nLegal and compliance\n​\nPrerequisites\nBefore configuring Claude Code with Vertex AI, ensure you have:\nA Google Cloud Platform (GCP) account with billing enabled\nA GCP project with Vertex AI API enabled\nAccess to desired Claude models (e.g., Claude Sonnet 4)\nGoogle Cloud SDK (\ngcloud\n) installed and configured\nQuota allocated in desired GCP region\nVertex AI may not support the Claude Code default models on non-\nus-east5\nregions. Ensure you are using\nus-east5\nand have quota allocated, or switch to supported models.\n​\nSetup\n​\n1. Enable Vertex AI API\nEnable the Vertex AI API in your GCP project:\n# Set your project ID\ngcloud config\nset\nproject YOUR-PROJECT-ID\n# Enable Vertex AI API\ngcloud services\nenable\naiplatform.googleapis.com\n​\n2. Request model access\nRequest access to Claude models in Vertex AI:\nNavigate to the\nVertex AI Model Garden\nSearch for “Claude” models\nRequest access to desired Claude models (e.g., Claude Sonnet 4)\nWait for approval (may take 24-48 hours)\n​\n3. Configure GCP credentials\nClaude Code uses standard Google Cloud authentication.\nFor more information, see\nGoogle Cloud authentication documentation\n.\n​\n4. Configure Claude Code\nSet the following environment variables:\n# Enable Vertex AI integration\nexport\nCLAUDE_CODE_USE_VERTEX\n=\n1\nexport\nCLOUD_ML_REGION\n=\nus-east5\nexport\nANTHROPIC_VERTEX_PROJECT_ID\n=\nYOUR-PROJECT-ID\n# Optional: Disable prompt caching if not enabled\nexport\nDISABLE_PROMPT_CACHING\n=\n1\nFor heightened rate limits and prompt caching enablement, contact Google Cloud support. Once enabled, remove the\nDISABLE_PROMPT_CACHING\nsetting.\n​\n5. Model configuration\nClaude Code uses these default models for Vertex AI:\nModel type\nDefault value\nPrimary model\nclaude-sonnet-4@20250514\nSmall/fast model\nclaude-3-5-haiku@20241022\nTo customize models:\nexport\nANTHROPIC_MODEL\n=\n'claude-opus-4@20250514'\nexport\nANTHROPIC_SMALL_FAST_MODEL\n=\n'claude-3-5-haiku@20241022'\n​\nIAM configuration\nGrant the required IAM roles for Claude Code.\nFor details, see\nVertex IAM documentation\n.\nWe recommend creating a dedicated GCP project for Claude Code to simplify cost tracking and access control.\n​\nTroubleshooting\nIf you encounter quota issues:\nCheck current quotas or request quota increase through\nCloud Console\nIf you encounter “model not found” 404 errors:\nVerify you have access to the specified region\nConfirm model is Enabled in\nModel Garden\nIf you encounter 429 errors:\nEnsure the primary model and small/fast model are supported in your selected region\n​\nAdditional resources\nVertex AI documentation\nVertex AI pricing\nVertex AI quotas and limits\nWas this page helpful?\nYes\nNo\nAmazon Bedrock\nCorporate proxy\nOn this page\nPrerequisites\nSetup\n1. Enable Vertex AI API\n2. Request model access\n3. Configure GCP credentials\n4. Configure Claude Code\n5. Model configuration\nIAM configuration\nTroubleshooting\nAdditional resources",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/corporate-proxy",
+      "text": "Corporate proxy"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/llm-gateway",
+      "text": "LLM gateway"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/devcontainer",
+      "text": "Development containers"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/iam",
+      "text": "Identity and Access Management"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/security",
+      "text": "Security"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/monitoring-usage",
+      "text": "Monitoring"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/costs",
+      "text": "Costs"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/cli-reference",
+      "text": "CLI reference"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/interactive-mode",
+      "text": "Interactive mode"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/slash-commands",
+      "text": "Slash commands"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/settings",
+      "text": "Settings"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/data-usage",
+      "text": "Data usage"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/legal-and-compliance",
+      "text": "Legal and compliance"
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:29.056015",
+    "word_count": 513,
+    "link_count": 13,
+    "content_length": 3554
+  }
+}
