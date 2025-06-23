@@ -1,0 +1,177 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/build-with-claude/token-counting",
+  "title": "Token counting - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nCapabilities\nToken counting\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nFirst steps\nIntro to Claude\nGet started\nModels & pricing\nModels overview\nChoosing a model\nMigrating to Claude 4\nModel deprecations\nPricing\nLearn about Claude\nBuilding with Claude\nFeatures overview\nContext windows\nGlossary\nCapabilities\nPrompt caching\nExtended thinking\nStreaming Messages\nBatch processing\nCitations\nMultilingual support\nToken counting\nEmbeddings\nVision\nPDF support\nFiles API\nGoogle Sheets add-on\nTools\nOverview\nHow to implement tool use\nToken-efficient tool use\nFine-grained tool streaming\nBash tool\nCode execution tool\nComputer use tool\nText editor tool\nWeb search tool\nModel Context Protocol (MCP)\nMCP connector\nRemote MCP servers\nUse cases\nOverview\nTicket routing\nCustomer support agent\nContent moderation\nLegal summarization\nPrompt engineering\nOverview\nClaude 4 best practices\nPrompt generator\nUse prompt templates\nPrompt improver\nBe clear and direct\nUse examples (multishot prompting)\nLet Claude think (CoT)\nUse XML tags\nGive Claude a role (system prompts)\nPrefill Claude's response\nChain complex prompts\nLong context tips\nExtended thinking tips\nTest & evaluate\nDefine success criteria\nDevelop test cases\nUsing the Evaluation Tool\nReducing latency\nStrengthen guardrails\nReduce hallucinations\nIncrease output consistency\nMitigate jailbreaks\nStreaming refusals\nReduce prompt leak\nKeep Claude in character\nLegal center\nAnthropic Privacy Policy\nSecurity and compliance\nToken counting enables you to determine the number of tokens in a message before sending it to Claude, helping you make informed decisions about your prompts and usage. With token counting, you can\nProactively manage rate limits and costs\nMake smart model routing decisions\nOptimize prompts to be a specific length\n​\nHow to count message tokens\nThe\ntoken counting\nendpoint accepts the same structured list of inputs for creating a message, including support for system prompts,\ntools\n,\nimages\n, and\nPDFs\n. The response contains the total number of input tokens.\nThe token count should be considered an\nestimate\n. In some cases, the actual number of input tokens used when creating a message may differ by a small amount.\n​\nSupported models\nThe token counting endpoint supports the following models:\nClaude Opus 4\nClaude Sonnet 4\nClaude Sonnet 3.7\nClaude Sonnet 3.5\nClaude Haiku 3.5\nClaude Haiku 3\nClaude Opus 3\n​\nCount tokens in basic messages\nPython\nTypeScript\nShell\nJava\nimport\nanthropic\nclient\n=\nanthropic\n.\nAnthropic\n(\n)\nresponse\n=\nclient\n.\nmessages\n.\ncount_tokens\n(\nmodel\n=\n\"claude-opus-4-20250514\"\n,\nsystem\n=\n\"You are a scientist\"\n,\nmessages\n=\n[\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n\"Hello, Claude\"\n}\n]\n,\n)\nprint\n(\nresponse\n.\njson\n(\n)\n)\nJSON\n{\n\"input_tokens\"\n:\n14\n}\n​\nCount tokens in messages with tools\nServer tool\ntoken counts only apply to the first sampling call.\nPython\nTypeScript\nShell\nJava\nimport\nanthropic\nclient\n=\nanthropic\n.\nAnthropic\n(\n)\nresponse\n=\nclient\n.\nmessages\n.\ncount_tokens\n(\nmodel\n=\n\"claude-opus-4-20250514\"\n,\ntools\n=\n[\n{\n\"name\"\n:\n\"get_weather\"\n,\n\"description\"\n:\n\"Get the current weather in a given location\"\n,\n\"input_schema\"\n:\n{\n\"type\"\n:\n\"object\"\n,\n\"properties\"\n:\n{\n\"location\"\n:\n{\n\"type\"\n:\n\"string\"\n,\n\"description\"\n:\n\"The city and state, e.g. San Francisco, CA\"\n,\n}\n}\n,\n\"required\"\n:\n[\n\"location\"\n]\n,\n}\n,\n}\n]\n,\nmessages\n=\n[\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n\"What's the weather like in San Francisco?\"\n}\n]\n)\nprint\n(\nresponse\n.\njson\n(\n)\n)\nJSON\n{\n\"input_tokens\"\n:\n403\n}\n​\nCount tokens in messages with images\nShell\nPython\nTypeScript\nJava\n#!/bin/sh\nIMAGE_URL\n=\n\"https://upload.wikimedia.org/wikipedia/commons/a/a7/Camponotus_flavomarginatus_ant.jpg\"\nIMAGE_MEDIA_TYPE\n=\n\"image/jpeg\"\nIMAGE_BASE64\n=\n$(\ncurl\n\"\n$IMAGE_URL\n\"\n|\nbase64\n)\ncurl\nhttps://api.anthropic.com/v1/messages/count_tokens\n\\\n--header\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n--header\n\"anthropic-version: 2023-06-01\"\n\\\n--header\n\"content-type: application/json\"\n\\\n--data\n\\\n'\n{\n\"model\"\n:\n\"claude-opus-4-20250514\"\n,\n\"messages\"\n:\n[\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n[\n{\n\"type\"\n:\n\"image\"\n,\n\"source\"\n:\n{\n\"type\"\n:\n\"base64\"\n,\n\"media_type\"\n:\n\"'\n$IMAGE_MEDIA_TYPE\n'\"\n,\n\"data\"\n:\n\"'\n$IMAGE_BASE64\n'\"\n}\n}\n,\n{\n\"type\"\n:\n\"text\"\n,\n\"text\"\n:\n\"Describe this image\"\n}\n]\n}\n]\n}\n'\nJSON\n{\n\"input_tokens\"\n:\n1551\n}\n​\nCount tokens in messages with extended thinking\nSee\nhere\nfor more details about how the context window is calculated with extended thinking\nThinking blocks from\nprevious\nassistant turns are ignored and\ndo not\ncount toward your input tokens\nCurrent\nassistant turn thinking\ndoes\ncount toward your input tokens\nShell\nPython\nTypeScript\nJava\ncurl\nhttps://api.anthropic.com/v1/messages/count_tokens\n\\\n--header\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n--header\n\"content-type: application/json\"\n\\\n--header\n\"anthropic-version: 2023-06-01\"\n\\\n--data\n'\n{\n\"model\"\n:\n\"claude-opus-4-20250514\"\n,\n\"thinking\"\n:\n{\n\"type\"\n:\n\"enabled\"\n,\n\"budget_tokens\"\n:\n16000\n}\n,\n\"messages\"\n:\n[\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n\"Are there an infinite number of prime numbers such that n mod 4 == 3?\"\n}\n,\n{\n\"role\"\n:\n\"assistant\"\n,\n\"content\"\n:\n[\n{\n\"type\"\n:\n\"thinking\"\n,\n\"thinking\"\n:\n\"This is a nice number theory question. Lets think about it step by step...\"\n,\n\"signature\"\n:\n\"EuYBCkQYAiJAgCs1le6/Pol5Z4/JMomVOouGrWdhYNsH3ukzUECbB6iWrSQtsQuRHJID6lWV...\"\n}\n,\n{\n\"type\"\n:\n\"text\"\n,\n\"text\"\n:\n\"Yes, there are infinitely many prime numbers p such that p mod 4 = 3...\"\n}\n]\n}\n,\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n\"Can you write a formal proof?\"\n}\n]\n}\n'\nJSON\n{\n\"input_tokens\"\n:\n88\n}\n​\nCount tokens in messages with PDFs\nToken counting supports PDFs with the same\nlimitations\nas the Messages API.\nShell\nPython\nTypeScript\nJava\ncurl\nhttps://api.anthropic.com/v1/messages/count_tokens\n\\\n--header\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n--header\n\"content-type: application/json\"\n\\\n--header\n\"anthropic-version: 2023-06-01\"\n\\\n--data\n'\n{\n\"model\"\n:\n\"claude-opus-4-20250514\"\n,\n\"messages\"\n:\n[\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n[\n{\n\"type\"\n:\n\"document\"\n,\n\"source\"\n:\n{\n\"type\"\n:\n\"base64\"\n,\n\"media_type\"\n:\n\"application/pdf\"\n,\n\"data\"\n:\n\"'\n$(\nbase64\n-i\ndocument.pdf\n)\n'\"\n}\n}\n,\n{\n\"type\"\n:\n\"text\"\n,\n\"text\"\n:\n\"Please summarize this document.\"\n}\n]\n}\n]\n}\n'\nJSON\n{\n\"input_tokens\"\n:\n2188\n}\n​\nPricing and rate limits\nToken counting is\nfree to use\nbut subject to requests per minute rate limits based on your\nusage tier\n. If you need higher limits, contact sales through the\nAnthropic Console\n.\nUsage tier\nRequests per minute (RPM)\n1\n100\n2\n2,000\n3\n4,000\n4\n8,000\nToken counting and message creation have separate and independent rate limits — usage of one does not count against the limits of the other.\n​\nFAQ\nDoes token counting use prompt caching?\nNo, token counting provides an estimate without using caching logic. While you may provide\ncache_control\nblocks in your token counting request, prompt caching only occurs during actual message creation.\nWas this page helpful?\nYes\nNo\nMultilingual support\nEmbeddings\nOn this page\nHow to count message tokens\nSupported models\nCount tokens in basic messages\nCount tokens in messages with tools\nCount tokens in messages with images\nCount tokens in messages with extended thinking\nCount tokens in messages with PDFs\nPricing and rate limits\nFAQ",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/claude-for-sheets",
+      "text": "Google Sheets add-on"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use",
+      "text": "How to implement tool use"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/token-efficient-tool-use",
+      "text": "Token-efficient tool use"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/fine-grained-tool-streaming",
+      "text": "Fine-grained tool streaming"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/bash-tool",
+      "text": "Bash tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/code-execution-tool",
+      "text": "Code execution tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/computer-use-tool",
+      "text": "Computer use tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/text-editor-tool",
+      "text": "Text editor tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+      "text": "Web search tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/mcp-connector",
+      "text": "MCP connector"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/remote-mcp-servers",
+      "text": "Remote MCP servers"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/ticket-routing",
+      "text": "Ticket routing"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/customer-support-chat",
+      "text": "Customer support agent"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/content-moderation",
+      "text": "Content moderation"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/legal-summarization",
+      "text": "Legal summarization"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices",
+      "text": "Claude 4 best practices"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-generator",
+      "text": "Prompt generator"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-templates-and-variables",
+      "text": "Use prompt templates"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-improver",
+      "text": "Prompt improver"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct",
+      "text": "Be clear and direct"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/multishot-prompting",
+      "text": "Use examples (multishot prompting)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought",
+      "text": "Let Claude think (CoT)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags",
+      "text": "Use XML tags"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts",
+      "text": "Give Claude a role (system prompts)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prefill-claudes-response",
+      "text": "Prefill Claude's response"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-prompts",
+      "text": "Chain complex prompts"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/long-context-tips",
+      "text": "Long context tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/extended-thinking-tips",
+      "text": "Extended thinking tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/define-success",
+      "text": "Define success criteria"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests",
+      "text": "Develop test cases"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/eval-tool",
+      "text": "Using the Evaluation Tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-latency",
+      "text": "Reducing latency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+      "text": "Reduce hallucinations"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/increase-consistency",
+      "text": "Increase output consistency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+      "text": "Mitigate jailbreaks"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals",
+      "text": "Streaming refusals"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak",
+      "text": "Reduce prompt leak"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/keep-claude-in-character",
+      "text": "Keep Claude in character"
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:39.960675",
+    "word_count": 1164,
+    "link_count": 41,
+    "content_length": 7265
+  }
+}
