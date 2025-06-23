@@ -1,0 +1,26 @@
+{
+  "start_time": "2025-06-23T16:00:44.042307",
+  "base_url": "https://docs.anthropic.com/en/docs/claude-code/",
+  "allowed_paths": [
+    "/docs/"
+  ],
+  "folder_name": "claude-code",
+  "pages": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/",
+      "title": "Claude Code overview - Anthropic",
+      "file": "temp_crawl_claude-code/llm_ready/en__docs__claude-code.txt",
+      "scraped_at": "2025-06-23T16:00:45.131653",
+      "word_count": 416,
+      "chunk_count": 1
+    }
+  ],
+  "statistics": {
+    "total_pages": 1,
+    "successful_pages": 1,
+    "failed_pages": 0,
+    "total_words": 416,
+    "total_chunks": 1
+  },
+  "end_time": "2025-06-23T16:00:48.138272"
+}
