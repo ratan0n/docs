@@ -1,0 +1,177 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/build-with-claude/files",
+  "title": "Files API - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nCapabilities\nFiles API\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nFirst steps\nIntro to Claude\nGet started\nModels & pricing\nModels overview\nChoosing a model\nMigrating to Claude 4\nModel deprecations\nPricing\nLearn about Claude\nBuilding with Claude\nFeatures overview\nContext windows\nGlossary\nCapabilities\nPrompt caching\nExtended thinking\nStreaming Messages\nBatch processing\nCitations\nMultilingual support\nToken counting\nEmbeddings\nVision\nPDF support\nFiles API\nGoogle Sheets add-on\nTools\nOverview\nHow to implement tool use\nToken-efficient tool use\nFine-grained tool streaming\nBash tool\nCode execution tool\nComputer use tool\nText editor tool\nWeb search tool\nModel Context Protocol (MCP)\nMCP connector\nRemote MCP servers\nUse cases\nOverview\nTicket routing\nCustomer support agent\nContent moderation\nLegal summarization\nPrompt engineering\nOverview\nClaude 4 best practices\nPrompt generator\nUse prompt templates\nPrompt improver\nBe clear and direct\nUse examples (multishot prompting)\nLet Claude think (CoT)\nUse XML tags\nGive Claude a role (system prompts)\nPrefill Claude's response\nChain complex prompts\nLong context tips\nExtended thinking tips\nTest & evaluate\nDefine success criteria\nDevelop test cases\nUsing the Evaluation Tool\nReducing latency\nStrengthen guardrails\nReduce hallucinations\nIncrease output consistency\nMitigate jailbreaks\nStreaming refusals\nReduce prompt leak\nKeep Claude in character\nLegal center\nAnthropic Privacy Policy\nSecurity and compliance\nThe Files API lets you upload and manage files to use with the Anthropic API without re-uploading content with each request. This is particularly useful when using the\ncode execution tool\nto provide inputs (e.g. datasets and documents) and then download outputs (e.g. charts). You can also use the Files API to prevent having to continually re-upload frequently used documents and images across multiple API calls.\nThe Files API is currently in beta. Please reach out through our\nfeedback form\nto share your experience with the Files API.\n​\nSupported models\nReferencing a\nfile_id\nin a Messages request is supported in all models that support the given file type. For example,\nimages\nare supported in all Claude 3+ models,\nPDFs\nin all Claude 3.5+ models, and\nvarious other file types\nfor the code execution tool in Claude 3.5 Haiku plus all Claude 3.7+ models.\nThe Files API is currently not supported on Amazon Bedrock or Google Vertex AI.\n​\nHow the Files API works\nThe Files API provides a simple create-once, use-many-times approach for working with files:\nUpload files\nto our secure storage and receive a unique\nfile_id\nDownload files\nthat are created from the code execution tool\nReference files\nin\nMessages\nrequests using the\nfile_id\ninstead of re-uploading content\nManage your files\nwith list, retrieve, and delete operations\n​\nHow to use the Files API\nTo use the Files API, you’ll need to include the beta feature header:\nanthropic-beta: files-api-2025-04-14\n.\n​\nUploading a file\nUpload a file to be referenced in future API calls:\nShell\nPython\nTypeScript\ncurl\n-X\nPOST https://api.anthropic.com/v1/files\n\\\n-H\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n-H\n\"anthropic-version: 2023-06-01\"\n\\\n-H\n\"anthropic-beta: files-api-2025-04-14\"\n\\\n-F\n\"file=@/path/to/document.pdf\"\n​\nUsing a file in messages\nOnce uploaded, reference the file using its\nfile_id\n:\nShell\nPython\nTypeScript\ncurl\n-X\nPOST https://api.anthropic.com/v1/messages\n\\\n-H\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n-H\n\"anthropic-version: 2023-06-01\"\n\\\n-H\n\"anthropic-beta: files-api-2025-04-14\"\n\\\n-H\n\"content-type: application/json\"\n\\\n-d\n'\n{\n\"model\"\n:\n\"claude-sonnet-4-20250514\"\n,\n\"max_tokens\"\n:\n1024\n,\n\"messages\"\n:\n[\n{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n[\n{\n\"type\"\n:\n\"text\"\n,\n\"text\"\n:\n\"Please summarize this document for me.\"\n}\n,\n{\n\"type\"\n:\n\"document\"\n,\n\"source\"\n:\n{\n\"type\"\n:\n\"file\"\n,\n\"file_id\"\n:\n\"file_011CNha8iCJcU1wXNR6q4V8w\"\n}\n}\n]\n}\n]\n}\n'\n​\nFile types and content blocks\nThe Files API supports different file types that correspond to different content block types:\nFile Type\nMIME Type\nContent Block Type\nUse Case\nPDF\napplication/pdf\ndocument\nText analysis, document processing\nPlain text\ntext/plain\ndocument\nText analysis, processing\nImages\nimage/jpeg\n,\nimage/png\n,\nimage/gif\n,\nimage/webp\nimage\nImage analysis, visual tasks\nDatasets, others\nVaries\ncontainer_upload\nAnalyze data, create visualizations\n​\nDocument blocks\nFor PDFs and text files, use the\ndocument\ncontent block:\n{\n\"type\"\n:\n\"document\"\n,\n\"source\"\n:\n{\n\"type\"\n:\n\"file\"\n,\n\"file_id\"\n:\n\"file_011CNha8iCJcU1wXNR6q4V8w\"\n}\n,\n\"title\"\n:\n\"Document Title\"\n,\n// Optional\n\"context\"\n:\n\"Context about the document\"\n,\n// Optional\n\"citations\"\n:\n{\n\"enabled\"\n:\ntrue\n}\n// Optional, enables citations\n}\n​\nImage blocks\nFor images, use the\nimage\ncontent block:\n{\n\"type\"\n:\n\"image\"\n,\n\"source\"\n:\n{\n\"type\"\n:\n\"file\"\n,\n\"file_id\"\n:\n\"file_011CPMxVD3fHLUhvTqtsQA5w\"\n}\n}\n​\nManaging files\n​\nList files\nRetrieve a list of your uploaded files:\nShell\nPython\nTypeScript\ncurl\nhttps://api.anthropic.com/v1/files\n\\\n-H\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n-H\n\"anthropic-version: 2023-06-01\"\n\\\n-H\n\"anthropic-beta: files-api-2025-04-14\"\n​\nGet file metadata\nRetrieve information about a specific file:\nShell\nPython\nTypeScript\ncurl\nhttps://api.anthropic.com/v1/files/file_011CNha8iCJcU1wXNR6q4V8w\n\\\n-H\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n-H\n\"anthropic-version: 2023-06-01\"\n\\\n-H\n\"anthropic-beta: files-api-2025-04-14\"\n​\nDelete a file\nRemove a file from your workspace:\nShell\nPython\nTypeScript\ncurl\n-X\nDELETE https://api.anthropic.com/v1/files/file_011CNha8iCJcU1wXNR6q4V8w\n\\\n-H\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n-H\n\"anthropic-version: 2023-06-01\"\n\\\n-H\n\"anthropic-beta: files-api-2025-04-14\"\n​\nDownloading a file\nDownload files that have been created by the code execution tool:\nShell\nPython\nTypeScript\ncurl\n-X\nGET\n\"https://api.anthropic.com/v1/files/file_011CNha8iCJcU1wXNR6q4V8w/content\"\n\\\n-H\n\"x-api-key:\n$ANTHROPIC_API_KEY\n\"\n\\\n-H\n\"anthropic-version: 2023-06-01\"\n\\\n-H\n\"anthropic-beta: files-api-2025-04-14\"\n\\\n--output\ndownloaded_file.txt\nYou can only download files that were created by the\ncode execution tool\n. Files that you uploaded cannot be downloaded.\n​\nFile storage and limits\n​\nStorage limits\nMaximum file size:\n500 MB per file\nTotal storage:\n100 GB per organization\n​\nFile lifecycle\nFiles are scoped to the workspace of the API key. Other API keys can use files created by any other API key associated with the same workspace\nFiles persist until you delete them\nDeleted files cannot be recovered\nFiles are inaccessible via the API shortly after deletion, but they may persist in active\nMessages\nAPI calls and associated tool uses\n​\nError handling\nCommon errors when using the Files API include:\nFile not found (404):\nThe specified\nfile_id\ndoesn’t exist or you don’t have access to it\nInvalid file type (400):\nThe file type doesn’t match the content block type (e.g., using an image file in a document block)\nExceeds context window size (400):\nThe file is larger than the context window size (e.g. using a 500 MB plaintext file in a\n/v1/messages\nrequest)\nInvalid filename (400):\nFilename doesn’t meet the length requirements (1-255 characters) or contains forbidden characters (\n<\n,\n>\n,\n:\n,\n\"\n,\n|\n,\n?\n,\n*\n,\n\\\n,\n/\n, or unicode characters 0-31)\nFile too large (413):\nFile exceeds the 500 MB limit\nStorage limit exceeded (403):\nYour organization has reached the 100 GB storage limit\n{\n\"type\"\n:\n\"error\"\n,\n\"error\"\n:\n{\n\"type\"\n:\n\"invalid_request_error\"\n,\n\"message\"\n:\n\"File not found: file_011CNha8iCJcU1wXNR6q4V8w\"\n}\n}\n​\nUsage and billing\nFile API operations are\nfree\n:\nUploading files\nDownloading files\nListing files\nGetting file metadata\nDeleting files\nFile content used in\nMessages\nrequests are priced as input tokens. You can only download files created by the code execution tool.\n​\nRate limits\nDuring the beta period:\nFile-related API calls are limited to approximately 100 requests per minute\nContact us\nif you need higher limits for your use case\nWas this page helpful?\nYes\nNo\nPDF support\nGoogle Sheets add-on\nOn this page\nSupported models\nHow the Files API works\nHow to use the Files API\nUploading a file\nUsing a file in messages\nFile types and content blocks\nDocument blocks\nImage blocks\nManaging files\nList files\nGet file metadata\nDelete a file\nDownloading a file\nFile storage and limits\nStorage limits\nFile lifecycle\nError handling\nUsage and billing\nRate limits",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/claude-for-sheets",
+      "text": "Google Sheets add-on"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use",
+      "text": "How to implement tool use"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/token-efficient-tool-use",
+      "text": "Token-efficient tool use"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/fine-grained-tool-streaming",
+      "text": "Fine-grained tool streaming"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/bash-tool",
+      "text": "Bash tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/code-execution-tool",
+      "text": "Code execution tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/computer-use-tool",
+      "text": "Computer use tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/text-editor-tool",
+      "text": "Text editor tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+      "text": "Web search tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/mcp-connector",
+      "text": "MCP connector"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/remote-mcp-servers",
+      "text": "Remote MCP servers"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/ticket-routing",
+      "text": "Ticket routing"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/customer-support-chat",
+      "text": "Customer support agent"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/content-moderation",
+      "text": "Content moderation"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/use-case-guides/legal-summarization",
+      "text": "Legal summarization"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices",
+      "text": "Claude 4 best practices"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-generator",
+      "text": "Prompt generator"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-templates-and-variables",
+      "text": "Use prompt templates"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-improver",
+      "text": "Prompt improver"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct",
+      "text": "Be clear and direct"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/multishot-prompting",
+      "text": "Use examples (multishot prompting)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought",
+      "text": "Let Claude think (CoT)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags",
+      "text": "Use XML tags"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts",
+      "text": "Give Claude a role (system prompts)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prefill-claudes-response",
+      "text": "Prefill Claude's response"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-prompts",
+      "text": "Chain complex prompts"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/long-context-tips",
+      "text": "Long context tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/extended-thinking-tips",
+      "text": "Extended thinking tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/define-success",
+      "text": "Define success criteria"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests",
+      "text": "Develop test cases"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/eval-tool",
+      "text": "Using the Evaluation Tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-latency",
+      "text": "Reducing latency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+      "text": "Reduce hallucinations"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/increase-consistency",
+      "text": "Increase output consistency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+      "text": "Mitigate jailbreaks"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals",
+      "text": "Streaming refusals"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak",
+      "text": "Reduce prompt leak"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/keep-claude-in-character",
+      "text": "Keep Claude in character"
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:40.466210",
+    "word_count": 1278,
+    "link_count": 41,
+    "content_length": 8439
+  }
+}
