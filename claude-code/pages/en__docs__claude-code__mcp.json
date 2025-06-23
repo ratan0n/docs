@@ -1,0 +1,89 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/claude-code/mcp",
+  "title": "Model Context Protocol (MCP) - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nBuild with Claude\nModel Context Protocol (MCP)\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nGetting started\nOverview\nSet up\nQuickstart\nMemory management\nCommon workflows\nBuild with Claude\nAdd Claude Code to your IDE\nModel Context Protocol (MCP)\nGitHub Actions\nClaude Code SDK\nTroubleshooting\nDeployment\nOverview\nAmazon Bedrock\nGoogle Vertex AI\nCorporate proxy\nLLM gateway\nDevelopment containers\nAdministration\nIdentity and Access Management\nSecurity\nMonitoring\nCosts\nReference\nCLI reference\nInteractive mode\nSlash commands\nSettings\nResources\nData usage\nLegal and compliance\nModel Context Protocol (MCP) is an open protocol that enables LLMs to access external tools and data sources. For more details about MCP, see the\nMCP documentation\n.\nUse third party MCP servers at your own risk. Make sure you trust the MCP\nservers, and be especially careful when using MCP servers that talk to the\ninternet, as these can expose you to prompt injection risk.\n​\nConfigure MCP servers\n1\nAdd an MCP stdio Server\n# Basic syntax\nclaude mcp\nadd\n<\nname\n>\n<\ncommand\n>\n[\nargs\n..\n.\n]\n# Example: Adding a local server\nclaude mcp\nadd\nmy-server\n-e\nAPI_KEY\n=\n123\n-- /path/to/server arg1 arg2\n2\nAdd an MCP SSE Server\n# Basic syntax\nclaude mcp\nadd\n--transport\nsse\n<\nname\n>\n<\nurl\n>\n# Example: Adding an SSE server\nclaude mcp\nadd\n--transport\nsse sse-server https://example.com/sse-endpoint\n# Example: Adding an SSE server with custom headers\nclaude mcp\nadd\n--transport\nsse api-server https://api.example.com/mcp\n--header\n\"X-API-Key: your-key\"\n3\nAdd an MCP HTTP Server\n# Basic syntax\nclaude mcp\nadd\n--transport\nhttp\n<\nname\n>\n<\nurl\n>\n# Example: Adding a streamable HTTP server\nclaude mcp\nadd\n--transport\nhttp http-server https://example.com/mcp\n# Example: Adding an HTTP server with authentication header\nclaude mcp\nadd\n--transport\nhttp secure-server https://api.example.com/mcp\n--header\n\"Authorization: Bearer your-token\"\n4\nManage your MCP servers\n# List all configured servers\nclaude mcp list\n# Get details for a specific server\nclaude mcp get my-server\n# Remove a server\nclaude mcp remove my-server\nTips:\nUse the\n-s\nor\n--scope\nflag to specify where the configuration is stored:\nlocal\n(default): Available only to you in the current project (was called\nproject\nin older versions)\nproject\n: Shared with everyone in the project via\n.mcp.json\nfile\nuser\n: Available to you across all projects (was called\nglobal\nin older versions)\nSet environment variables with\n-e\nor\n--env\nflags (e.g.,\n-e KEY=value\n)\nConfigure MCP server startup timeout using the MCP_TIMEOUT environment variable (e.g.,\nMCP_TIMEOUT=10000 claude\nsets a 10-second timeout)\nCheck MCP server status any time using the\n/mcp\ncommand within Claude Code\nMCP follows a client-server architecture where Claude Code (the client) can connect to multiple specialized servers\nClaude Code supports SSE (Server-Sent Events) and streamable HTTP servers for real-time communication\nUse\n/mcp\nto authenticate with remote servers that require OAuth 2.0 authentication\n​\nUnderstanding MCP server scopes\nMCP servers can be configured at three different scope levels, each serving distinct purposes for managing server accessibility and sharing. Understanding these scopes helps you determine the best way to configure servers for your specific needs.\n​\nScope hierarchy and precedence\nMCP server configurations follow a clear precedence hierarchy. When servers with the same name exist at multiple scopes, the system resolves conflicts by prioritizing local-scoped servers first, followed by project-scoped servers, and finally user-scoped servers. This design ensures that personal configurations can override shared ones when needed.\n​\nLocal scope\nLocal-scoped servers represent the default configuration level and are stored in your project-specific user settings. These servers remain private to you and are only accessible when working within the current project directory. This scope is ideal for personal development servers, experimental configurations, or servers containing sensitive credentials that shouldn’t be shared.\n# Add a local-scoped server (default)\nclaude mcp\nadd\nmy-private-server /path/to/server\n# Explicitly specify local scope\nclaude mcp\nadd\nmy-private-server\n-s\nlocal\n/path/to/server\n​\nProject scope\nProject-scoped servers enable team collaboration by storing configurations in a\n.mcp.json\nfile at your project’s root directory. This file is designed to be checked into version control, ensuring all team members have access to the same MCP tools and services. When you add a project-scoped server, Claude Code automatically creates or updates this file with the appropriate configuration structure.\n# Add a project-scoped server\nclaude mcp\nadd\nshared-server\n-s\nproject /path/to/server\nThe resulting\n.mcp.json\nfile follows a standardized format:\n{\n\"mcpServers\"\n:\n{\n\"shared-server\"\n:\n{\n\"command\"\n:\n\"/path/to/server\"\n,\n\"args\"\n:\n[\n]\n,\n\"env\"\n:\n{\n}\n}\n}\n}\nFor security reasons, Claude Code prompts for approval before using project-scoped servers from\n.mcp.json\nfiles. If you need to reset these approval choices, use the\nclaude mcp reset-project-choices\ncommand.\n​\nUser scope\nUser-scoped servers provide cross-project accessibility, making them available across all projects on your machine while remaining private to your user account. This scope works well for personal utility servers, development tools, or services you frequently use across different projects.\n# Add a user server\nclaude mcp\nadd\nmy-user-server\n-s\nuser /path/to/server\n​\nChoosing the right scope\nSelect your scope based on:\nLocal scope\n: Personal servers, experimental configurations, or sensitive credentials specific to one project\nProject scope\n: Team-shared servers, project-specific tools, or services required for collaboration\nUser scope\n: Personal utilities needed across multiple projects, development tools, or frequently-used services\n​\nAuthenticate with remote MCP servers\nMany remote MCP servers require authentication. Claude Code supports OAuth 2.0 authentication flow for secure connection to these servers.\n1\nAdd a remote server requiring authentication\n# Add an SSE or HTTP server that requires OAuth\nclaude mcp\nadd\n--transport\nsse github-server https://api.github.com/mcp\n2\nAuthenticate using the /mcp command\nWithin Claude Code, use the\n/mcp\ncommand to manage authentication:\n> /mcp\nThis opens an interactive menu where you can:\nView connection status for all servers\nAuthenticate with servers requiring OAuth\nClear existing authentication\nView server capabilities\n3\nComplete the OAuth flow\nWhen you select “Authenticate” for a server:\nYour browser opens automatically to the OAuth provider\nComplete the authentication in your browser\nClaude Code receives and securely stores the access token\nThe server connection becomes active\nTips:\nAuthentication tokens are stored securely and refreshed automatically\nUse “Clear authentication” in the\n/mcp\nmenu to revoke access\nIf your browser doesn’t open automatically, copy the provided URL\nOAuth authentication works with both SSE and HTTP transports\n​\nConnect to a Postgres MCP server\nSuppose you want to give Claude read-only access to a PostgreSQL database for querying and schema inspection.\n1\nAdd the Postgres MCP server\nclaude mcp\nadd\npostgres-server /path/to/postgres-mcp-server --connection-string\n\"postgresql://user:pass@localhost:5432/mydb\"\n2\nQuery your database with Claude\n> describe the schema of our users table\n> what are the most recent orders in the system?\n> show me the relationship between customers and invoices\nTips:\nThe Postgres MCP server provides read-only access for safety\nClaude can help you explore database structure and run analytical queries\nYou can use this to quickly understand database schemas in unfamiliar projects\nMake sure your connection string uses appropriate credentials with minimum required permissions\n​\nAdd MCP servers from JSON configuration\nSuppose you have a JSON configuration for a single MCP server that you want to add to Claude Code.\n1\nAdd an MCP server from JSON\n# Basic syntax\nclaude mcp add-json\n<\nname\n>\n'<json>'\n# Example: Adding a stdio server with JSON configuration\nclaude mcp add-json weather-api\n'{\"type\":\"stdio\",\"command\":\"/path/to/weather-cli\",\"args\":[\"--api-key\",\"abc123\"],\"env\":{\"CACHE_DIR\":\"/tmp\"}}'\n2\nVerify the server was added\nclaude mcp get weather-api\nTips:\nMake sure the JSON is properly escaped in your shell\nThe JSON must conform to the MCP server configuration schema\nYou can use\n-s global\nto add the server to your global configuration instead of the project-specific one\n​\nImport MCP servers from Claude Desktop\nSuppose you have already configured MCP servers in Claude Desktop and want to use the same servers in Claude Code without manually reconfiguring them.\n1\nImport servers from Claude Desktop\n# Basic syntax\nclaude mcp add-from-claude-desktop\n2\nSelect which servers to import\nAfter running the command, you’ll see an interactive dialog that allows you to select which servers you want to import.\n3\nVerify the servers were imported\nclaude mcp list\nTips:\nThis feature only works on macOS and Windows Subsystem for Linux (WSL)\nIt reads the Claude Desktop configuration file from its standard location on those platforms\nUse the\n-s global\nflag to add servers to your global configuration\nImported servers will have the same names as in Claude Desktop\nIf servers with the same names already exist, they will get a numerical suffix (e.g.,\nserver_1\n)\n​\nUse Claude Code as an MCP server\nSuppose you want to use Claude Code itself as an MCP server that other applications can connect to, providing them with Claude’s tools and capabilities.\n1\nStart Claude as an MCP server\n# Basic syntax\nclaude mcp serve\n2\nConnect from another application\nYou can connect to Claude Code MCP server from any MCP client, such as Claude Desktop. If you’re using Claude Desktop, you can add the Claude Code MCP server using this configuration:\n{\n\"command\"\n:\n\"claude\"\n,\n\"args\"\n:\n[\n\"mcp\"\n,\n\"serve\"\n]\n,\n\"env\"\n:\n{\n}\n}\nTips:\nThe server provides access to Claude’s tools like View, Edit, LS, etc.\nIn Claude Desktop, try asking Claude to read files in a directory, make edits, and more.\nNote that this MCP server is simply exposing Claude Code’s tools to your MCP client, so your own client is responsible for implementing user confirmation for individual tool calls.\n​\nUse MCP resources\nMCP servers can expose resources that you can reference using @ mentions, similar to how you reference files.\n​\nReference MCP resources\n1\nList available resources\nType\n@\nin your prompt to see available resources from all connected MCP servers. Resources appear alongside files in the autocomplete menu.\n2\nReference a specific resource\nUse the format\n@server:protocol://resource/path\nto reference a resource:\n> Can you analyze @github:issue://123 and suggest a fix?\n> Please review the API documentation at @docs:file://api/authentication\n3\nMultiple resource references\nYou can reference multiple resources in a single prompt:\n> Compare @postgres:schema://users with @docs:file://database/user-model\nTips:\nResources are automatically fetched and included as attachments when referenced\nResource paths are fuzzy-searchable in the @ mention autocomplete\nClaude Code automatically provides tools to list and read MCP resources when servers support them\nResources can contain any type of content that the MCP server provides (text, JSON, structured data, etc.)\n​\nUse MCP prompts as slash commands\nMCP servers can expose prompts that become available as slash commands in Claude Code.\n​\nExecute MCP prompts\n1\nDiscover available prompts\nType\n/\nto see all available commands, including those from MCP servers. MCP prompts appear with the format\n/mcp__servername__promptname\n.\n2\nExecute a prompt without arguments\n> /mcp__github__list_prs\n3\nExecute a prompt with arguments\nMany prompts accept arguments. Pass them space-separated after the command:\n> /mcp__github__pr_review 456\n> /mcp__jira__create_issue \"Bug in login flow\" high\nTips:\nMCP prompts are dynamically discovered from connected servers\nArguments are parsed based on the prompt’s defined parameters\nPrompt results are injected directly into the conversation\nServer and prompt names are normalized (spaces become underscores)\nWas this page helpful?\nYes\nNo\nAdd Claude Code to your IDE\nGitHub Actions\nOn this page\nConfigure MCP servers\nUnderstanding MCP server scopes\nScope hierarchy and precedence\nLocal scope\nProject scope\nUser scope\nChoosing the right scope\nAuthenticate with remote MCP servers\nConnect to a Postgres MCP server\nAdd MCP servers from JSON configuration\nImport MCP servers from Claude Desktop\nUse Claude Code as an MCP server\nUse MCP resources\nReference MCP resources\nUse MCP prompts as slash commands\nExecute MCP prompts",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/github-actions",
+      "text": "GitHub Actions"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/sdk",
+      "text": "Claude Code SDK"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/troubleshooting",
+      "text": "Troubleshooting"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/third-party-integrations",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/amazon-bedrock",
+      "text": "Amazon Bedrock"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/google-vertex-ai",
+      "text": "Google Vertex AI"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/corporate-proxy",
+      "text": "Corporate proxy"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/llm-gateway",
+      "text": "LLM gateway"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/devcontainer",
+      "text": "Development containers"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/iam",
+      "text": "Identity and Access Management"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/security",
+      "text": "Security"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/monitoring-usage",
+      "text": "Monitoring"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/costs",
+      "text": "Costs"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/cli-reference",
+      "text": "CLI reference"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/interactive-mode",
+      "text": "Interactive mode"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/slash-commands",
+      "text": "Slash commands"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/settings",
+      "text": "Settings"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/data-usage",
+      "text": "Data usage"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/legal-and-compliance",
+      "text": "Legal and compliance"
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:27.041770",
+    "word_count": 1939,
+    "link_count": 19,
+    "content_length": 12850
+  }
+}
