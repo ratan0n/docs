@@ -1,0 +1,85 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-improver",
+  "title": "Use our prompt improver to optimize your prompts - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nPrompt engineering\nUse our prompt improver to optimize your prompts\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nFirst steps\nIntro to Claude\nGet started\nModels & pricing\nModels overview\nChoosing a model\nMigrating to Claude 4\nModel deprecations\nPricing\nLearn about Claude\nBuilding with Claude\nFeatures overview\nContext windows\nGlossary\nCapabilities\nPrompt caching\nExtended thinking\nStreaming Messages\nBatch processing\nCitations\nMultilingual support\nToken counting\nEmbeddings\nVision\nPDF support\nFiles API\nGoogle Sheets add-on\nTools\nOverview\nHow to implement tool use\nToken-efficient tool use\nFine-grained tool streaming\nBash tool\nCode execution tool\nComputer use tool\nText editor tool\nWeb search tool\nModel Context Protocol (MCP)\nMCP connector\nRemote MCP servers\nUse cases\nOverview\nTicket routing\nCustomer support agent\nContent moderation\nLegal summarization\nPrompt engineering\nOverview\nClaude 4 best practices\nPrompt generator\nUse prompt templates\nPrompt improver\nBe clear and direct\nUse examples (multishot prompting)\nLet Claude think (CoT)\nUse XML tags\nGive Claude a role (system prompts)\nPrefill Claude's response\nChain complex prompts\nLong context tips\nExtended thinking tips\nTest & evaluate\nDefine success criteria\nDevelop test cases\nUsing the Evaluation Tool\nReducing latency\nStrengthen guardrails\nReduce hallucinations\nIncrease output consistency\nMitigate jailbreaks\nStreaming refusals\nReduce prompt leak\nKeep Claude in character\nLegal center\nAnthropic Privacy Policy\nSecurity and compliance\nOur prompt improver is compatible with all Claude models, including those with extended thinking capabilities. For prompting tips specific to extended thinking models, see\nhere\n.\nThe prompt improver helps you quickly iterate and improve your prompts through automated analysis and enhancement. It excels at making prompts more robust for complex tasks that require high accuracy.\n​\nBefore you begin\nYou’ll need:\nA\nprompt template\nto improve\nFeedback on current issues with Claude’s outputs (optional but recommended)\nExample inputs and ideal outputs (optional but recommended)\n​\nHow the prompt improver works\nThe prompt improver enhances your prompts in 4 steps:\nExample identification\n: Locates and extracts examples from your prompt template\nInitial draft\n: Creates a structured template with clear sections and XML tags\nChain of thought refinement\n: Adds and refines detailed reasoning instructions\nExample enhancement\n: Updates examples to demonstrate the new reasoning process\nYou can watch these steps happen in real-time in the improvement modal.\n​\nWhat you get\nThe prompt improver generates templates with:\nDetailed chain-of-thought instructions that guide Claude’s reasoning process and typically improve its performance\nClear organization using XML tags to separate different components\nStandardized example formatting that demonstrates step-by-step reasoning from input to output\nStrategic prefills that guide Claude’s initial responses\nWhile examples appear separately in the Workbench UI, they’re included at the start of the first user message in the actual API call. View the raw format by clicking ”\n</> Get Code\n” or insert examples as raw text via the Examples box.\n​\nHow to use the prompt improver\nSubmit your prompt template\nAdd any feedback about issues with Claude’s current outputs (e.g., “summaries are too basic for expert audiences”)\nInclude example inputs and ideal outputs\nReview the improved prompt\n​\nGenerate test examples\nDon’t have examples yet? Use our\nTest Case Generator\nto:\nGenerate sample inputs\nGet Claude’s responses\nEdit the responses to match your ideal outputs\nAdd the polished examples to your prompt\n​\nWhen to use the prompt improver\nThe prompt improver works best for:\nComplex tasks requiring detailed reasoning\nSituations where accuracy is more important than speed\nProblems where Claude’s current outputs need significant improvement\nFor latency or cost-sensitive applications, consider using simpler prompts. The prompt improver creates templates that produce longer, more thorough, but slower responses.\n​\nExample improvement\nHere’s how the prompt improver enhances a basic classification prompt:\nOriginal prompt\nFrom the following list of Wikipedia article titles, identify which article this sentence came from.\nRespond with just the article title and nothing else.\nArticle titles:\n{{titles}}\nSentence to classify:\n{{sentence}}\nImproved prompt\nYou are an intelligent text classification system specialized in matching sentences to Wikipedia article titles. Your task is to identify which Wikipedia article a given sentence most likely belongs to, based on a provided list of article titles.\nFirst, review the following list of Wikipedia article titles:\n<article_titles>\n{{titles}}\n</article_titles>\nNow, consider this sentence that needs to be classified:\n<sentence_to_classify>\n{{sentence}}\n</sentence_to_classify>\nYour goal is to determine which article title from the provided list best matches the given sentence. Follow these steps:\n1. List the key concepts from the sentence\n2. Compare each key concept with the article titles\n3. Rank the top 3 most relevant titles and explain why they are relevant\n4. Select the most appropriate article title that best encompasses or relates to the sentence's content\nWrap your analysis in <analysis> tags. Include the following:\n- List of key concepts from the sentence\n- Comparison of each key concept with the article titles\n- Ranking of top 3 most relevant titles with explanations\n- Your final choice and reasoning\nAfter your analysis, provide your final answer: the single most appropriate Wikipedia article title from the list.\nOutput only the chosen article title, without any additional text or explanation.\nNotice how the improved prompt:\nAdds clear step-by-step reasoning instructions\nUses XML tags to organize content\nProvides explicit output formatting requirements\nGuides Claude through the analysis process\n​\nTroubleshooting\nCommon issues and solutions:\nExamples not appearing in output\n: Check that examples are properly formatted with XML tags and appear at the start of the first user message\nChain of thought too verbose\n: Add specific instructions about desired output length and level of detail\nReasoning steps don’t match your needs\n: Modify the steps section to match your specific use case\n​\nNext steps\nPrompt library\nGet inspired by example prompts for various tasks.\nGitHub prompting tutorial\nLearn prompting best practices with our interactive tutorial.\nTest your prompts\nUse our evaluation tool to test your improved prompts.\nWas this page helpful?\nYes\nNo\nUse prompt templates\nBe clear and direct\nOn this page\nBefore you begin\nHow the prompt improver works\nWhat you get\nHow to use the prompt improver\nGenerate test examples\nWhen to use the prompt improver\nExample improvement\nTroubleshooting\nNext steps",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought",
+      "text": "Let Claude think (CoT)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags",
+      "text": "Use XML tags"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts",
+      "text": "Give Claude a role (system prompts)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prefill-claudes-response",
+      "text": "Prefill Claude's response"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-prompts",
+      "text": "Chain complex prompts"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/long-context-tips",
+      "text": "Long context tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/extended-thinking-tips",
+      "text": "Extended thinking tips"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/define-success",
+      "text": "Define success criteria"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests",
+      "text": "Develop test cases"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/eval-tool",
+      "text": "Using the Evaluation Tool"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-latency",
+      "text": "Reducing latency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+      "text": "Reduce hallucinations"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/increase-consistency",
+      "text": "Increase output consistency"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+      "text": "Mitigate jailbreaks"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals",
+      "text": "Streaming refusals"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak",
+      "text": "Reduce prompt leak"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/keep-claude-in-character",
+      "text": "Keep Claude in character"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/resources/prompt-library/library",
+      "text": "Prompt libraryGet inspired by example prompts for various tasks."
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:48.567795",
+    "word_count": 1032,
+    "link_count": 18,
+    "content_length": 6974
+  }
+}
