@@ -1,0 +1,141 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/claude-code/overview",
+  "title": "Claude Code overview - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nGetting started\nClaude Code overview\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nDocumentation\nDeveloper Discord\nSupport\nGetting started\nOverview\nSet up\nQuickstart\nMemory management\nCommon workflows\nBuild with Claude\nAdd Claude Code to your IDE\nModel Context Protocol (MCP)\nGitHub Actions\nClaude Code SDK\nTroubleshooting\nDeployment\nOverview\nAmazon Bedrock\nGoogle Vertex AI\nCorporate proxy\nLLM gateway\nDevelopment containers\nAdministration\nIdentity and Access Management\nSecurity\nMonitoring\nCosts\nReference\nCLI reference\nInteractive mode\nSlash commands\nSettings\nResources\nData usage\nLegal and compliance\nBy integrating directly with your development environment, Claude Code streamlines your workflow without requiring additional servers or complex setup.\n​\nBasic usage\nTo install Claude Code, use NPM:\nnpm\ninstall\n-g\n@anthropic-ai/claude-code\nFor more detailed installation instructions, see\nSet up Claude Code\n.\nTo run Claude Code, simply call the\nclaude\nCLI:\nclaude\nYou can then prompt Claude directly from the interactive Claude Code REPL session.\nFor more usage instructions, see\nQuickstart\n.\n​\nWhy Claude Code?\n​\nAccelerate development\nUse Claude Code to accelerate development with the following key capabilities:\nEditing files and fixing bugs across your codebase\nAnswering questions about your code’s architecture and logic\nExecuting and fixing tests, linting, and other commands\nSearching through git history, resolving merge conflicts, and creating commits and PRs\nBrowsing documentation and resources from the internet using web search\n​\nSecurity and privacy by design\nYour code’s security is paramount. Claude Code’s architecture ensures:\nDirect API connection\n: Your queries go straight to Anthropic’s API without intermediate servers\nWorks where you work\n: Operates directly in your terminal\nUnderstands context\n: Maintains awareness of your entire project structure\nTakes action\n: Performs real operations like editing files and creating commits\n​\nEnterprise integration\nClaude Code seamlessly integrates with enterprise AI platforms. You can connect to\nAmazon Bedrock or Google Vertex AI\nfor secure, compliant deployments that meet your organization’s requirements.\n​\nNext steps\nSetup\nInstall and authenticate Claude Code\nQuickstart\nSee Claude Code in action with practical examples\nCommands\nLearn about CLI commands and controls\nConfiguration\nCustomize Claude Code for your workflow\n​\nAdditional resources\nCommon workflows\nStep-by-step guides for common workflows\nTroubleshooting\nSolutions for common issues with Claude Code\nBedrock & Vertex integrations\nConfigure Claude Code with Amazon Bedrock or Google Vertex AI\nReference implementation\nClone our development container reference implementation.\nWas this page helpful?\nYes\nNo\nSet up\nOn this page\nBasic usage\nWhy Claude Code?\nAccelerate development\nSecurity and privacy by design\nEnterprise integration\nNext steps\nAdditional resources",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com",
+      "text": "Anthropic home page"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/home",
+      "text": "Welcome"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/intro",
+      "text": "Developer Guide"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/mcp",
+      "text": "Model Context Protocol (MCP)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/resources/overview",
+      "text": "Resources"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/release-notes/overview",
+      "text": "Release Notes"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/setup",
+      "text": "Set up"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/quickstart",
+      "text": "Quickstart"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/memory",
+      "text": "Memory management"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/common-workflows",
+      "text": "Common workflows"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/ide-integrations",
+      "text": "Add Claude Code to your IDE"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/mcp",
+      "text": "Model Context Protocol (MCP)"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/github-actions",
+      "text": "GitHub Actions"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/sdk",
+      "text": "Claude Code SDK"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/troubleshooting",
+      "text": "Troubleshooting"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/third-party-integrations",
+      "text": "Overview"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/amazon-bedrock",
+      "text": "Amazon Bedrock"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/google-vertex-ai",
+      "text": "Google Vertex AI"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/corporate-proxy",
+      "text": "Corporate proxy"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/llm-gateway",
+      "text": "LLM gateway"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/devcontainer",
+      "text": "Development containers"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/iam",
+      "text": "Identity and Access Management"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/security",
+      "text": "Security"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/monitoring-usage",
+      "text": "Monitoring"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/costs",
+      "text": "Costs"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/cli-reference",
+      "text": "CLI reference"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/interactive-mode",
+      "text": "Interactive mode"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/slash-commands",
+      "text": "Slash commands"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/settings",
+      "text": "Settings"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/data-usage",
+      "text": "Data usage"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/legal-and-compliance",
+      "text": "Legal and compliance"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/bedrock-vertex-proxies",
+      "text": "Bedrock & Vertex integrationsConfigure Claude Code with Amazon Bedrock or Google Vertex AI"
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:23.918888",
+    "word_count": 423,
+    "link_count": 32,
+    "content_length": 3018
+  }
+}
