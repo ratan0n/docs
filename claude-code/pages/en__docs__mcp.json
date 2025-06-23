@@ -1,0 +1,21 @@
+{
+  "url": "https://docs.anthropic.com/en/docs/mcp",
+  "title": "Model Context Protocol (MCP) - Anthropic",
+  "text": "Anthropic\nhome page\nEnglish\nSearch...\nSearch...\nNavigation\nModel Context Protocol (MCP)\nWelcome\nDeveloper Guide\nAPI Guide\nClaude Code\nModel Context Protocol (MCP)\nResources\nRelease Notes\nMCP is an open protocol that standardizes how applications provide context to LLMs.\nThink of MCP like a USB-C port for AI applications. Just as USB-C provides a standardized way to connect your devices to various peripherals and accessories, MCP provides a standardized way to connect AI models to different data sources and tools.\n​\nBuilding with MCP\nMCP Documentation\nLearn more about the protocol, how to build servers and clients, and discover those made by others.\nMCP in Claude Desktop\nLearn how to set up MCP in Claude for Desktop, such as letting Claude read and write files to your computer’s file system.\n​\nMCP connector\nConnect to remote MCP servers directly from the Messages API without building an MCP client. This feature provides seamless integration with MCP-compatible tools and services.\nMCP connector documentation\nLearn how to use the MCP connector in the Messages API to connect to MCP servers.\n​\nMCP with Claude Code\nMCP with Claude Code\nLearn how to set up MCP for Claude Code.\nWas this page helpful?\nYes\nNo",
+  "links": [
+    {
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/mcp-connector",
+      "text": "MCP connector documentationLearn how to use the MCP connector in the Messages API to connect to MCP "
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/mcp",
+      "text": "MCP with Claude CodeLearn how to set up MCP for Claude Code."
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-23T15:07:25.292197",
+    "word_count": 200,
+    "link_count": 2,
+    "content_length": 1218
+  }
+}
