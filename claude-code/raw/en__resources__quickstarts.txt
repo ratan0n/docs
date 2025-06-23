@@ -1,0 +1,161 @@
+URL: https://docs.anthropic.com/en/resources/quickstarts
+TITLE: GitHub - anthropics/anthropic-quickstarts: A collection of projects designed to help developers quickly get started with building deployable applications using the Anthropic API
+SCRAPED: 2025-06-23T15:08:00.040595
+WORD_COUNT: 552
+LINKS_FOUND: 28
+================================================================================
+
+anthropics
+/
+anthropic-quickstarts
+Public
+Notifications
+You must be signed in to change notification settings
+Fork
+1.6k
+Star
+9.2k
+A collection of projects designed to help developers quickly get started with building deployable applications using the Anthropic API
+License
+MIT license
+9.2k
+stars
+1.6k
+forks
+Branches
+Tags
+Activity
+Star
+Notifications
+You must be signed in to change notification settings
+anthropics/anthropic-quickstarts
+main
+Branches
+Tags
+Go to file
+Code
+Open more actions menu
+Folders and files
+Name
+Name
+Last commit message
+Last commit date
+Latest commit
+History
+68 Commits
+.github
+.github
+agents
+agents
+computer-use-demo
+computer-use-demo
+customer-support-agent
+customer-support-agent
+financial-data-analyst
+financial-data-analyst
+.pre-commit-config.yaml
+.pre-commit-config.yaml
+CLAUDE.md
+CLAUDE.md
+LICENSE
+LICENSE
+README.md
+README.md
+pyproject.toml
+pyproject.toml
+View all files
+Repository files navigation
+Anthropic Quickstarts
+Anthropic Quickstarts is a collection of projects designed to help developers quickly get started with building  applications using the Anthropic API. Each quickstart provides a foundation that you can easily build upon and customize for your specific needs.
+Getting Started
+To use these quickstarts, you'll need an Anthropic API key. If you don't have one yet, you can sign up for free at
+console.anthropic.com
+.
+Available Quickstarts
+Customer Support Agent
+A customer support agent powered by Claude. This project demonstrates how to leverage Claude's natural language understanding and generation capabilities to create an AI-assisted customer support system with access to a knowledge base.
+Go to Customer Support Agent Quickstart
+Financial Data Analyst
+A financial data analyst powered by Claude. This project demonstrates how to leverage Claude's capabilities with interactive data visualization to analyze financial data via chat.
+Go to Financial Data Analyst Quickstart
+Computer Use Demo
+An environment and tools that Claude can use to control a desktop computer. This project demonstrates how to leverage the computer use capabilities of the new Claude 3.5 Sonnet model.
+Go to Computer Use Demo Quickstart
+General Usage
+Each quickstart project comes with its own README and setup instructions. Generally, you'll follow these steps:
+Clone this repository
+Navigate to the specific quickstart directory
+Install the required dependencies
+Set up your Anthropic API key as an environment variable
+Run the quickstart application
+Explore Further
+To deepen your understanding of working with Claude and the Anthropic API, check out these resources:
+Anthropic API Documentation
+Anthropic Cookbook
+- A collection of code snippets and guides for common tasks
+Anthropic API Fundamentals Course
+Contributing
+We welcome contributions to the Anthropic Quickstarts repository! If you have ideas for new quickstart projects or improvements to existing ones, please open an issue or submit a pull request.
+Community and Support
+Join our
+Anthropic Discord community
+for discussions and support
+Check out the
+Anthropic support documentation
+for additional help
+License
+This project is licensed under the MIT License - see the
+LICENSE
+file for details.
+About
+A collection of projects designed to help developers quickly get started with building deployable applications using the Anthropic API
+Resources
+Readme
+License
+MIT license
+Uh oh!
+There was an error while loading.
+Please reload this page
+.
+Activity
+Custom properties
+Stars
+9.2k
+stars
+Watchers
+87
+watching
+Forks
+1.6k
+forks
+Report repository
+Releases
+No releases published
+Packages
+0
+Uh oh!
+There was an error while loading.
+Please reload this page
+.
+Uh oh!
+There was an error while loading.
+Please reload this page
+.
+Contributors
+21
++ 7 contributors
+Languages
+TypeScript
+45.3%
+Python
+37.6%
+Jupyter Notebook
+9.6%
+JavaScript
+3.4%
+Shell
+1.3%
+CSS
+1.2%
+Other
+1.6%
