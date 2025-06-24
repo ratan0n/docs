@@ -1,0 +1,25 @@
+{
+  "id": "wiki__spaces__MD94__pages__352085698__premove",
+  "title": "premove - MediationZone Documentation 9.4 - InfoZone",
+  "url": "https://infozone.atlassian.net/wiki/spaces/MD94/pages/352085698/premove",
+  "categories": [
+    "space:MD94"
+  ],
+  "text": "usage: premove <package-name> Removes the selected package from the system. The command should only be used by system administrators with authority to maintain the MediationZone software. For further information about managing packages, see the System Administrator's Guide . Return Codes Listed below are the different return codes for the premove command: Code Description Code Description 0 Will be returned if the command was successful. 1 Will be returned if there is no package with the specified name.",
+  "chunks": [
+    {
+      "chunk_id": 1,
+      "text": "usage: premove <package-name> Removes the selected package from the system. The command should only be used by system administrators with authority to maintain the MediationZone software. For further information about managing packages, see the System Administrator's Guide . Return Codes Listed below are the different return codes for the premove command: Code Description Code Description 0 Will be returned if the command was successful. 1 Will be returned if there is no package with the specified name.",
+      "title": "premove - MediationZone Documentation 9.4 - InfoZone",
+      "url": "https://infozone.atlassian.net/wiki/spaces/MD94/pages/352085698/premove",
+      "word_count": 77,
+      "char_count": 508
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-24T04:17:50.454564",
+    "word_count": 77,
+    "char_count": 508,
+    "chunk_count": 1
+  }
+}
