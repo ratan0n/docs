@@ -1,0 +1,25 @@
+{
+  "id": "wiki__spaces__MD93__pages__204742517__Conditional_Trace_Access_Permissions",
+  "title": "Conditional Trace Access Permissions - MediationZone Documentation 9.3 - InfoZone",
+  "url": "https://infozone.atlassian.net/wiki/spaces/MD93/pages/204742517/Conditional+Trace+Access+Permissions",
+  "categories": [
+    "space:MD93"
+  ],
+  "text": "There are two different permission levels for Conditional Trace; Conditional Trace Template , which allows you to create and edit Conditional Trace templates in Legacy Desktop, and Conditional Trace , which allows you to use the created templates to do traces in Desktop. To set Conditional Trace access permissions, go to Manage  Tools & Monitoring and then select Access Controller where you can either configure permissions in a new or existing group. Open Access permissions for user who can use existing Conditional Trace filters in Desktop Permission settings Members of the default Administrator access group are configured to manage Conditional Trace templates and filters by default. To enable other users to manage templates and filters, they must be granted Execute rights for the applications Conditional Trace and Conditional Trace Template . To enable users to manage filters only, they must be granted Execute rights for the application Conditional Trace . Write permissions are not required to be set.",
+  "chunks": [
+    {
+      "chunk_id": 1,
+      "text": "There are two different permission levels for Conditional Trace; Conditional Trace Template , which allows you to create and edit Conditional Trace templates in Legacy Desktop, and Conditional Trace , which allows you to use the created templates to do traces in Desktop. To set Conditional Trace access permissions, go to Manage  Tools & Monitoring and then select Access Controller where you can either configure permissions in a new or existing group. Open Access permissions for user who can use existing Conditional Trace filters in Desktop Permission settings Members of the default Administrator access group are configured to manage Conditional Trace templates and filters by default. To enable other users to manage templates and filters, they must be granted Execute rights for the applications Conditional Trace and Conditional Trace Template . To enable users to manage filters only, they must be granted Execute rights for the application Conditional Trace . Write permissions are not required to be set.",
+      "title": "Conditional Trace Access Permissions - MediationZone Documentation 9.3 - InfoZone",
+      "url": "https://infozone.atlassian.net/wiki/spaces/MD93/pages/204742517/Conditional+Trace+Access+Permissions",
+      "word_count": 158,
+      "char_count": 1017
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-24T03:34:28.402727",
+    "word_count": 158,
+    "char_count": 1017,
+    "chunk_count": 1
+  }
+}
