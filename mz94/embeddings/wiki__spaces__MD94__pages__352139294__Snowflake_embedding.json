@@ -1,0 +1,25 @@
+{
+  "id": "wiki__spaces__MD94__pages__352139294__Snowflake",
+  "title": "Snowflake - MediationZone Documentation 9.4 - InfoZone",
+  "url": "https://infozone.atlassian.net/wiki/spaces/MD94/pages/352139294/Snowflake",
+  "categories": [
+    "space:MD94"
+  ],
+  "text": "This section contains information that is specific to the database type Snowflake. Supported Functions The Snowflake Server database can be used with: sqlExec Function (APL) SQL Collection/Forwarding Agents Preparations The drivers that are required to use the Snowflake database are bundled with the software and no additional preparations are required. Advanced Connection Configuration for Snowflake The Advanced Connection Setup is used for Snowflake configurations. To make the Connection String text area and the Notification Service text field appear, select the Advanced Connection Setup radio button. The Username , Password and Database Type fields will remain. Open Database Profile Configuration - Advanced Connection Setup for Snowflake Setting Description Setting Description Connection String In this field you should enter the following string: jdbc:snowflake://<ip address>/<db query> Notification Service This field is not applicable for the Snowflake db. Note! When using the Snowflake JDBC driver, you might encounter the following exception: net.snowflake.client.jdbc.SnowflakeSQLException: JDBC driver internal error: exception creating result java.lang.NoClassDefFoundError: Could not initialize class net.snowflake.client.jdbc.internal.apache.arrow.memory. RootAllocator at net.snowflake.client.jdbc.SnowflakeResultSetSerializableV1.create(Snowflake ResultSetSerializa bleV1.java:586). To resolve the issue, you can override the default result format for JDBC by setting the JDBC_QUERY_RESULT_FORMAT property. Use the following ALTER statements to set the property at the account or user level: ALTER ACCOUNT SET JDBC_QUERY_RESULT_FORMAT='JSON'; ALTER USER <user_name> SET JDBC_QUERY_RESULT_FORMAT='JSON'; See this Snowflake Community Article for more information regarding this error.",
+  "chunks": [
+    {
+      "chunk_id": 1,
+      "text": "This section contains information that is specific to the database type Snowflake. Supported Functions The Snowflake Server database can be used with: sqlExec Function (APL) SQL Collection/Forwarding Agents Preparations The drivers that are required to use the Snowflake database are bundled with the software and no additional preparations are required. Advanced Connection Configuration for Snowflake The Advanced Connection Setup is used for Snowflake configurations. To make the Connection String text area and the Notification Service text field appear, select the Advanced Connection Setup radio button. The Username , Password and Database Type fields will remain. Open Database Profile Configuration - Advanced Connection Setup for Snowflake Setting Description Setting Description Connection String In this field you should enter the following string: jdbc:snowflake://<ip address>/<db query> Notification Service This field is not applicable for the Snowflake db. Note! When using the Snowflake JDBC driver, you might encounter the following exception: net.snowflake.client.jdbc.SnowflakeSQLException: JDBC driver internal error: exception creating result java.lang.NoClassDefFoundError: Could not initialize class net.snowflake.client.jdbc.internal.apache.arrow.memory. RootAllocator at net.snowflake.client.jdbc.SnowflakeResultSetSerializableV1.create(Snowflake ResultSetSerializa bleV1.java:586). To resolve the issue, you can override the default result format for JDBC by setting the JDBC_QUERY_RESULT_FORMAT property. Use the following ALTER statements to set the property at the account or user level: ALTER ACCOUNT SET JDBC_QUERY_RESULT_FORMAT='JSON'; ALTER USER <user_name> SET JDBC_QUERY_RESULT_FORMAT='JSON'; See this Snowflake Community Article for more information regarding this error.",
+      "title": "Snowflake - MediationZone Documentation 9.4 - InfoZone",
+      "url": "https://infozone.atlassian.net/wiki/spaces/MD94/pages/352139294/Snowflake",
+      "word_count": 219,
+      "char_count": 1809
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-24T03:46:16.342497",
+    "word_count": 219,
+    "char_count": 1809,
+    "chunk_count": 1
+  }
+}
