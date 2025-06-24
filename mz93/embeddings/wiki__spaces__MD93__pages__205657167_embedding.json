@@ -1,0 +1,25 @@
+{
+  "id": "wiki__spaces__MD93__pages__205657167",
+  "title": "wfgroupenable - MediationZone Documentation 9.3 - InfoZone",
+  "url": "https://infozone.atlassian.net/wiki/spaces/MD93/pages/205657167",
+  "categories": [
+    "space:MD93"
+  ],
+  "text": "This command enables one or more workflow groups. usage: wfgroupenable <pattern match expression for workflow group names> ... [ -mode < a >] With this command you compare a single pattern match expression, or several, with the full workflow group name of all the workflow groups. Example- wfgroupenable <folder>.<workflowgroupconfigurationname>.<workflowgroupname> The command accepts standard wild cards, such as '*' and '?'. For further information see Textual Pattern Matches . It also accepts the following options: Option Description Option Description [ -mode < a > ] Enable only workflow groups marked with a specified mode: a - Only Autostart groups are enabled. Return Codes Listed below are the different return codes for the wfgroupenable command: Code Description Code Description 0 Will be returned if the command is successful. 1 Will be returned if the argument count is incorrect. 2 Will be returned if the user is not found or not logged in. 3 Will be returned if no matching workflow group is found. 4 Will be returned if the user does not have permission to access the workflow group.",
+  "chunks": [
+    {
+      "chunk_id": 1,
+      "text": "This command enables one or more workflow groups. usage: wfgroupenable <pattern match expression for workflow group names> ... [ -mode < a >] With this command you compare a single pattern match expression, or several, with the full workflow group name of all the workflow groups. Example- wfgroupenable <folder>.<workflowgroupconfigurationname>.<workflowgroupname> The command accepts standard wild cards, such as '*' and '?'. For further information see Textual Pattern Matches . It also accepts the following options: Option Description Option Description [ -mode < a > ] Enable only workflow groups marked with a specified mode: a - Only Autostart groups are enabled. Return Codes Listed below are the different return codes for the wfgroupenable command: Code Description Code Description 0 Will be returned if the command is successful. 1 Will be returned if the argument count is incorrect. 2 Will be returned if the user is not found or not logged in. 3 Will be returned if no matching workflow group is found. 4 Will be returned if the user does not have permission to access the workflow group.",
+      "title": "wfgroupenable - MediationZone Documentation 9.3 - InfoZone",
+      "url": "https://infozone.atlassian.net/wiki/spaces/MD93/pages/205657167",
+      "word_count": 177,
+      "char_count": 1104
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-24T04:46:50.116048",
+    "word_count": 177,
+    "char_count": 1104,
+    "chunk_count": 1
+  }
+}
