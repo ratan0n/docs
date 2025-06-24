@@ -1,0 +1,25 @@
+{
+  "id": "wiki__spaces__MD93__pages__285638657__APN_Agent",
+  "title": "APN Agent - MediationZone Documentation 9.3 - InfoZone",
+  "url": "https://infozone.atlassian.net/wiki/spaces/MD93/pages/285638657/APN+Agent",
+  "categories": [
+    "space:MD93"
+  ],
+  "text": "This section describes the APN profile and agent. The agent is a processing agent available in real-time workflow configurations. The APN agent allows push notifications to be sent to mobile devices using Apple certificates. Open An example of APN workflow The agent requires a profile containing configurations for the certificate, and needs to be provided with Title, Body, and Device token for the messages to be sent. There are also two UDR types specific for the APN agent; APNUDR and APNResult . Note! The APN agent does not support HTTP Proxy. Prerequisites The user of this information should be familiar with: Apple Push Notification Service ( https://developer.apple.com/notifications/ ) The section contains the following subsections: APN Profile APN Agent Configuration APN UDRs APN Agent MIM and Events",
+  "chunks": [
+    {
+      "chunk_id": 1,
+      "text": "This section describes the APN profile and agent. The agent is a processing agent available in real-time workflow configurations. The APN agent allows push notifications to be sent to mobile devices using Apple certificates. Open An example of APN workflow The agent requires a profile containing configurations for the certificate, and needs to be provided with Title, Body, and Device token for the messages to be sent. There are also two UDR types specific for the APN agent; APNUDR and APNResult . Note! The APN agent does not support HTTP Proxy. Prerequisites The user of this information should be familiar with: Apple Push Notification Service ( https://developer.apple.com/notifications/ ) The section contains the following subsections: APN Profile APN Agent Configuration APN UDRs APN Agent MIM and Events",
+      "title": "APN Agent - MediationZone Documentation 9.3 - InfoZone",
+      "url": "https://infozone.atlassian.net/wiki/spaces/MD93/pages/285638657/APN+Agent",
+      "word_count": 126,
+      "char_count": 815
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-24T03:40:29.202043",
+    "word_count": 126,
+    "char_count": 815,
+    "chunk_count": 1
+  }
+}
