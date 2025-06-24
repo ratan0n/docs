@@ -1,0 +1,1623 @@
+# RATANON/MZ93-DOCUMENTATION - Part 98/112
+
+---
+**Dataset:** ratanon/mz93-documentation
+**Part:** 98 of 112
+**GitHub:** https://github.com/ratan0n/docs/tree/main/mz93-documentation
+**Size:** ~70.0 KB
+---
+
+Some agents in a workflow need information from the workflow itself or other agents in order to perform their task. E.g. an agent that produces a file might need the source file name and the number of processed UDRs to be used in the outgoing filename. In order to satisfy these requirements, MediationZone uses a model called Meta Information Model (MIM). MIM is based on the fact that the individual agents supply information during run-time that other agents can use for any purpose. The MIM information is used in various parts of MediationZone e.g. when selecting what variables to use in a filename and when selecting what data that should identify UDRs delivered to ECS, and so on. Additionally, it is possible to create and set values for a user-defined MIM using APL. The MIM information can be viewed over JMX (Java Management Extensions). The following figure displays an example of a MIM tree GUI which is available within selected agents, either as part of the specific tab (such as Filename Template in forwarding agents) or as an assist pop-up window for APL scripting within Analysis and Aggregation Agents. Open Example of a MIM tree structure
+
+---
+
+# Document 2272: Couchbase Profile - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204737565
+**Categories:** chunks_index.json
+
+A Couchbase profile is used to read and write bucket data in a Couchbase database and can be accessed by workflows using Aggregation, Distributed Storage, or PCC. The profile should not be used to operate on data that has been inserted or updated by external third-party software. As a client of Couchbase, the profile operates in synchronous mode. When sending a request to Couchbase, the profile expects a server response, indicating success or failure, before proceeding to send the next one in queue. The Couchbase profile is loaded when you start a workflow that depends on it. Changes to the profile become effective when you restart the workflow. Note! Created or updated Couchbase profiles that are used for PCC do not become effective until you restart the ECs. Configuration To create a new Couchbase profile, click the New Configuration button from the Configuration dialog available from Build View , and then select Couchbase Profile from the menu. The contents of the menus in the menu bar may change depending on which configuration type has been opened in the currently displayed tab. The Couchbase profile uses the standard menu items and buttons that are visible for all configurations, and these are described in Common Configuration Buttons . The Edit menu is specific for Couchbase profile configurations. Setting Desciption Setting Desciption External References Select this menu item to Enable External References in an agent profile field. This can be used to configure the use of the following fields, and the respective external reference keys available: Bucket Name Bucket Password Bucket User Bucket User Password Operation Timeout Max Retries Retry Interval Host For further information, see Using External Reference in Agent Profile Fields and External Reference Profile . In a Couchbase profile, there are three tabs: Connectivity , Management , and Advanced . Connectivity Tab The Connectivity tab is displayed by default. Couchbase profile - Connectivity tab The following settings are available in the Connectivity tab: Setting Description Setting Description Bucket Configuration Bucket Name Enter the bucket that you want to access in Couchbase in this field. Bucket User Enter the user who has access rights to the bucket. User Password Enter the password for the user who has access to the bucket. Parameterized When enabled, here you may enter parameterized bucket configuration. Cluster Connectivity Operation Timeout (ms) Enter the number of milliseconds after which you want Couchbase "CRUD" operations, that is, create, read, update, and delete, to timeout. Setting a lower value than the default 1000 ms may have a positive impact on throughput performance. However, if the value is set too low, indicated by a large number of operation timeouts errors in the EC logs, a lower throughput can be expected. As mentioned, this value is used for timing out CRUD operations in Couchbase. This means that the system sends a request towards Couchbase and if an answer is not returned in time, the operation fails, and the system is no longer waiting for an answer. Retry Interval Time (ms) Enter the time interval, in milliseconds, that you want to wait before trying to read the cluster configuration again after a failed attempt. In other words, in case a request sent to Couchbase returns an unsuccessful answer, the number specified here is the time that the system waits before retrying the same request. Max Number Of Retries Enter the maximum number of retries. This is the number of retries the system does before treating the Couchbase operation as failed Enable Security Select this checkbox to connect to Couchbase cluster with SSL. If you want to set a parameter, select the Parameterized checkbox and enter the parameter name using ${} syntax, see Profiles for more information on how parameterization works (in this mode the regular Enable Security checkbox is disabled). The parameter needs to be set as true or false . Parameterized When enabled, you may enter a parameterized cluster configuration. Security Profile Cluster Nodes Cluster Nodes In this section, add IP addresses/hostnames of at least one of the nodes in the cluster. This address information is used by the Couchbase profile to connect to the cluster at workflow start, and to retrieve the IP addresses of the other nodes in the cluster. If the first node in the list cannot be accessed, the Couchbase profile will attempt to connect to the next one in order. This is repeated until a successful connection can be established. Hence it is not necessary to add all the nodes, but it is good practice to do so for a small cluster. For example, if there are just three nodes, you should add all of them. Hint! The Operation Timeout , Retry Interval Time , and Max Number Of Retries settings together with the Advanced tab setting mz.cb.lock.timeout.in .secs , work jointly. To understand how, see the following explanation. If you for example use the lookup function with transaction, a LOCK ERROR means that the lookup failed because there was already a transaction lock held on the object that the lookup was trying to get from Couchbase. That is, the lookup was not able to get a lock on the object. What is most important here is how the communication between MediationZone and Couchbase works. In case you use the lookup function it works like this: The lookup function with transaction ID tries to get an object from Couchbase with a lock. MediationZone sends a request to Couchbase to get an object and lock it. If the object exists and is not locked, Couchbase creates a lock and sends the answer back with a successful result code and the data. Alternatively, if the object is locked, Couchbase immediately sends an answer with the result LOCK_ERROR. Couchbase does not wait to answer until the lock is released. This is why the Operation Timeout parameter does not play a crucial role here. The Operation Timeout parameter is only used when Couchbase is stalling and does not send an answer for a long time. Assuming that the object is locked and the system received answer with LOCK_ERROR, it will wait for the amont of time specified in Retry Interval Time and then retry the request towards Couchbase. This process is repeated until Max Number Of Retries is exhausted or the answer contains a successful result code and the object is retrieved from Couchbase. So, if you for example set Retry Interval Time to 100 ms and Max Number of Retries to 10, you get 100 ms * 10 retries = 1000 ms. However, from a MZ perspective, the timeout of 1000 ms is just for a single lookup attempt and not for the whole lookup operation. To clarify, if you get a failed lookupMany with LOCK_ERROR in the system log, it means that the lookup failed because it tried to get an object with a lock but failed after Max Number Of Retries. That is, some other process (or thread) was holding a lock on that particular object for longer than 1000 ms. This is possible if the Advanced tab setting mz.cb.lock.timeout.in .secs is larger than 1000 ms. In other words, you need to decide what is more important - that the operation succeeds or that the operation is fast. Management Tab The Management tab contains Cluster Management and Monitoring settings. Open Couchbase profile - Management tab The following settings are available in the Management tab: Setting Description Setting Description Admin User Name If you want to create a new bucket that does not exist in your Couchbase cluster, enter the user name that you stated when installing Couchbase in this field. Admin Password If you want to create a new bucket that does not exist in your Couchbase cluster, enter the password that you stated when installing Couchbase in this field. Parameterized When enabled, here you may enter parameterized cluster management settings. Bucket Size (MB) Enter the size of the bucket you want to create, in MB. Number of Replicas Enter the number of replicas you want to have. If the bucket you want to access in Couchbase does not exist, the Couchbase profile can be used for creating the bucket in runtime for you, provided that the Admin User Name and Admin Password for your Couchbase cluster have been entered in the Management tab. If the bucket you want to access already exists in your cluster, these two fields do not have to be filled in. Advanced Tab In the Advanced tab, you can configure additional properties. These can typically be left unchanged in the standard Couchbase configuration. It is recommended that you change these properties when using the Couchbase profile in Aggregation. For more information about using the Couchbase profile in Aggregation, see Performance Tuning with Couchbase Storage in Aggregation Agent Configuration - Real-Time . Open Couchbase profile - Advanced tab Important! Client Management Timeout If there is a need to control a timeout of any synchronous operation, a system property mz.cb.management.timeout can be used. It should be set for every execution context used to execute a workflow that may require longer timeout. See the text in the Properties field for further information about the properties that you can set. Logging Couchbase Statistics You can use the property mz.cb.statistics.class if you want to log Couchbase statistics to file. The default value is com.digitalroute.mimexposer.statistics.NoDbStatistics . To enable this property, set the value to com.digitalroute.mimexposer.statistics.MemDbStatistics or com.digitalroute.mimexposer.statistics.FileDbStatistics . If you set the property value to com.digitalroute.mimexposer.statistics.MemDbStatistics , you can use the MIM agent to send statistics to System Insight. To do this, you must configure a workflow with a MIM agent. For further information, see 9.78.6 MIM Agent . If you set the property value to com.digitalroute.mimexposer.statistics.FileDbStatistics , you can use the MIM agent to send statistics to System Insight or you can log to file. If you want to log to file only, you do not require the MIM agent. The log file is stored in $MZ_HOME/log per bucket, for example <bucket name>_couchbase_stats.log, and the file is flushed every 60 seconds by default. If you want to modify how often the file is flushed, set the property mz.cb.statistics.flush.period.in .seconds with the required value in the EC. The Couchbase statistics that you can log include the following: Maximum answer time Average answer time Number of failed CRUDS Maximum lock time Average lock time Number of failed locks Number of timed out locks Support for Scope and Collection Refer to the following properties in the Advanced tab to configure Scope and Collection. Couchbase scope name: The default value is "_default". mz.cb.bucket.scopeName _default Couchbase collection name: The default value is "_default". mz.cb.bucket.collectionName _default Note! When naming scopes and collections, ensure to follow the standards mentioned in Naming for Scopes and Collections . When using scopes and collections, ensure that proper resources are assigned to the scope/collection within the Couchbase bucket. For example, if there are 5 buckets each with its own resource, and if it is decided to use only 1 bucket using scope and collection and removing the other 4. In this case, resources should be appropriately assigned to scopes/collections based on the previous usage of individual buckets.
+
+---
+
+# Document 2273: Kafka Batch Collection Agent Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/301138188/Kafka+Batch+Collection+Agent+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Input/Output Data This section describes the data type that the agent expects and delivers. The agent retrieves messages from Kafka and creates one KafkaRecord UDR per message. Meta Information Model (MIM) Published MIMs MIM Parameter Description MIM Parameter Description Estimated Lag Estimated lag is the sum of the currently outstanding messages for the assigned topic/partitions for this agent. Estimated Lag is of type long and is defined as a header MIM context type.
+
+---
+
+# Document 2274: Installing Cloudera Manager and Cloudera Distribution Hadoop (To be removed) - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205816986/Installing+Cloudera+Manager+and+Cloudera+Distribution+Hadoop+To+be+removed
+**Categories:** chunks_index.json
+
+Data Hub requires Cloudera Manager and CDH. For installation instructions, see the Cloudera documentation that is provided with the download link. Installation requirements and recommendations for Data Hub: Data Hub has been tested with CDH 5.13. The Enterprise Edition must be used in production environments. It is recommended that you select the parcels installation method for CDH. Installing additional parcels is optional and these are not required by Data Hub. When you are prompted to specify CDH services to install, select Core with Impala. Single user mode is recommended for production environments.
+
+---
+
+# Document 2275: SQL Forwarding Agent Events - Batch - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204643258/SQL+Forwarding+Agent+Events+-+Batch
+**Categories:** chunks_index.json
+
+Agent Message Events There are no message events for this agent. Debug Events Debug messages are dispatched in debug mode. During execution, the messages are displayed in the Workflow Monitor. You can configure Event Notifications that are triggered when a debug message is dispatched. For further information about the debug event type, see Debug Event . The agent produces the following debug events: SQL: sql-statement Example - SQL debug event SQL: INSERT INTO test_table (NUM, DATA) VALUES (?, ?) The debug message is sent when the SQL agent creates its SQL string to send to the database.
+
+---
+
+# Document 2276: User Documentation - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93.txt
+scraped_at: 2025-06-24T03:32:10.163735
+
+---
+
+# Document 2277: InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages.txt
+scraped_at: 2025-06-24T03:32:13.450997
+
+---
+
+# Document 2278: User Documentation - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/overview
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__overview.txt
+scraped_at: 2025-06-24T03:32:14.643787
+
+---
+
+# Document 2279: Installation Instructions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204996705/Installation+Instructions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204996705__Installation_Instructions.txt
+scraped_at: 2025-06-24T03:32:14.818126
+
+---
+
+# Document 2280: Desktop User's Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204638163/Desktop+User+s+Guide
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204638163__Desktop_User_s_Guide.txt
+scraped_at: 2025-06-24T03:32:15.968726
+
+---
+
+# Document 2281: Data Hub User's Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204676300/Data+Hub+User+s+Guide
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204676300__Data_Hub_User_s_Guide.txt
+scraped_at: 2025-06-24T03:32:20.366468
+
+---
+
+# Document 2282: Authorization Server User's Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205816932/Authorization+Server+User+s+Guide
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205816932__Authorization_Server_User_s_Guide.txt
+scraped_at: 2025-06-24T03:32:20.778683
+
+---
+
+# Document 2283: Development Toolkit User's Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204645031/Development+Toolkit+User+s+Guide
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204645031__Development_Toolkit_User_s_Guide.txt
+scraped_at: 2025-06-24T03:32:21.686758
+
+---
+
+# Document 2284: Conditional Trace User's Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204676782/Conditional+Trace+User+s+Guide
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204676782__Conditional_Trace_User_s_Guide.txt
+scraped_at: 2025-06-24T03:32:21.960990
+
+---
+
+# Document 2285: External Version Control User's Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204611134/External+Version+Control+User+s+Guide
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204611134__External_Version_Control_User_s_Guide.txt
+scraped_at: 2025-06-24T03:32:26.399580
+
+---
+
+# Document 2286: KPI Management User's Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205655872/KPI+Management+User+s+Guide
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205655872__KPI_Management_User_s_Guide.txt
+scraped_at: 2025-06-24T03:32:26.596418
+
+---
+
+# Document 2287: PCC User's Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204677233/PCC+User+s+Guide
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204677233__PCC_User_s_Guide.txt
+scraped_at: 2025-06-24T03:32:27.704946
+
+---
+
+# Document 2288: Reference Data Management User's Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205656532/Reference+Data+Management+User+s+Guide
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205656532__Reference_Data_Management_User_s_Guide.txt
+scraped_at: 2025-06-24T03:32:27.925288
+
+---
+
+# Document 2289: APL Reference Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204646109/APL+Reference+Guide
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204646109__APL_Reference_Guide.txt
+scraped_at: 2025-06-24T03:32:32.414355
+
+---
+
+# Document 2290: SAP CTS+ Integration User's Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/261914788/SAP+CTS+Integration+User+s+Guide
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__261914788__SAP_CTS_Integration_User_s_Guide.txt
+scraped_at: 2025-06-24T03:32:32.676439
+
+---
+
+# Document 2291: Command Line Tool Reference Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204646337/Command+Line+Tool+Reference+Guide
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204646337__Command_Line_Tool_Reference_Guide.txt
+scraped_at: 2025-06-24T03:32:33.707361
+
+---
+
+# Document 2292: Ultra Reference Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204612702/Ultra+Reference+Guide
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204612702__Ultra_Reference_Guide.txt
+scraped_at: 2025-06-24T03:32:34.151549
+
+---
+
+# Document 2293: Security and Privacy - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205815852/Security+and+Privacy
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205815852__Security_and_Privacy.txt
+scraped_at: 2025-06-24T03:32:38.756171
+
+---
+
+# Document 2294: System Administrator's Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205815899/System+Administrator+s+Guide
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205815899__System_Administrator_s_Guide.txt
+scraped_at: 2025-06-24T03:32:38.835635
+
+---
+
+# Document 2295: Third Party Software Requirements - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204678720/Third+Party+Software+Requirements
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204678720__Third_Party_Software_Requirements.txt
+scraped_at: 2025-06-24T03:32:40.348584
+
+---
+
+# Document 2296: Terminology - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205816269/Terminology
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205816269__Terminology.txt
+scraped_at: 2025-06-24T03:32:40.445562
+
+---
+
+# Document 2297: Software Description 9.3 - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204678907/Software+Description+9.3
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204678907__Software_Description_9.3.txt
+scraped_at: 2025-06-24T03:32:45.099611
+
+---
+
+# Document 2298: Release Information - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204647417/Release+Information
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204647417__Release_Information.txt
+scraped_at: 2025-06-24T03:32:45.528115
+
+---
+
+# Document 2299: Contractual Documents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204613907/Contractual+Documents
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204613907__Contractual_Documents.txt
+scraped_at: 2025-06-24T03:32:46.280686
+
+---
+
+# Document 2300: MediationZone 9.3.2 Released! - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/blog/2025/04/11/550863478/MediationZone+9.3.2+Released
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__blog__2025__04__11__550863478__MediationZone_9.3.2_Released.txt
+scraped_at: 2025-06-24T03:32:46.881592
+
+---
+
+# Document 2301: User Documentation - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93.txt
+scraped_at: 2025-06-24T03:32:51.401630
+
+---
+
+# Document 2302: Bug Fixes - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205881704/Bug+Fixes
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205881704__Bug_Fixes.txt
+scraped_at: 2025-06-24T03:32:52.001559
+
+---
+
+# Document 2303: MediationZone 9.3.1 Released! - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/blog/2024/11/29/404259389/MediationZone+9.3.1+Released
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__blog__2024__11__29__404259389__MediationZone_9.3.1_Released.txt
+scraped_at: 2025-06-24T03:32:52.567844
+
+---
+
+# Document 2304: MediationZone 9.3 Released! - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/blog/2024/09/24/331874639/MediationZone+9.3+Released
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__blog__2024__09__24__331874639__MediationZone_9.3_Released.txt
+scraped_at: 2025-06-24T03:32:53.848867
+
+---
+
+# Document 2305: SQS Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/299663361/SQS+Agents
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__299663361__SQS_Agents.txt
+scraped_at: 2025-06-24T03:32:58.223365
+
+---
+
+# Document 2306: Kafka Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/301137921/Kafka+Agents
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__301137921__Kafka_Agents.txt
+scraped_at: 2025-06-24T03:32:58.543461
+
+---
+
+# Document 2307: Google Secret Manager Profile - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/227311617/Google+Secret+Manager+Profile
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__227311617__Google_Secret_Manager_Profile.txt
+scraped_at: 2025-06-24T03:32:59.865227
+
+---
+
+# Document 2308: Amazon S3 Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204606217/Amazon+S3+Agents
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204606217__Amazon_S3_Agents.txt
+scraped_at: 2025-06-24T03:33:00.125165
+
+---
+
+# Document 2309: Log Filter - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/314998785/Log+Filter
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__314998785__Log_Filter.txt
+scraped_at: 2025-06-24T03:33:04.726969
+
+---
+
+# Document 2310: New Features and Enhancements - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204647457/New+Features+and+Enhancements
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204647457__New_Features_and_Enhancements.txt
+scraped_at: 2025-06-24T03:33:05.047098
+
+---
+
+# Document 2311: MediationZone 9.3 Release - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204678755/MediationZone+9.3+Release
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204678755__MediationZone_9.3_Release.txt
+scraped_at: 2025-06-24T03:33:05.924129
+
+---
+
+# Document 2312: System Requirements - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204736060/System+Requirements
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204736060__System_Requirements.txt
+scraped_at: 2025-06-24T03:33:06.475323
+
+---
+
+# Document 2313: Upgrade - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204736188/Upgrade
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204736188__Upgrade.txt
+scraped_at: 2025-06-24T03:33:10.994552
+
+---
+
+# Document 2314: Installation - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205029520/Installation
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205029520__Installation.txt
+scraped_at: 2025-06-24T03:33:11.058629
+
+---
+
+# Document 2315: Downgrade/Rollback - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/550731779/Downgrade+Rollback
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__550731779__Downgrade_Rollback.txt
+scraped_at: 2025-06-24T03:33:12.386325
+
+---
+
+# Document 2316: PCC Installation Instructions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205029812/PCC+Installation+Instructions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205029812__PCC_Installation_Instructions.txt
+scraped_at: 2025-06-24T03:33:12.721273
+
+---
+
+# Document 2317: Appendix A - Oracle Home Settings - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204670130/Appendix+A+-+Oracle+Home+Settings
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204670130__Appendix_A_-_Oracle_Home_Settings.txt
+scraped_at: 2025-06-24T03:33:16.996167
+
+---
+
+# Document 2318: Appendix B - Couchbase - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204604410/Appendix+B+-+Couchbase
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204604410__Appendix_B_-_Couchbase.txt
+scraped_at: 2025-06-24T03:33:17.446849
+
+---
+
+# Document 2319: Appendix C - PostgreSQL HBA Settings - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205029924/Appendix+C+-+PostgreSQL+HBA+Settings
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205029924__Appendix_C_-_PostgreSQL_HBA_Settings.txt
+scraped_at: 2025-06-24T03:33:18.227925
+
+---
+
+# Document 2320: Appendix D - Java Version Change - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/281903108/Appendix+D+-+Java+Version+Change
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__281903108__Appendix_D_-_Java_Version_Change.txt
+scraped_at: 2025-06-24T03:33:19.122992
+
+---
+
+# Document 2321: Working with Workflows - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204736591/Working+with+Workflows
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204736591__Working_with_Workflows.txt
+scraped_at: 2025-06-24T03:33:23.504890
+
+---
+
+# Document 2322: Desktop Overview - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204604466/Desktop+Overview
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204604466__Desktop_Overview.txt
+scraped_at: 2025-06-24T03:33:23.749410
+
+---
+
+# Document 2323: Event Notifications - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204736858/Event+Notifications
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204736858__Event_Notifications.txt
+scraped_at: 2025-06-24T03:33:25.143809
+
+---
+
+# Document 2324: Alarm Detection - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204670892/Alarm+Detection
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204670892__Alarm_Detection.txt
+scraped_at: 2025-06-24T03:33:25.700596
+
+---
+
+# Document 2325: Tools & Monitoring - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204605336/Tools+Monitoring
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204605336__Tools_Monitoring.txt
+scraped_at: 2025-06-24T03:33:29.992653
+
+---
+
+# Document 2326: Inspection - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204998019/Inspection
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204998019__Inspection.txt
+scraped_at: 2025-06-24T03:33:30.278023
+
+---
+
+# Document 2327: Appendix 1 - Profiles - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204639259/Appendix+1+-+Profiles
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204639259__Appendix_1_-_Profiles.txt
+scraped_at: 2025-06-24T03:33:31.577107
+
+---
+
+# Document 2328: Appendix 2 - Batch and Real-Time Workflow Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204606046/Appendix+2+-+Batch+and+Real-Time+Workflow+Agents
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204606046__Appendix_2_-_Batch_and_Real-Time_Workflow_Agents.txt
+scraped_at: 2025-06-24T03:33:31.972420
+
+---
+
+# Document 2329: Appendix 4 - Collection Strategies - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205035499/Appendix+4+-+Collection+Strategies
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205035499__Appendix_4_-_Collection_Strategies.txt
+scraped_at: 2025-06-24T03:33:36.650205
+
+---
+
+# Document 2330: Appendix 3 - Task Workflow Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204644296/Appendix+3+-+Task+Workflow+Agents
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204644296__Appendix_3_-_Task_Workflow_Agents.txt
+scraped_at: 2025-06-24T03:33:36.819843
+
+---
+
+# Document 2331: InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/history/204638163
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__history__204638163.txt
+scraped_at: 2025-06-24T03:33:37.101188
+
+---
+
+# Document 2332: Legacy Desktop - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204741656/Legacy+Desktop
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204741656__Legacy_Desktop.txt
+scraped_at: 2025-06-24T03:33:37.989294
+
+---
+
+# Document 2333: Preparation of Data Hub - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204742158/Preparation+of+Data+Hub
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204742158__Preparation_of_Data_Hub.txt
+scraped_at: 2025-06-24T03:33:42.250751
+
+---
+
+# Document 2334: Data Hub Profile - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204676337/Data+Hub+Profile
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204676337__Data_Hub_Profile.txt
+scraped_at: 2025-06-24T03:33:42.658861
+
+---
+
+# Document 2335: Data Hub Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204644899/Data+Hub+Agents
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204644899__Data_Hub_Agents.txt
+scraped_at: 2025-06-24T03:33:43.502165
+
+---
+
+# Document 2336: Data Hub Example - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204676395/Data+Hub+Example
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204676395__Data_Hub_Example.txt
+scraped_at: 2025-06-24T03:33:44.173103
+
+---
+
+# Document 2337: Data Hub Forwarding Agent - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204644935/Data+Hub+Forwarding+Agent
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204644935__Data_Hub_Forwarding_Agent.txt
+scraped_at: 2025-06-24T03:33:48.325835
+
+---
+
+# Document 2338: Data Hub Query - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204610846/Data+Hub+Query
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204610846__Data_Hub_Query.txt
+scraped_at: 2025-06-24T03:33:48.672532
+
+---
+
+# Document 2339: Authorization Server Overview - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205816959/Authorization+Server+Overview
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205816959__Authorization_Server_Overview.txt
+scraped_at: 2025-06-24T03:33:49.492729
+
+---
+
+# Document 2340: Managing the Authorization Server - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205849609/Managing+the+Authorization+Server
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205849609__Managing_the_Authorization_Server.txt
+scraped_at: 2025-06-24T03:33:50.311953
+
+---
+
+# Document 2341: Authorization Server Properties - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204648132/Authorization+Server+Properties
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204648132__Authorization_Server_Properties.txt
+scraped_at: 2025-06-24T03:33:55.043344
+
+---
+
+# Document 2342: Management API - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205784151/Management+API
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205784151__Management_API.txt
+scraped_at: 2025-06-24T03:33:55.029304
+
+---
+
+# Document 2343: Enabling Authorization Server - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205816948/Enabling+Authorization+Server
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205816948__Enabling_Authorization_Server.txt
+scraped_at: 2025-06-24T03:33:56.618428
+
+---
+
+# Document 2344: Development Toolkit Overview - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204676454/Development+Toolkit+Overview
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204676454__Development_Toolkit_Overview.txt
+scraped_at: 2025-06-24T03:33:56.659088
+
+---
+
+# Document 2345: Installation and Setup - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204676475/Installation+and+Setup
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204676475__Installation_and_Setup.txt
+scraped_at: 2025-06-24T03:34:01.157308
+
+---
+
+# Document 2346: Creating a DTK Plugin - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204676496/Creating+a+DTK+Plugin
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204676496__Creating_a_DTK_Plugin.txt
+scraped_at: 2025-06-24T03:34:01.451249
+
+---
+
+# Document 2347: Data Serialization - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204610961/Data+Serialization
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204610961__Data_Serialization.txt
+scraped_at: 2025-06-24T03:34:02.668450
+
+---
+
+# Document 2348: Agent Plugins - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204742273/Agent+Plugins
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204742273__Agent_Plugins.txt
+scraped_at: 2025-06-24T03:34:03.448771
+
+---
+
+# Document 2349: UDR Plugins - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204645191/UDR+Plugins
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204645191__UDR_Plugins.txt
+scraped_at: 2025-06-24T03:34:08.074306
+
+---
+
+# Document 2350: Exceptions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204645172/Exceptions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204645172__Exceptions.txt
+scraped_at: 2025-06-24T03:34:08.229584
+
+---
+
+# Document 2351: Event Plugins - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204645219/Event+Plugins
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204645219__Event_Plugins.txt
+scraped_at: 2025-06-24T03:34:09.722433
+
+---
+
+# Document 2352: Notifier Plugins - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204645236/Notifier+Plugins
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204645236__Notifier_Plugins.txt
+scraped_at: 2025-06-24T03:34:09.892222
+
+---
+
+# Document 2353: Ultra Field Plugins - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204645263/Ultra+Field+Plugins
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204645263__Ultra_Field_Plugins.txt
+scraped_at: 2025-06-24T03:34:14.228166
+
+---
+
+# Document 2354: APL Plugins - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205655740/APL+Plugins
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205655740__APL_Plugins.txt
+scraped_at: 2025-06-24T03:34:14.418299
+
+---
+
+# Document 2355: Workflow Service Plugins - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204645281/Workflow+Service+Plugins
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204645281__Workflow_Service_Plugins.txt
+scraped_at: 2025-06-24T03:34:15.821644
+
+---
+
+# Document 2356: Desktop Plugins - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204676719/Desktop+Plugins
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204676719__Desktop_Plugins.txt
+scraped_at: 2025-06-24T03:34:16.003468
+
+---
+
+# Document 2357: Configuration Contract - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204676747/Configuration+Contract
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204676747__Configuration_Contract.txt
+scraped_at: 2025-06-24T03:34:20.593650
+
+---
+
+# Document 2358: Environment Interfaces - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204611008/Environment+Interfaces
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204611008__Environment_Interfaces.txt
+scraped_at: 2025-06-24T03:34:20.711733
+
+---
+
+# Document 2359: InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/history/204645031
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__history__204645031.txt
+scraped_at: 2025-06-24T03:34:20.956527
+
+---
+
+# Document 2360: Agent Plugin Examples - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204742433/Agent+Plugin+Examples
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204742433__Agent_Plugin_Examples.txt
+scraped_at: 2025-06-24T03:34:21.942209
+
+---
+
+# Document 2361: Conditional Trace Templates - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204611035/Conditional+Trace+Templates
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204611035__Conditional_Trace_Templates.txt
+scraped_at: 2025-06-24T03:34:26.758334
+
+---
+
+# Document 2362: Installation and Setup - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204676475
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204676475.txt
+scraped_at: 2025-06-24T03:34:26.912219
+
+---
+
+# Document 2363: Tracing in Desktop - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204611111/Tracing+in+Desktop
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204611111__Tracing_in_Desktop.txt
+scraped_at: 2025-06-24T03:34:28.013906
+
+---
+
+# Document 2364: Conditional Trace Access Permissions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204742517/Conditional+Trace+Access+Permissions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204742517__Conditional_Trace_Access_Permissions.txt
+scraped_at: 2025-06-24T03:34:28.402727
+
+---
+
+# Document 2365: InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/history/204676782
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__history__204676782.txt
+scraped_at: 2025-06-24T03:34:31.681830
+
+---
+
+# Document 2366: Overview External Version Control - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204645370/Overview+External+Version+Control
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204645370__Overview_External_Version_Control.txt
+scraped_at: 2025-06-24T03:34:32.840992
+
+---
+
+# Document 2367: Usage Scenarios External Version Control - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204611152/Usage+Scenarios+External+Version+Control
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204611152__Usage_Scenarios_External_Version_Control.txt
+scraped_at: 2025-06-24T03:34:33.046588
+
+---
+
+# Document 2368: Formats and Commands for External Version Control - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204742554/Formats+and+Commands+for+External+Version+Control
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204742554__Formats_and_Commands_for_External_Version_Control.txt
+scraped_at: 2025-06-24T03:34:34.207842
+
+---
+
+# Document 2369: InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/history/204611134
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__history__204611134.txt
+scraped_at: 2025-06-24T03:34:37.477684
+
+---
+
+# Document 2370: KPI Management Overview - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205655902/KPI+Management+Overview
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205655902__KPI_Management_Overview.txt
+scraped_at: 2025-06-24T03:34:38.641212
+
+---
+
+# Document 2371: Best Practices for External Version Control - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204611236/Best+Practices+for+External+Version+Control
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204611236__Best_Practices_for_External_Version_Control.txt
+scraped_at: 2025-06-24T03:34:38.976610
+
+---
+
+# Document 2372: KPI Management Service Models - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204611259/KPI+Management+Service+Models
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204611259__KPI_Management_Service_Models.txt
+scraped_at: 2025-06-24T03:34:40.368062
+
+---
+
+# Document 2373: KPI Profile - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204611299/KPI+Profile
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204611299__KPI_Profile.txt
+scraped_at: 2025-06-24T03:34:45.038884
+
+---
+
+# Document 2374: KPI Management - Non-Distributed Processing - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204742668/KPI+Management+-+Non-Distributed+Processing
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204742668__KPI_Management_-_Non-Distributed_Processing.txt
+scraped_at: 2025-06-24T03:34:45.072308
+
+---
+
+# Document 2375: KPI Management UDR Types - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204677192/KPI+Management+UDR+Types
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204677192__KPI_Management_UDR_Types.txt
+scraped_at: 2025-06-24T03:34:46.438069
+
+---
+
+# Document 2376: KPI Management - Distributed Processing - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204742761/KPI+Management+-+Distributed+Processing
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204742761__KPI_Management_-_Distributed_Processing.txt
+scraped_at: 2025-06-24T03:34:46.927509
+
+---
+
+# Document 2377: InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/history/205655872
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__history__205655872.txt
+scraped_at: 2025-06-24T03:34:50.226045
+
+---
+
+# Document 2378: Terminology - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205816269
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205816269.txt
+scraped_at: 2025-06-24T03:34:51.380997
+
+---
+
+# Document 2379: PCC Rules - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204677251/PCC+Rules
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204677251__PCC_Rules.txt
+scraped_at: 2025-06-24T03:34:51.702656
+
+---
+
+# Document 2380: PCC Buckets - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204611758/PCC+Buckets
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204611758__PCC_Buckets.txt
+scraped_at: 2025-06-24T03:34:53.206594
+
+---
+
+# Document 2381: PCC Routing Control - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204645897/PCC+Routing+Control
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204645897__PCC_Routing_Control.txt
+scraped_at: 2025-06-24T03:34:57.541726
+
+---
+
+# Document 2382: PCC Extensions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204677512/PCC+Extensions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204677512__PCC_Extensions.txt
+scraped_at: 2025-06-24T03:34:57.754399
+
+---
+
+# Document 2383: InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/history/204677233
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__history__204677233.txt
+scraped_at: 2025-06-24T03:34:57.900230
+
+---
+
+# Document 2384: Reference Data Profile - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204612029/Reference+Data+Profile
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204612029__Reference_Data_Profile.txt
+scraped_at: 2025-06-24T03:34:59.170444
+
+---
+
+# Document 2385: Reference Data Management DB Ref Event - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205656579/Reference+Data+Management+DB+Ref+Event
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205656579__Reference_Data_Management_DB_Ref_Event.txt
+scraped_at: 2025-06-24T03:35:03.878485
+
+---
+
+# Document 2386: RESTful Interface for Reference Data Management - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204677668/RESTful+Interface+for+Reference+Data+Management
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204677668__RESTful_Interface_for_Reference_Data_Management.txt
+scraped_at: 2025-06-24T03:35:03.906561
+
+---
+
+# Document 2387: Data Types for Reference Data Management - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204743524/Data+Types+for+Reference+Data+Management
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204743524__Data_Types_for_Reference_Data_Management.txt
+scraped_at: 2025-06-24T03:35:05.271598
+
+---
+
+# Document 2388: Reference Data Management Dashboard - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204743416/Reference+Data+Management+Dashboard
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204743416__Reference_Data_Management_Dashboard.txt
+scraped_at: 2025-06-24T03:35:05.587419
+
+---
+
+# Document 2389: InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/history/205656532
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__history__205656532.txt
+scraped_at: 2025-06-24T03:35:08.854408
+
+---
+
+# Document 2390: Language Characteristics - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204612107/Language+Characteristics
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204612107__Language_Characteristics.txt
+scraped_at: 2025-06-24T03:35:10.321269
+
+---
+
+# Document 2391: Distributed Storage Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204743566/Distributed+Storage+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204743566__Distributed_Storage_Functions.txt
+scraped_at: 2025-06-24T03:35:11.155727
+
+---
+
+# Document 2392: General Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204677814/General+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204677814__General_Functions.txt
+scraped_at: 2025-06-24T03:35:11.739058
+
+---
+
+# Document 2393: Aggregation Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204646187/Aggregation+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204646187__Aggregation_Functions.txt
+scraped_at: 2025-06-24T03:35:16.322231
+
+---
+
+# Document 2394: APL Collection Strategy Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205656761/APL+Collection+Strategy+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205656761__APL_Collection_Strategy_Functions.txt
+scraped_at: 2025-06-24T03:35:16.414912
+
+---
+
+# Document 2395: Audit Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204646217/Audit+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204646217__Audit_Functions.txt
+scraped_at: 2025-06-24T03:35:17.967070
+
+---
+
+# Document 2396: APL Container Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204677873/APL+Container+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204677873__APL_Container_Functions.txt
+scraped_at: 2025-06-24T03:35:18.238750
+
+---
+
+# Document 2397: Avro Decoding/Encoding Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205656774/Avro+Decoding+Encoding+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205656774__Avro_Decoding_Encoding_Functions.txt
+scraped_at: 2025-06-24T03:35:23.160236
+
+---
+
+# Document 2398: Azure Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204612288/Azure+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204612288__Azure_Functions.txt
+scraped_at: 2025-06-24T03:35:23.189243
+
+---
+
+# Document 2399: Backlog Size Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204677891/Backlog+Size+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204677891__Backlog_Size_Functions.txt
+scraped_at: 2025-06-24T03:35:24.390453
+
+---
+
+# Document 2400: Base64 Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204646232/Base64+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204646232__Base64_Functions.txt
+scraped_at: 2025-06-24T03:35:24.681602
+
+---
+
+# Document 2401: DNS Lookup Function - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204612352/DNS+Lookup+Function
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204612352__DNS_Lookup_Function.txt
+scraped_at: 2025-06-24T03:35:29.590165
+
+---
+
+# Document 2402: Database Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205656792/Database+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205656792__Database_Functions.txt
+scraped_at: 2025-06-24T03:35:29.630392
+
+---
+
+# Document 2403: Diameter Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205656833/Diameter+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205656833__Diameter_Functions.txt
+scraped_at: 2025-06-24T03:35:31.259652
+
+---
+
+# Document 2404: Decrypt Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204743670/Decrypt+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204743670__Decrypt_Functions.txt
+scraped_at: 2025-06-24T03:35:31.494385
+
+---
+
+# Document 2405: Dynamic Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204677915/Dynamic+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204677915__Dynamic_Functions.txt
+scraped_at: 2025-06-24T03:35:35.833532
+
+---
+
+# Document 2406: External References Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204677926/External+References+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204677926__External_References_Functions.txt
+scraped_at: 2025-06-24T03:35:36.446014
+
+---
+
+# Document 2407: FNTUDR Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205656844/FNTUDR+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205656844__FNTUDR_Functions.txt
+scraped_at: 2025-06-24T03:35:37.183253
+
+---
+
+# Document 2408: File Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204743688/File+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204743688__File_Functions.txt
+scraped_at: 2025-06-24T03:35:38.657512
+
+---
+
+# Document 2409: HTTP Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205656873/HTTP+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205656873__HTTP_Functions.txt
+scraped_at: 2025-06-24T03:35:43.533961
+
+---
+
+# Document 2410: Hash and Checksum Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204646277/Hash+and+Checksum+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204646277__Hash_and_Checksum_Functions.txt
+scraped_at: 2025-06-24T03:35:43.557582
+
+---
+
+# Document 2411: JSON Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205656924/JSON+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__205656924__JSON_Functions.txt
+scraped_at: 2025-06-24T03:35:45.382496
+
+---
+
+# Document 2412: HTTP/2 Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204743754/HTTP+2+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204743754__HTTP_2_Functions.txt
+scraped_at: 2025-06-24T03:35:45.761407
+
+---
+
+# Document 2413: Log and Notification Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204743789/Log+and+Notification+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204743789__Log_and_Notification_Functions.txt
+scraped_at: 2025-06-24T03:35:51.455913
+
+---
+
+# Document 2414: LDAP Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204646295/LDAP+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204646295__LDAP_Functions.txt
+scraped_at: 2025-06-24T03:35:51.497056
+
+---
+
+# Document 2415: MIM Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204612404/MIM+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204612404__MIM_Functions.txt
+scraped_at: 2025-06-24T03:35:53.191945
+
+---
+
+# Document 2416: PKCS7 Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204612422/PKCS7+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204612422__PKCS7_Functions.txt
+scraped_at: 2025-06-24T03:35:53.490785
+
+---
+
+# Document 2417: Random Number Generation Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204646319/Random+Number+Generation+Functions
+**Categories:** crawl_summary.json
+
+file: temp_crawl_mz93/llm_ready/wiki__spaces__MD93__pages__204646319__Random_Number_Generation_Functions.txt
+scraped_at: 2025-06-24T03:35:58.458965
+
+---
+
+# Document 2418: Shell Script Execution Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204612440/Shell+Script+Execution+Functions
+
+
+---
+**End of Part 98** - Continue to next part for more content.
