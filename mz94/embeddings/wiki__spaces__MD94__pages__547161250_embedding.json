@@ -1,0 +1,25 @@
+{
+  "id": "wiki__spaces__MD94__pages__547161250",
+  "title": "Replacement of Web API - MediationZone Documentation 9.4 - InfoZone",
+  "url": "https://infozone.atlassian.net/wiki/spaces/MD94/pages/547161250",
+  "categories": [
+    "space:MD94"
+  ],
+  "text": "The Web API has been replaced with the Operations REST Interface. The commands and the reply has been changed. For example the reply from the GET workflow status command: Web API Operations REST Interface <workflow> <current-ec>ec1</current-ec> <last-action-type>STARTED</last-action-type> <source-file-left>4</source-file-left> <key>MZ1290001112344_1</key> <name>Default.disk.workflow_1</name> <state>RUNNING_STATE</state> <manual-mode>false</manual-mode> </workflow { \"state\": \"Running\", \"runningEc\": \"ec1\", \"storedEc\": \"ec1\", \"parameters\": { \"Interval\": 4096, \"timeunit\": \"SECONDS\" }, \"enabled\": true, \"workflowName\": \"Workflow_1\", \"templateName\": \"Default.collectWorkflow\", \"useExtRef\": { \"Interval\": true, \"timeunit\": false }, \"pendingChanges\": true, \"workflow debug mode\": true, \"configVersion\": 3, \"lastModifiedDate\": \"2022-04-21T12:06:02.391Z\", \"nodeNames\": \"/{\"agent_1\", \"agent_2\"}\", \"packageName\": \"myPackage\", \"packageVersion\": \"1.0\", \"lockerWfName\": \"Default.collectWorkflow.wf1\", \"warnings\": \"Workflow is invalid due to missing required parameter x.\", \"creator\": \"SomeUserId\", \"packageNameAndVersion\": \"string\", \"type\": \"string\", \"action\": \"STARTED\" } Look for Web API commands used in your scripts and/or third party products: Example of URL for 8.3 http://localhost:9000/webapi/v1/workflows/MZ1290001112344_1 See the documentation for the Operations API for information on the particular commands used: Operations REST Interface .",
+  "chunks": [
+    {
+      "chunk_id": 1,
+      "text": "The Web API has been replaced with the Operations REST Interface. The commands and the reply has been changed. For example the reply from the GET workflow status command: Web API Operations REST Interface <workflow> <current-ec>ec1</current-ec> <last-action-type>STARTED</last-action-type> <source-file-left>4</source-file-left> <key>MZ1290001112344_1</key> <name>Default.disk.workflow_1</name> <state>RUNNING_STATE</state> <manual-mode>false</manual-mode> </workflow { \"state\": \"Running\", \"runningEc\": \"ec1\", \"storedEc\": \"ec1\", \"parameters\": { \"Interval\": 4096, \"timeunit\": \"SECONDS\" }, \"enabled\": true, \"workflowName\": \"Workflow_1\", \"templateName\": \"Default.collectWorkflow\", \"useExtRef\": { \"Interval\": true, \"timeunit\": false }, \"pendingChanges\": true, \"workflow debug mode\": true, \"configVersion\": 3, \"lastModifiedDate\": \"2022-04-21T12:06:02.391Z\", \"nodeNames\": \"/{\"agent_1\", \"agent_2\"}\", \"packageName\": \"myPackage\", \"packageVersion\": \"1.0\", \"lockerWfName\": \"Default.collectWorkflow.wf1\", \"warnings\": \"Workflow is invalid due to missing required parameter x.\", \"creator\": \"SomeUserId\", \"packageNameAndVersion\": \"string\", \"type\": \"string\", \"action\": \"STARTED\" } Look for Web API commands used in your scripts and/or third party products: Example of URL for 8.3 http://localhost:9000/webapi/v1/workflows/MZ1290001112344_1 See the documentation for the Operations API for information on the particular commands used: Operations REST Interface .",
+      "title": "Replacement of Web API - MediationZone Documentation 9.4 - InfoZone",
+      "url": "https://infozone.atlassian.net/wiki/spaces/MD94/pages/547161250",
+      "word_count": 145,
+      "char_count": 1445
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-24T04:15:26.678042",
+    "word_count": 145,
+    "char_count": 1445,
+    "chunk_count": 1
+  }
+}
