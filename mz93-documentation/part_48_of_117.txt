@@ -1,0 +1,353 @@
+# RATANON/MZ93-DOCUMENTATION - Part 48/112
+
+---
+**Dataset:** ratanon/mz93-documentation
+**Part:** 48 of 112
+**GitHub:** https://github.com/ratan0n/docs/tree/main/mz93-documentation
+**Size:** ~68.1 KB
+---
+
+The Kafka batch collection agent consumes messages from the topic and partitions stated in the Kafka collection agent's configuration, which contains the following settings: Setting Description Setting Description Profile Browse and select the profile the agent should use, as defined in the Legacy Kafka Profile . All Select this option if you want messages to be collected from all of the partitions. Range Select this option if you want messages to be collected from the range that you specify. Specific Select this option if you want messages to be collected from the specified partition(s). This is a comma-separated list. Batch Size Use this field to set the number of messages you want in each batch. If this field is set to 0, all messages will be collected in one batch. Note! For best performance, avoid setting the batch size too small, as running many batches every second can reduce efficiency. Default Offset settings The Kafka batch collection agent will collect the messages in sequence, and when the batch is finished the last number in the sequence will be the offset for the messages in the next batch. If the next message in sequence does not exist in the next batch for some reason, the Default Offset settings can be used to determine where the Kafka batch collection should start. Start at Beginning Select this option if you want the agent to start collecting from the first message in the queue. Start at End Select this option if you want the agent to start collecting from the last message in the queue. This means that the workflow will not collect anything, but the offset will be updated to the last messages for the next run. Note! Use the new https://infozone.atlassian.net/wiki/x/wwDzEQ for transactional topics. Input/Output Data Input Data Messages from the Kafka Log. Output Data Legacy KafkaUDR
+
+---
+
+# Document 1101: GCP Storage Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204607769/GCP+Storage+Agents
+**Categories:** chunks_index.json
+
+The GCP Storage agents collect and forward batches of files from specified buckets in the Google Cloud Platform, and are available in batch workflow configurations. This section contains the following subsections: GCP Storage Collection Agent GCP Storage Forwarding Agent
+
+---
+
+# Document 1102: Azure Event Hub Consumer Agent Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204640230/Azure+Event+Hub+Consumer+Agent+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Input/Output Data This section includes information about the data type that the agent expects and delivers. The agent retrieves a message from the event hub and places it in a bytearray . The agent produces bytearray types. MIM For information about the MIM and a list of the general MIM parameters, see MIM .
+
+---
+
+# Document 1103: SQL Collection Agent Configuration - Batch - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204740701/SQL+Collection+Agent+Configuration+-+Batch
+**Categories:** chunks_index.json
+
+To open the SQL Collection agent configuration dialog from a workflow configuration, you can do either one of the following : double-click the agent icon select the agent icon and click the Edit button The Agent Configuration contains configurations related to the SQL query to use to retrieve information from the source database, as well as the UDR type to be created and how the UDRs are populated by the agent. Open SQL collection agent configuration dialog Setting Description Setting Description Database Profile name of the database that the agent will connect to and retrieve data from. For further information about database profile setup, see Database Profile . SQL Statement The user enters an SQL statement specifying the query that the system should send to the database. By right clicking in the pane, selecting MIM Assistance... , the MIM Browser appears. The user can select a MIM value to be used in the SQL query. The value of the MIM will be used in the SQL query during execution. The name of the MIM Value for example "Workflow.Batch Count" will be displayed in blue color as "$(Workflow.Batch Count)" in the text field. There is support for Stored Procedures. When using the collection agent to produce output from the procedure the JDBC support for output parameters is used. The character "?" is used to mark an output parameter in the SQL statement in the agent. An example of a procedure with one input argument and one output argument could have a SQL statement looking like this: CALL test_proc( $(Analysis_1.TestMIM), ? ) The procedure will be called and the value of the output parameter ("?") will be assigned to the configured UDR field. When using output parameters only one UDR will be produced in the batch. The exact supported syntax for stored procedures varies between databases. For example calling an Oracle function can be done via: begin ? := test_func( ); end; Note! The statement syntax of the statement will not be validated in the GUI, but references to MIM values are validated. If a incorrect SQL statement is entered this will generate an exception during runtime. UDR Type Type of UDR mapped from the result set and routed into the workflow. When selecting the Browse button next to the field the UDR Internal Format Browser will open and one and only one UDR type can be selected. ResultSet Size The result set size gives the JDBC driver a hint to the number of rows to fetch from the database when more rows are required for the ResultSet object. If you set the ResultSet Size to 0, the JDBC driver decides the best size. UDR Fields The table represents the mapping from the result set, returned when executing the statement entered in the SQL field to a specified Value in the UDR.
+
+---
+
+# Document 1104: Firebase UDRs - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205000136/Firebase+UDRs
+**Categories:** chunks_index.json
+
+The Firebase UDR types include the following UDRs; FirebaseUDR FirebaseErrorResult FirebaseUDR When the Firebase agent receives a FirebaseUDR, it sends out a request with data to each device in the pushTokens list. The following fields are included in the FirebaseUDR: Field Description Field Description message (string) This field contains the text message to be sent. pushTokens (list<string>) This field contains a list of push tokens that the message request is to be sent to. title (string) This field contains the title of the text message to be sent. Example - Generated message from Body and Title fields APL: consume { FirebaseUDR firebaseUDR = udrCreate(FirebaseUDR); firebaseUDR.title = "DigitalRoute"; firebaseUDR.message ="Every bit counts."; list <string> myList = listCreate(string, "key","key"); firebaseUDR.pushTokens= myList; udrRoute(firebaseUDR); } FirebaseErrorUDR If the Firebase agent receives a response from Firebase that contains an error, this will be logged and a FireBaseErrorUDR will be sent back to the workflow. The following fields are included in the FireBaseErrorUDR: Field Description Field Description errorMessage (list<string>) This field contains the result code of the attempt to send a push notification; 0 - OK, 1 - Rejected, 2 - Timed out, or 3 - Error. Message (string) This field contains a descriptive text for each result code: 0 - Empty 1 - Message from Apple describing the reason for a rejection 2 - Timeout 3 - Content of any exception that has occurred initialUDR (FirebaseUDR(Firebase)) This field contains the original FirebaseUDR that the agent received.
+
+---
+
+# Document 1105: Textual Pattern Matches - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204678113
+**Categories:** chunks_index.json
+
+In resemblance to Regular Expressions, when searching through text strings of names and other textual patterns in mzsh, there are two characters that help you filter text according to certain criteria: The asterisk '*' is a wildcard for one or more characters. The question mark '?' is a wildcard for any single character. Note! If you want to use the '*' and '?' wildcards when you are not logged in, the wildcards have to either be enclosed with single or double quotation marks or preceded with a backslash ''. For example: mzsh mzadmin/dr wfgrouplist * will work. mzsh mzadmin/dr wfgrouplist "*" will work. mzsh mzadmin/dr wfgrouplist * -mode D will not work. The period '.' punctuation mark is not a wildcard and is treated as normal punctuation mark character.
+
+---
+
+# Document 1106: Spending Status UDRs - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205653844/Spending+Status+UDRs
+**Categories:** chunks_index.json
+
+MonitorSpendingStatusCycleUDR The MonitorSpendingStatusCycleUDR is a container used to correlate MonitorSpendingUDR requests with the corresponding answers. Field Description Field Description answer (DRUDR) This is the answer to the sent request: either MonitorSpendingStatusResultUDR or CCExceptionUDR . EndProcessingTime (long) This readonly field will only be populated when the agent emits the answer in the workflow. It contains a timestamp which corresponds to the time when the UDR has been received from the SAP Convergent Charging. Latency (long) This readonly field will only be populated when the agent emits the answer in the workflow. It contains the latency introduced by the processing of this UDR. request (DRUDR) This is the request sent: either MonitorSpendingStatusUDR or MonitorSpendingStatusCancelUDR . requestId (long) This is the ID of the request. StartProcessingTime (long) This readonly field will only be populated when the agent emits the request in the workflow. It contains a timestamp which corresponds to the time when the UDR has been submitted to SAP Convergent Charging. MonitorSpendingStatusResultUDR The MonitorSpendingStatusResultUDR contains the answer to a MonitorSpendingUDR request. Field Description Field Description monitoringAction (string) This is the type of action that was taken, either created, changed, or cancelled. monitoringId (string) This the monitoring ID the request refers to. If left empty, the default monitoring ID set in the agent configuration will be used. spendingStatusesIds (list<SpendingStatusUDR (sapcc.monitoring)>) This is the list of the spending status IDs that the monitoring session refers to. If left empty, all available spending status IDs will be monitored. MonitorSpendingStatusUDR The MonitorSpendingStatusUDR initiates monitoring of the spending status for the stated spending status IDs. Field Description Field Description listenerId (byte) This is the listener ID of the SAP CC Online agent which you want to monitor the spending status. monitoringId (string) Monitoring ID is a unique identifier for this monitoring session. spendingStatusIds (list<string>) This is the list of the spending status IDs that you want to monitor. If left empty, all available spending status IDs for the stated monitoring ID will be monitored. ttl (string) This it the Time To Live value in seconds for the monitoring session. If no MonitorSpendingStatusCancelUDR has been received within this number of seconds, the session will close down. If left empty, the default TTL set in the agent configuration will be used. userId (string) This is the ID of the user to which the monitoring ID belongs. MonitorSpendingStatusCancelUDR The MonitorSpendingStatusCancelUDR will terminate monitoring of spending status IDs belonging to the stated monitoring ID. Field Description Field Description listenerId (byte) This is the listener ID of the SAP CC Online agent that is monitoring the spending status. monitoringId (string) Monitoring ID is a unique identifier for this monitoring session. userId (string) This is the ID of the user to which the monitoring ID belongs. SpendingStatusReportUDR Once monitoring has been activated, the SpendingStatusReportUDR will be sent every time that one of the monitored spending status IDs moves to another label. Field Description Field Description monitoringId (string) This the monitoring ID that the report relates to. If left empty, the default monitoring ID set in the agent configuration will be used. spendingStatuses (list<spendingStatusUDR (sapcc.monitoring>)) This is a list of the spendingStatusUDR s included in the report, i e the spending statuses that have moved to another label. SpendingStatusUDR Once monitoring has bee activated, the SpendingStatusUDR will represent the current state of a spending status. Field Description Field Description id (string) This the spending status identifier. label (string) This is the current label for the spending status.
+
+---
+
+# Document 1107: Ultra Format Converter - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204744190
+**Categories:** chunks_index.json
+
+When an Ultra Format Definition is updated, the system automatically converts, or updates, persistent data by default when it is accessed, in order to reflect changes. You can either completely disable this automatic update or enable it for only a selection of formats. You can also set default values for added fields. The following agents and applications can handle persistent data: Application Handling Application Handling Database Collection Agent Collected UDRs are updated. Decoder (using MZ Tagged ) Processed UDRs are updated. Aggregation Sessions All UDRs belonging to the same format definition - historic and updated - are considered valid for comparison. If historic UDRs exist within old sessions, or the session format itself has been updated, the session and its content is updated the next time it is accessed. ECS UDRs are updated whenever they are read from the ECS by the ECS collection agent or accessed through the ECS Inspector . Note! Attempts to collect, process, or update historic UDR data when the automatic conversion for a specific format is disabled causes the workflow to abort (or return an exception, when done outside workflow processing). Conversion Rules If you remove fields from the format definition, they are deleted and cannot be retrieved. If you add fields, they are set to either 0 (zero), true ( numeric types), false ( boolean types), or null (all other types), by default. If you change the type of an existing field, it can cause the field content to be deleted. For example, if you change the type from string to int , the field is set to 0 (zero), provided that no valid default value is defined. Only numerical types ( int , long , etc) are directly interchangeable. If a numeric value exceeds the number of bytes allowed in the new type, it is truncated. Disabling Automatic Conversion In the Ultra Format Converter , you can disable the automatic conversion to new format versions, and instead define default values for UDR fields added in the new version. Open the Ultra Format Converter by selecting Manage  Ultra Format Converter . Open Ultra Format Converter Setting Description Setting Description Convert Select for which UDR types to enable conversion. There are two options: All - All formats are considered, regardless of the types listed (default). Selected Only - Only the formats listed in this window are considered. UDR Types If you have selected to convert Selected Only in the Convert drop-down list, you need to add UDR types in this section. Field/Value section (Default Values) If you have added UDR types in the UDR Types section, it is possible to add default field values of the selected UDR type(s). This may be useful if fields are added to the format, or the type of an existing field is changed. The latter case is especially useful since the old field values are reset if the types are not interchangeable. Note! It is not possible to assign values to old, already existing fields. This can be configured but will not take effect.
+
+---
+
+# Document 1108: System Properties - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205881382
+**Categories:** chunks_index.json
+
+This section describes the system properties, a type of attribute, that you can set in the STR and in various configuration files. The system properties that you can set in STR are divided into the following categories: Cell properties - applicable on a system level Container properties - applicable on a container level Execution Context properties - applicable to ECs Platform properties - applicable to the Platform instance Service Context properties - applicable to SCs High Availability properties - related to high availability Log properties - related to logging Database properties - related to Oracle, PostgreSQL and SAP HANA connections, i.e. to the MedationZone database and external databases. Desktop properties - default properties for connected Desktops The properties set in your system and in each container, after the initial installation, depend on the container type and the installation settings. Properties that are not defined in the STR are set to their respective default values. You can configure properties for services that should run on Pico instances, e g SCs. For further information about these properties, see Managing Service Configurations . For general information about how to set attributes in the STR, see System Topology Registry and Managing Picos with Topo . This chapter includes the following sections: Cell Properties Container Properties High Availability Properties Execution Context Properties Platform Properties Log Properties Database Properties
+
+---
+
+# Document 1109: HDFS Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204607958/HDFS+Agents
+**Categories:** chunks_index.json
+
+This section describes the HDFS collection and forwarding agents. These agents are available in batch workflow configurations. Prerequisites The reader of this information must be familiar with: The Apache Hadoop Project and Hadoop Distributed File System The section contains the following subsections: HDFS Agents Preparations HDFS Collection Agent HDFS Forwarding Agent
+
+---
+
+# Document 1110: GCP Storage Forwarding Agent Transaction Behavior - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205033313/GCP+Storage+Forwarding+Agent+Transaction+Behavior
+**Categories:** chunks_index.json
+
+The transaction behaviour for the GCP Storage forwarding agent is presented here. Emits This agent does not emit anything. Retrieves The agent retrieves commands from other agents and based on them generates a state change of the file currently processed. Command Description Command Description Begin Batch When a Begin Batch message is received, the temporary directory DR_TMP_DIR is first created in the target directory, if not already created. Then a target file is created and opened in the temporary directory. End Batch When an End Batch message is received, the target file in DR_TMP_DIR is first closed and then the Command , if specified in After Treatment , is executed. Finally, the file is moved from the temporary directory to the target directory. Cancel Batch If a Cancel Batch message is received, the target file is removed from the DR_TMP_DIR directory.
+
+---
+
+# Document 1111: Log Properties - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205848638
+**Categories:** chunks_index.json
+
+This section describes the log related properties that you can set in the STR and the Desktop. All Pico Types These properties are applicable to all pico types in the STR. Property Description Property Description pico.logdateformat Default value: "YYYY-MM-DD" This property specifies the date format to be used in the log files. See http://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html for further information. pico.log.header Default value: " " This property enables the addition of a header to the log file generated, which indicates which pico, and in which version of MediationZone the log file is generated. To add headers to the log of the pico in which you set this property, set this property to mz.version-pico . After setting this property you must restart the relevant pico. pico.log.level Default value: "WARNING" This property specifies the log level. The available values for pico.log.level are: ALL FINEST FINER FINE INFO WARNING SEVERE OFF Note! Changing the default log level to INFO, FINE, FINER, FINEST, or ALL, may have a significant impact on performance. pico.pid Default value: $MZ_HOME/log This property specifies the directory you want the EC or Platform to write process ID (PID) file to. If this property is not included in the pico configuration, the default directory, $MZ_HOME/log will be used. Note! If using several ECs, a directory has to be added for each EC. pico.stderr Default value: $MZ_HOME/log This property specifies the directory you want the EC or Platform to write standard errors to. If this property is not included in the pico configuration, the default directory, $MZ_HOME/log will be used. Note! If using several ECs, a directory has to be added for each EC. pico.stdout Default value: $MZ_HOME/log This property specifies the directory you want the EC or Platform to write standard output to. If this property is not included in the pico configuration, the default directory, $MZ_HOME/log will be used. Note! If using several ECs, a directory has to be added for each EC. log4j.configurationFile Default value: $MZ_HOME/etc/log4j2.xml This property specifies the location of log4j2 configuration file. If this property is not included in the pico configuration, the default directory, $MZ_HOME/etc/log4j2.xml will be used. Note! If using several ECs, a directory has to be added for each EC. log4j APL Logs - Platform The Platform property mz.logging.refreshinterval defines how often log4j APL logs are updated. It is set to 1000 ms by default. For further information about log4j APL logs, see log4j APL Logging Configurations .
+
+---
+
+# Document 1112: Rollback for Standard Upgrades - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/550731808
+**Categories:** chunks_index.json
+
+The rollback procedure is designed to restore the system to its original state before the upgrade. If the upgrade fails, a rollback will be triggered automatically to revert the file system, configuration files, and database to their previous states. This ensures system stability and consistency. You can do a manual rollback but this is not recommended if changes have been made to the system or database after the upgrade, since it may result in inconsistencies or corruption. Automatic Rollback When an upgrade fails, the rollback process begins automatically. Below is an example of the logs you might encounter during an upgrade from version 9.3.1.9 to 9.3.2.0: === Starting rollback in /mzhomes/mz1 === Old version: 9.3.1.9 === Rolling back from attempted upgrade to 9.3.2.0 Once the rollback process is complete, you will see the following confirmation: ============================== ROLLBACK COMPLETE =============================== Manual Rollback If you have completed an upgrade and want to do a rollback, you can initiate a rollback manually. It is assumed that no configurations have been updated or added in the upgraded version and that the installation directory has not been removed. If the installation directory has been removed, you need to follow the instructions in General Preparations Platform before performing the rollback. You can perform a manual rollback by running the following command: ./setup.sh rollback During a rollback, the process uses backup files stored in the following directory: <my_mz_home>/tmp/upgrade/backup This directory is created during the upgrade process and is essential for rollback in case of any failure. The directory above is the default directory, you can also define another directory by using the property upgrade.temp.dir , see Upgrade Preparations .
+
+---
+
+# Document 1113: Dimensioning of the Database - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205029896
+**Categories:** chunks_index.json
+
+The parameters included in this section are depending on the amount of BucketDataHolders that is going to be stored in the database, and they may be dimensioned as follows: Parameter Description Parameter Description DataMemory DataMemory is the amount of memory used for storing the data. This amount of physical memory will be required for each of the data nodes in, addition to memory required for OS etc, and is calculated as follows: (40b + average usage per BucketDataHolder) x NumberOf BucketDataHolder = DataMemory The maximum size of a BucketDataHolder is 14 kb. However, if you use 5 buckets per BucketDataHolder, and 1-2 sessions, you may expect a size of about 1-2 kb. Example - DataMemory If you plan to have 50 000 BucketDataHolders with an average usage of 2 kb, the required DataMemory will be: (40b + 2048) x 50 000 = 104 400 000 bytes IndexMemory IndexMemory is the amount of memory used for the index of each table/entry. This data will also be stored on the data nodes, which means that this amount of memory needs to be available on each data node. Usually, this parameter is configured to be 1/5 or 1/6 of the DataMemory. However, the required amount of memory may also be calculated as follows: 20b x TotalNumberOfRecords (one record for each BucketDataHolder) = IndexMemory Example - IndexMemory If the DataMemory is configured to be 104 400 000 bytes, as in the example for DataMemory, configuring the IndexMemory to 1/5 would be 20 880 000 bytes, or to 1/6 would be 17 400 000 bytes. If the IndexMemory is calculated based on the number of records, and you plan to have 50 000 BucketDataHolders, the required IndexMemory will be: 20b x 50 000 = 1 000 000 bytes FragmentLogFileSize and NoOfFragmentLogFiles These two parameters in combination make out the total amount of redo space. The redo space is the amount of space required for keeping a copy of all changes made to the database on disk in order to make it possible to recover the database after a crash, for example. The redo space should be about six times the available data memory and is calculated as follows: 4 x FragmentLogFileSize x NoOfFragmentLogFiles = 6 x DataMemory The reason for multiplying with four is that the number of configured files times four are created for the backup. NoOfFragmentLogFiles has a minimum value of 3, and it is generally recommended to set FragmentLogFileSize to 256. Example - NoOfFragmentLogFiles If you have 10 000 M in DataMemory, you will need 60 000 M in redo: 4 x 256 M x NoOfFragmentLogFiles = 60 000 M which in turn means that the NoOfFragmentLogFiles should be at least 59 DiskCheckPointSpeed The DiskCheckPointSpeed is used for specifying the number of Mb per second that should be written to disk during local checkpoint (a complete backup to disk of the database which is done on a regular basis). When configuring this parameter, the amount of data in the database as well as the speed of the hard drive should be considered. MaxNoOfConcurrentTransactions With this parameter you can specify the maximum number of concurrent transactions that may be performed. Each thread will use at least one transaction during load, but typically this parameter can be set higher. The recommended setting is 1024. However, this may need to be adjusted during functional and performance testing. MaxNoOfConcurrentOoperations With this parameter you can specify the maximum number of concurrent operations. One operation constitutes one update of one line, which means that deleting 10 000 entries will result in 10 000 concurrent operations. This parameter may be set to 32 768 and then be adjusted during functional and performance testing. TimeBetweenGlobalCheckPoints This parameter determines how often the redo log should be flushed to disk. The default value is 2 000 ms and the recommended value is 1 000 ms. TimeBetweenLocalCheckPoints With this parameter you can specify how often you want to make a local checkpoint. By default this is set to 20, which is usually a reasonable configuration. The calculation is based on the amount of changes, which means that if this parameter is configured to 20, the effect will be as follows: 4 x 220 = 4 Mb A rewrite will be made when at least 4 Mb of changes have been written to the database. If less has been written, then a local checkpoint will be made after 57 minutes. Only one rewrite will be active at the time, which means that even if there is more traffic this configuration will still work.
+
+---
+
+# Document 1114: PostgreSQL Preparations - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204669899/PostgreSQL+Preparations
+**Categories:** chunks_index.json
+
+This section describes the preparations necessary when using PostgreSQL as database and includes the following subsections: Extract Database Definition Files for PostgreSQL PostgreSQL Database Creation
+
+---
+
+# Document 1115: Merge Files Collection Configuration - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204608330/Merge+Files+Collection+Configuration
+**Categories:** chunks_index.json
+
+To open the Merge Files collection agent configuration, click Build  New Configuration . Select Workflow from the Configurations dialog. When prompted to Select workflow type , select Batch . Click Add agent and select Merge Files in the Collection tab in the Agent Selection dialog. Double-click the agent icon or right-click the icon and select Edit agent , to display the Agent Configuration dialog. Parts of the configuration may be done in the Sort Order tab, see 3.1.6 Workflow Template for more information. Merge Files Tab The Merge Files tab contains configurations related to the location and handling of the source files collected by the agent. Open Merge Files collection agent configuration - Merge Files tab. Field Description Field Description File Information Settings Base Directory Pathname of the source base directory on the local file system of the execution context, where the source files reside. Filename Name of the source files collected from the sub directory. Regular expressions according to Java syntax applies. For further information, see http://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html Example - Filename To match all log filenames beginning with INF , type: INF.* Sub Directories Name of the sub directory from where files will be collected (the Base Directory will always be a match). Note! When input is provided from a forwarding agent, you must change the sub directories pattern to exclude the DR_TMP_DIR file by entering the following: (?!DR_TMP_DIR$)(.*) Compression Compression type of the source files. Determines if the agent will decompress the files before passing them on into the workflow. No Compression - agent does not decompress the files. Default setting. Gzip - agent decompresses the files using gzip. Merge Closing Condition Settings File Limit The maximum number of files processed in each batch. Byte Limit The maximum number of bytes processed in each batch. Note! Note that limits are set per directory, that is, the batch will be closed when the last file of a sub directory has been processed even if the File Limit or Byte Limit closing condition has not been reached. Before Collection Settings Move To Temporary Directory If enabled, the source files are moved to the automatically created subdirectory DR_TMP_DIR under the directory from which they originated, prior to collection. This option supports safe collection of source files. Inactive Source Warning (hours) If the specified value is greater than zero, and if no file has been collected during the specified number of hours, the following message is logged: The source has been idle for more than <n> hours, the last inserted file is <file>. After Collection Settings Move to If enabled, the files will after collection be moved to the sub directory specified in the Directory filed. If Move to Temporary Directory is selected the file will be moved from the directory DR_TMP_DIR . to a sub directory relative to the files original location. The fields Prefix, Suffix and Keep (days) will be enabled when the Move to are set. Information about them will follow. Rename If enabled, the source files will after the collection be renamed and kept in the source directory from which they were collected. If using Move to Temporary Directory the files will after the renaming be moved from the DR_TMP_DIR directory back to the original location. Note! If Rename is enabled, the source files will be renamed in the current directory (source or DR_TMP_DIR ). Make sure that the new name does not match the regular expression or the file will be collected over and over again. Remove If enabled, the source files will, after successfully being processed, be removed from the source directory (or from the DR_TMP_DIR directory if Move to Temporary Directory is used). Ignore If enabled, the source files will remain in the source directory. Destination Pathname relative to the current position of a file where the source files will be moved. This field is only enabled if Move to is selected. Prefix/Suffix Prefix and/or suffix that will be appended to the beginning respectively the end of the name of the source files. These fields are only enabled if Move to to or Rename is selected. Keep (days) Number of days to keep source files after the collection. In order to delete the source files, the workflow has to be executed (scheduled or manually) again, after the configured number of days. Note, a date tag is added to the filename, determining when the file may be removed. This field is only enabled if Move to or Rename is selected. After each successful execution of the workflow the agent will search recursively under Base Directory for files to remove. Backward Compatibility Settings Force Single UDR If this is disabled the output files will automatically be divided in multiple UDRs per file. The output files will be divided in suitable block sizes.
+
+---
+
+# Document 1116: Agent User Interface - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204645120/Agent+User+Interface
+**Categories:** chunks_index.json
+
+The user interface of an agent is displayed when you double-click the agent's icon in the Workflow Template. The Workflow Template is responsible for calling different methods in the user interface classes, and the implementations are expected to respond properly. To be able to enter and display data, the DRAgentUI class must be extended. This class will further be referred to as the GUI class. An extension of DRAgentInspectable is used to notify the Workflow Template about the current template configuration when the user interface is displayed. This class will further be referred to as the Inspectable class. The common data exchange point is an extension of DRAgentConfigData . The Workflow Template provides the GUI and Inspectable classes with information about the workflow as a whole in the DRWfUIEnvironment class. Open Agent user interface This section includes the following subsections: Other User Interface Components The User Interface Dialog
+
+---
+
+# Document 1117: GTP' LGU ReCollection Agent Events and Limitations - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205000489/GTP+LGU+ReCollection+Agent+Events+and+Limitations
+**Categories:** chunks_index.json
+
+Agent Message Events There are no agent message events for this agent. Debug Events Debug messages are dispatched in debug mode. During execution, the messages are displayed in the Workflow Monitor. Incoming and outgoing messages from the agent are displayed as byte strings (example: 0x00 0x41 0x00 0x001). You can configure Event Notifications that are triggered when a debug message is dispatched. For further information about the debug event type, see Debug Event .
+
+---
+
+# Document 1118: UUID Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204646174/UUID+Functions
+**Categories:** chunks_index.json
+
+This section describes functions that facilitate creation and use of immutable universally unique identifiers (UUID). For general information about UUIDs, see https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/UUID.html . For information about the uuid type, see Data types . The following functions for UUID described here are: uuidCreateFromHexString This function takes a string representation of a UUID and converts it to the uuid type. uuid uuidCreateFromHexString ( string aString ) Parameter Description uuidString A string representation of a UUID Returns A UUID based on the input string The format of the string is validated but not the content. The function returns null if the format of the string is incorrect. Example - uuidCreateFromHexString The following example converts a string to a UUID: uuid getUuid (string s) { uuid u = uuidCreateFromHexString(s); if(u==null) { //Incorrect UUID format } return u; } uuidCreateRandom This function generates a random UUID. uuid uuidCreateRandom ( void ) Parameter Description Returns A version 4 UUID ( randomly generated UUID) Example - uuidCreateRandom The following example creates a random UUID: uuid getUuid() { return uuidCreateRandom(); } uuidGetVersion This function returns the version of a UUID. The version number describes the type of the UUID, e g time-based, DCE security, name-based, and randomly generated UUID. For instance, a UUID generated by the function uuidCreateRandom is 4 ( randomly generated UUID). int uuidGetVersion ( uuid aUuid ) Parameter Description aUuid The UUID for which you want to retrieve the version. Returns The version of the UUID, or -1 if the UUID in the argument is null. Example - uuidGetVersion The following example retrieves the version from a UUID: uuid getUuid (string s) { uuid u = uuidCreateFromHexString(s); if(u==null) { debug("Incorrect UUID format"); } else if (uuidGetVersion(u)<0) { debug("Invalid UUID"); } return u; } uuidString This function converts a UUID to a string. string uuidString ( aUuid ) Parameter Description aUuid The UUID that you want to convert Returns The UUID represented as a string Example - uuidString The result of the following two examples are identical: uuid aUuid = uuidCreateRandom(); string s = (string) aUuid; uuid aUuid = uuidCreateRandom(); string s = uuidString(aUuid);
+
+---
+
+# Document 1119: ParquetDecoderUDR - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205686379/ParquetDecoderUDR
+**Categories:** chunks_index.json
+
+The Parquet Decoder agent receives Parquet data from file collectors in bytearray format, converts the data into ParquetDecoderUDRs, using one UDR per record, and routes those UDRs forward into the workflow. Field Description Field Description payload Fields passed for the row as an APL map (map: string -> any). The keys for the map are column names from the Parquet document, while values are dependent on the data type. The structure of the payload is specified by the corresponding schema field described below. schema APL representation of the Parquet schema for the message. Encoded as an APL map that maps the top-level field names to ParquetType objects that describes the field (for example, type, required/optional). The structure of the payload field (described above) conforms to this schema. schemaname Name of top-level schema for the encapsulated message.
+
+---
+
+# Document 1120: Management API - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205784151/Management+API
+**Categories:** chunks_index.json
+
+This section describes the Management API of the Authorization Server. Once you have setup the Authorization Server service instance, you will need to provision scopes and register clients before access tokens can be requested. The Authorization Server will provide access tokens for registered (known) clients only. The Management API's purpose is to help with the process of provisioning scopes and client registration via a set of HTTP based APIs and managing them. Provisioning Scopes A scope is what is known as an arbitrary string based on the user's context. Examples such as normal_scope, admin_scope determines the user's access level and the scopes that are associated with that level. Scope values cannot have space characters and it is recommended that any space be substituted with the underscore character. Scopes can be added and removed using the /scope endpoint URI after the Management API base URI while setting up the Authorization Server. Example - Scope endpoint URI http(s)://hostname:port/authserver/api /scope The following table lists all HTTP APIs available for provisioning scopes and the expected success return value. URI HTTP Method Input Parameters Input Format and Example Return Value Return Format and Example URI HTTP Method Input Parameters Input Format and Example Return Value Return Format and Example /scope GET None Format: N/A Example: N/A Space delimited list of all scopes provisioned Format: JSON Example: {"scope":"normal_scope admin_scope"} /scope POST Space delimited list of scopes to be provisioned Format: JSON Example: {"scope":"normal_scope admin_scope"} Space delimited list of scopes provisioned succesfully Format: JSON Example: {"scope":"normal_scope admin_scope"} /scope PATCH Space delimited list of scopes to be removed Format: JSON Example: {"scope":"admin_scope"} Space delimited list of scopes removed successfully Format: JSON Example: {"scope":"admin_scope"} Client Registration A client is an application that requires the REST API to be hosted on the HTTP/2 Server agent. When the OAuth2 authorization is enabled in the HTTP/2 Server agent, the client must obtain an access token such as generated by Authorization Server and then provide the access token via the Authorization HTTP header for REST API requests. The client must be registered first before obtaining the access token from the Authorization Server. Any unregistered client will not be accepted. Clients can be registered and removed using the /clients endpoint URI after the Management API base URI. Example - Client endpoint URI http(s)://hostname:port/authserver/api /clients Note! The client name MUST be unique. The following table lists all HTTP APIs available for provisioning scopes and the expected success return value: URI HTTP Method Input Parameters Input Format and Example Return Value Return Format and Example URI HTTP Method Input Parameters Input Format and Example Return Value Return Format and Example /clients GET None Format: N/A Example: N/A List of all clients registered Format: JSON Example: [{"client_name":"Some App","client_id":"YCuIPYVa0GryebpzniAZU5VGqye_dxBGdcXI","client_secret":"Ofy1-QfO3yrFYdk3dj1pmM30GKVre9Q6bMk6V7YIRmqGHwaijQ","scope":"normal_scope admin_scope"}] /clients/<client_name> GET None Format: N/A Example: N/A Client details for the <client_name> specified Format: JSON Example: {"client_name":"Some App","client_id":"YCuIPYVa0GryebpzniAZU5VGqye_dxBGdcXI","client_secret":"Ofy1-QfO3yrFYdk3dj1pmM30GKVre9Q6bMk6V7YIRmqGHwaijQ","scope":"normal_scope admin_scope"} /clients POST client_name and scope of the client to be registered Format: JSON Example: {"client_name":"Some App","scope":"normal_scope admin_scope"} Clients details for the <client_name> registered Format: JSON Example: {"client_name":"Some App","client_id":"YCuIPYVa0GryebpzniAZU5VGqye_dxBGdcXI","client_secret":"Ofy1-QfO3yrFYdk3dj1pmM30GKVre9Q6bMk6V7YIRmqGHwaijQ","scope":"normal_scope admin_scope"} /clients/<client_name> DELETE N/A Format: N/A Example: N/A Status for the removal of the client with <client_name> Format: JSON Example: {"status":"success"} /clients/<client_name> PUT scope of client to be registered or modified if client exists Format: JSON Example: {"scope":"normal_scope admin_scope"} Client details for the <client_name> that is registered or modified Format: JSON Example: {"client_name":"Some App","client_id":"YCuIPYVa0GryebpzniAZU5VGqye_dxBGdcXI","client_secret":"Ofy1-QfO3yrFYdk3dj1pmM30GKVre9Q6bMk6V7YIRmqGHwaijQ","scope":"normal_scope admin_scope"} /clients/<client_name> PATCH N/A Format: N/A Example: N/A Client details for the <client_name> that is specified and with new client_id and client_secret generated Format: JSON Example: {"client_name":"Some App","client_id":"YCuIPYVa0GryebpzniAZU5VGqye_dxBGdcXI","client_secret":"Ofy1-QfO3yrFYdk3dj1pmM30GKVre9Q6bMk6V7YIRmqGHwaijQ","scope":"normal_scope admin_scope"} HTTP Status Code The Management API in the Authorization Server will return certain codes to the client to indicate a successful or unsuccessful request. The following table will show the HTTP Status Code for successful HTTP API calls as well as all unsuccessful HTTP API calls. HTTP Status Code Return Value Return Format Return Example HTTP Status Code Return Value Return Format Return Example 200 (Successful) This indicates that the HTTP API call is successful. The response will often include a body that is dependent on which method was used in the request. JSON Highly dependent on the HTTP method type. 400 (Bad Request) Status of the HTTP API call and description of the status. Error is due to incorrect usage of the HTTP API by the user. JSON {"status":"error","description":"invalid form data"} 401 (Unauthorized) Incorrect username and/or password provided for the HTTP API call when HTTP Basic Authentication is enabled for the Management API. The response HTTP header parameter "WWW-Authenticate" will be set to "Basic" in this case. N/A N/A 500 (Internal Server Error) Status of the HTTP API call and description of the status. Error is due to the Authorization Server unable to handle the request internally. JSON {"status":"error","description":"database error"} Access Token Endpoint The access token endpoint is used by the client to request for access tokens. All clients have to be registered by using the Management API before the access token can be requested as all unregistered clients will not have their token request accepted. See the Client Registration section above for more information. Every registered client will have a client_id and client_secret assigned by the Authorization Server and the access token can only be requested using this set of client credentials. The access token can be requested using the Access Token URI that was configured using the access-token-uri parameter. Example - Access Token URI if the access-token-uri parameter value was configured to /token. The access token endpoint would be: http(s)://hostname:port/authserver/token The client can request for the access token at the access token endpoint by following the steps below: Setting the "client_id" and "client_secret" as username and password respectively in the HTTP Basic Authentication header. Setting the "grant_type" parameter using the "application/x-www-form-urlencoded" format in the HTTP request entity-body. The value MUST be set to "client_credentials". In the case that the client doesn't support HTTP Basic Authentication, the "client_id" and "client_secret" can be set using the the "application/x-www-form-urlencoded" format in the HTTP request entity-body as well using the "client_id" and "client_secret" parameter names respectively. Example - Using HTTP Basic Authentication header HTTP access token request by specifying client_id and client_secret in the HTTP Basic Authentication header POST /token HTTP/1.1 Host: oauth2.server.com Authorization: Basic WUN1SVBZVmEwR3J5ZWJwem5pQVpVNVZHcXllX2R4QkdkY1hJOk9meTEtUWZPM3lyRllkazNkajFwbU0zMEdLVnJlOVE2Yk1rNlY3WUlSbXFHSHdhaWpR Content-Type: application/x-www-form-urlencoded grant_type=client_credentials Example - Using application/x-www-form-urlencoded in the HTTP request entity-body HTTP access token request by specifying client_id and client_secret in the application/x-www-form-urlencoded format in the HTTP request entity-body POST /token HTTP/1.1 Host: oauth2.server.com Content-Type: application/x-www-form-urlencoded grant_type=client_credentials client_id=YCuIPYVa0GryebpzniAZU5VGqye_dxBGdcXI client_secret=Ofy1-QfO3yrFYdk3dj1pmM30GKVre9Q6bMk6V7YIRmqGHwaijQ The access token response will contain the following parameters to the entity-body of the HTTP response with a 200 (OK) status code: entity-body Description entity-body Description access_token The access token issued by the Authorization Server token_type The value will always be Bearer expires_in The lifetime (in seconds) of the access token Example - HTTP access token response HTTP/1.1 200 OK Content-Type: application/json Content-Length: 572 { "access_token":"eyJraWQiOiJqd3QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJSaWVsbGUgQXBwIiwic2NvcGUiOiJzY29wZTEgc2NvcGUzIiwiaXNzIjoiZGlnaXRhbHJvdXRlIiwiZXhwIjoxNTIwMjY4MTk2LCJpYXQiOjE1MjAyNjYzOTZ9.fInkdt_Fe4QQ-gAgI7CszIMkru61aec6OYxQsotkydh5xVczJsaJ-QkAfPtJ0tTVkAYeJZYmVEi_aApY8HNJMrZgvS07S8PnBOwsPUAPAHTDVU3u3c9zqhVzV5233rcoMdiUK61Qa7MoreE_4BwxjYMbek08DscwPWRZ-3V1r49PZ5i2MI5kfj4LdNTcuJZZ62-oILupdvVCiGTt9poGZqZdktEkgKANXPhxp1oQ-w1LD9uhmsRWP_6Cd4R1ky1HJxEocbDtx0uf068De4v1rxH2myaz7faZBexeQEUHjiDLxomnBnQENTfxTEVIj7WLqenAzPIkAOC_KvVv5EaJJg", "token_type":"Bearer", "expires_in":1800 } In the event of an error when requesting an access token, The Authorization Server will respond with an HTTP 400 (Bad Request) status code unless specified otherwise. The response will include the following parameters: entity-body Description entity-body Description error A single ASCII [USASCII] error code from the following: invalid_client unsupported_grant_type error_description Human-readable ASCII [USASCII] text providing additional information, used to assist the client developer in understanding the error that occurred. Example - HTTP access token error response HTTP/1.1 400 Bad Request Content-Type: application/json Content-Length: 64 {"error":"invalid_client","error_description":"Unknown client"}
+
+---
+
+# Document 1121: AMQP Agent Configuration - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205031787/AMQP+Agent+Configuration
+**Categories:** chunks_index.json
+
+To open the AMQP agent configuration dialog from a workflow configuration, you can do either one of the following: double-click the agent icon select the agent icon and click the Edit button The Agent Configuration contains the following settings: Open AMQP Agent Configuration Setting Description Setting Description RPC Answer Timeout (ms) Enter the interval in milliseconds you want the agent to wait for an answer before timing out in this field. Auto Acknowledge Select this checkbox if you want the AMQP agent to automatically send back acknowledgments of receiving messages to the broker. Make Initial Subscription Select this checkbox if you want the AMQP agent to make the initial subscription. Queue Enter the name of of the queue you want to subscribe to and receive messages from in this field. Tag Enter the identifier to be used for the channel. Several clients can use the same tag for the same channel. If this field is empty, the server will generate a unique tag. Authenticate Through Workflow Select this checkbox to provide the authentication credentials for broker connections via LoginInfo UDRs instead of the agent configuration. When you select this check box the Username and Password fields will be disabled. Username Enter the username to be used for broker connections. Password Enter the password associated with the username. Virtual Host Enter the name of the virtual host in this field. Broker Addresses Add the brokers you want the AMQP agent to connect to in this section stating host and port for each broker. You may enter one or several brokers. Use TLS Select this checkbox to have the AMQP agent use TLS. Note! The two-way TLS is not supported in AMQP. Security Profile Note! This field is enabled when the Use TLS checkbox is selected. Only the Java Keystore Type, Keystore Path and Keystore Password fields in the Security profile are used by AMQP agent. A new security profile is automatically generated when importing the AMQP agent workflow configuration of an earlier version prior to MediationZone version 9.
+
+---
+
+# Document 1122: TLSInformation and X509Certificate - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205002736/TLSInformation+and+X509Certificate
+**Categories:** chunks_index.json
+
+The TLSInformation and X509Certificate UDR types are part of the securityInformation UDR field that contains information about the certificate chain and also which protocol and cipher suite are used . The X509Certificate UDR type contains information about the fields corresponding to the java.security.cert.X509Certificate. The securityInformation UDR is part of all the other UDR types as part of the Web socket UDRs. Open Open The TLSInformation and X 509Cer tificate UDR types with their UDR Fields
+
+---
+
+# Document 1123: Kafka Real-Time Forwarding Agent Events - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/608010323/Kafka+Real-Time+Forwarding+Agent+Events
+**Categories:** chunks_index.json
+
+Agent Events Debug Events
+
+---
+
+# Document 1124: Netflow Events - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205033959/Netflow+Events
+**Categories:** chunks_index.json
+
+Agent Message Events There are no message events for this agent. Debug Events There are no debug events for this agent.
+
+---
+
+# Document 1125: Real-Time Disk_Deprecated Forwarding Agent - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205655352/Real-Time+Disk_Deprecated+Forwarding+Agent
+**Categories:** chunks_index.json
+
+The real-time Disk_Deprecated forwarding agent creates files on the local file system that contains the received data. The files are created when any of the batch closing criteria that are defined in the agent are fulfilled. You can also trigger the current batch to close from APL. A disk buffer, consisting of temporary files, is synchronized with the received data at periodic intervals. When any of the batch closing criteria is fulfilled, or if the workflow stops, the buffered data and the data in memory are written to the configured target path. If the EC is terminated while the workflow is running, the temporary files will remain on disk as "orphans". When the workflow is restarted the orphan files will be processed. You can optionally tag these files with a suffix. The section contains the following subsections: Real-Time Disk_Deprecated Forwarding Agent Configuration Real-Time Disk_Deprecated Forwarding Agent MultiForwardingUDR Input Closing Batches from APL and Error Handling Real-Time Disk_Deprecated Forwarding Agent Input/Output Data and MIM Real-Time Disk_Deprecated Forwarding Agent Events Real-Time Disk_Deprecated Forwarding Agent Example
+
+---
+
+# Document 1126: SMPP Agents Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204674773/SMPP+Agents+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Input/Output Data The Input/Output data is the type of data an agent expects and delivers. The Receiver agent produces DELIVER_SM UDRs and delivers DELIVER_SM_RESP UDRs. The Transmitter agent expects SUBMIT_SM UDRs and produces SUBMIT_SM_RESP UDRs. MIM For information about the MIM and a list of the general MIM parameters, see Administration and Management in Legacy Desktop . Publishes MIM Parameter Description Session State This MIM parameter contains information about the session state. Session State is of the string type and is defined as a global MIM context type. Accesses The agent does not itself access any MIM resources.
+
+---
+
+# Document 1127: GTP' Agent - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204641547/GTP+Agent
+**Categories:** chunks_index.json
+
+This section describes the GTP' agent. This is a collection agent for real-time workflow configurations. The GTP' agent collects from GSM agents messages and datagrams of charging protocol of type GTP'. By collecting this information the GTP' agent enables MediationZone to act as a Charging Gateway device, providing Charging Gateway Functionality (CGF) within UMTS/GPRS networks. MediationZone supports UMTS/GPRS Charging Gateway Functionality The GTP' agent awaits initialization from the GSN nodes of the types SGSN and GGSN. When initiated, there are two protocols with which the Agent can interact with the nodes: Transmission Control Protocol(TCP), and Datagram Protocol(UDP) A GTP' workflow can alternate the implementation of two different protocols by using two GTP' agents. One for each protocol. In case of failure, the GTP' agent can be configured to notify the GSN nodes to route the incoming data to another host. An alternative configuration is to set up a second and identical workflow, on a separate EC. The agent counts the received requests and publishes those values as MIM values. Those MIM values can also be viewed from the command line tool with the wfcommand printcounters command. The GTP' agent supports IPv4 and IPv6 environments. Interaction Scenario The following scheme demonstrates the message and data transfer between the GSN nodes and the GTP' agent when using UDP: When started, the GTP' agent sends a Node Alive Request message to all configured GSN nodes. The GTP' agent awaits a Node Alive Response and will transmit Node Alive Request repeatedly, according to the Advanced tab settings. For further information see Advanced Tab in GTP' Agent Configuration . After a successful Node Alive Response the GSN node starts to transmit Data record Transfer Requests to the agent. When safely collected, the agent replies with a Data record transfer Response. When the workflow is stopped, the message Redirection Request is automatically sent to all configured GSN nodes. The workflow will not stop immediately but waits for a Redirection Response from each of the GSN nodes. If the Max Wait for a Response (sec) value is exceeded, the workflow stops, regardless of whether Redirection Response from the GSN nodes have been received or not. Note! When using TCP, the behavior is different. For further information, see GTP' Agent MZSH Commands, Events and Limitations . Prerequisites The reader of this information should be familiar with: GPRS Tunneling Protocol (GTP) across the Gn and Gp Interface [3GPP TS 29.060 V4.2.0]: http://www.3gpp.org/ftp/Specs/archive/29_series/29.060/29060-420.zip Call and event data for the Packet Switched (PS) domain [3GPP TS 32.015 V3.11.0]: http://www.3gpp.org/ftp/Specs/archive/32_series/32.015/32015-3b0.zip The section contains the following subsections: GTP' Agent Input/Output Data and MIM GTP' Agent Preparations GTP' Agent MZSH Commands, Events and Limitations GTP' Agent Configuration GTP' UDR
+
+---
+
+# Document 1128: User Event - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204737057/User+Event
+**Categories:** chunks_index.json
+
+This event is dispatched when the user changes something, for instance, updates a configuration. The following fields are included: userName - The name of the user. userAction - Action performed by the user. Fields inherited from the Base event The following fields are inherited from the Base event, and described in more detail in Base Event : category contents - Username: <username>, Action: <action>, Workflow: <Workflow name> eventName origin receiveTimeStamp severity timeStamp
+
+---
+
+# Document 1129: FTP Collection Agent Events - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205033125
+**Categories:** chunks_index.json
+
+Agent Message Events An agent message is an information message sent from the agent, stated according to the configurations made in the Event Notification Editor. For further information about the agent message event type, see Agent Event . Ready with file: filename Reported, along with the name of the source file, when the file has been collected and inserted into the workflow. File cancelled: filename Reported, along with the name of the current file, when a Cancel Batch message is received. This assumes the workflow is not aborted when a Cancel Batch message is received, see FTP Collection Agent Transaction Behavior for further information. Debug Events Debug messages are dispatched in debug mode. During execution, the messages are displayed in the Workflow Monitor. You can configure Event Notifications that are triggered when a debug message is dispatched. For further information about the debug event type, see Debug Event . The agent produces the following debug events: Command trace A printout of the control channel trace either in the Workflow Monitor or in a file.
+
+---
+
+# Document 1130: System Installation - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204997021/System+Installation
+**Categories:** chunks_index.json
+
+Move MZHOME of each container to a backup directory. mv $MZ_HOME <backup directory>/MZ_HOME_<container name> Install the system according to Platform Container Installation and Execution Container Installation . Note! A new database instance must be created during the installation. Note! If you are using SAP HANA as the Platform database, you will need to enable TLS/SSL on the SAP HANA database before you install your Platform.
+
+---
+
+# Document 1131: Appendix A - MediationZone Interfaces - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204647984/Appendix+A+-+MediationZone+Interfaces
+**Categories:** chunks_index.json
+
+MediationZone provides connection interfaces to a variety of external systems. Interfaces are grouped into two categories: Offline interfaces Collection and forwarding interfaces specifically used in a file-based environment. Online Interfaces Client and server functionality for workflows that communicate over online-enabled interfaces. For more detailed information: Refer to Product Catalog
+
+---
+
+# Document 1132: ECS Collection Agent Transaction Behavior - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205652502/ECS+Collection+Agent+Transaction+Behavior
+**Categories:** chunks_index.json
+
+This section includes information about the ECS Collection agent's transaction behavior. For information about the general transaction behavior, see the section, Transactions, in Workflow Monitor . Emits The agent emits commands that changes the state of the file currently processed. Command Description Begin Batch UDRs - Emitted prior to the routing of the first UDR in the batch created by the UDRs matching the collection definitions. Batches - Emitted prior to the routing of a batch. End Batch UDRs - Emitted when all UDRs have been collected or when a Hint End Batch request is received. The UDRs are then marked as Reprocessed in the ECS. Batches - Emitted after each batch has been processed. The batch is then marked as Reprocessed . Retrieves The agent retrieves commands from other agents and, based on them, generates a state change of the file currently processed. Command Description Cancel Batch No Cancel Batches are retrieved. Note! If any agent in the workflow emits a cancelBatch , the workflow aborts immediately (regardless of the workflow configuration).
+
+---
+
+# Document 1133: plist - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204612533/plist
+**Categories:** chunks_index.json
+
+plist [ -name <package name> ] [ -gen <all|nogenerated|onlygenerated> ] [ -archive [<package archive name>] ] [ -class [<java class name>] ] [ -resource [<java resource name>] ] [ -compact ] [ -inactive ] This command lists packages installed in the system. The list shows an overview of each package's user, version, repository, revision, and date. You can use options to filter packages and view detailed information such as archives, java classes, and resources. Option Description Option Description -name <package name> Use this option to show package info for <package name> . -gen <nogenerated|onlygenerated|all> Use this option to show packages that are generated by Ultra and APL configurations. -archive [ <package archive name> ] Use this option to show archive information for <package archive name> . Omit <package archive name> to show information for all archives. -class [ <java class name> ] Use this option together with archive <package archive name> to show class information for an archive. Omit &lt;java class name> to show information for all classes. -resource [ <java resource name> ] Use this option together with archive <package archive name> option to show resource information for an archive. Omit <java resource name> to show information for all resources. -compact Use this option to show the package information in a compact format. -inactive Use this option to show the packages currently not activated by the license. Example - Using the -name flag $ mzsh <username>/<password> plist -name Core Output: Overview of Core: Version: 7.2.0.0 Repository: Revision: ae3245cb47185027d32f28c2098af8fdd0f724db Date: 2015-09-02 17:35:38 Example - Using the -gen flag $ mzsh <username>/<password> plist -gen onlygenerated Output: Overview of _JavaCode_MZ1438686422047: Version: 8/7/15 3:25 PM Repository: n/a Revision: 8/7/15 3:25 PM Date: 2015-08-07 15:25:02 Example - Using the -archive flag $ mzsh <username>/<password> plist -name Analysis -archive Output: Overview of Analysis: Version: 7.2.0.0 Repository: Revision: ae3245cb47185027d32f28c2098af8fdd0f724db Date: 2015-09-02 17:35:38 Archives in Analysis: (Analysis, 7.2.0.0) analysis/mz-ANALYSIS-ui.jar, 70471 bytes (platform) (Analysis, 7.2.0.0) analysis/mz-ANALYSIS-main.jar, 87980 bytes (execution) Example - Using the -resource flag $ mzsh <username>/<password> plist -name Analysis -archive analysis/mz-ANALYSIS-main.jar -resource Output: Details for package Analysis archive analysis/mz-ANALYSIS-main.jar: (Analysis, 7.2.0.0) analysis/mz-ANALYSIS-main.jar, 87980 bytes (execution) Resources for analysis/mz-ANALYSIS-main.jar: META-INF/MANIFEST.MF com/digitalroute/wfc/analysis/AnalysisTC_en.properties com/digitalroute/wfc/analysis/analysis.svg Example - Using the -class flag $ mzsh <username>/<password> plist -name Analysis -archive analysis/mz-ANALYSIS-main.jar -class Output: Details for package Analysis archive analysis/mz-ANALYSIS-main.jar: (Analysis, 7.2.0.0) analysis/mz-ANALYSIS-main.jar, 87980 bytes (execution) Classes for analysis/mz-ANALYSIS-main.jar: com.digitalroute.wfc.analysis.AnalysisAgent com.digitalroute.wfc.analysis.AnalysisRealtimeExec com.digitalroute.wfc.analysis.AnalysisRealtimeInsp$1 ... Return Codes Listed below are the different return codes for the plist command: Code Description Code Description 0 Will be returned if the command was successful. 1 Will be returned if the command was unsuccessful. Note! This command requires that the user is logged in.
+
+---
+
+# Document 1134: Importing Or Exporting Data In Reference Data Management - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205656648/Importing+Or+Exporting+Data+In+Reference+Data+Management
+**Categories:** chunks_index.json
+
+
+
+---
+**End of Part 48** - Continue to next part for more content.
