@@ -1,0 +1,380 @@
+# RATANON/MZ93-DOCUMENTATION - Part 44/112
+
+---
+**Dataset:** ratanon/mz93-documentation
+**Part:** 44 of 112
+**GitHub:** https://github.com/ratan0n/docs/tree/main/mz93-documentation
+**Size:** ~69.9 KB
+---
+
+The calculated KPIs and related metadata are delivered in KPIOutput UDRs. The generation of this UDR type is triggered by the timestamp field of the incoming KDR UDRs. When a timestamp value exceeds the upper limit of the current period by a configurable "delay", KPIAggregatedOutput UDRs are generated for the period, which is then considered closed. The delay is configured in the KPI agent for further information, see KPI Agent . The length of a period for a KPI is defined by the window size that is set in the service model ( kpi object). Calculated KPIs that belong to a closed period will be discarded. The following fields are included in the KPIOutputUDRs : Field Type Description Field Type Description instancePath string This field contains an instantiated path based on actual input data and the node path of the kpi object in the service model. Example: Open The instance Path to the object referenced by node 2 in the example is "/Example City/SITE_6494". kpi string This field contains the name of the kpi object in the service model. node string This field contains the node path of the kpi object in the service model, e g tree1/region/city . For the instantiated path, corresponding to actual values in the input, see InstancePath . outputTime long This field contains the system time (Unix time) when the KPIOutput UDR was generated. outputType int 0 - UDR generated at the end of a period 1 - UDR generated for an immediate alarm When a KPI is configured to generate immediate alarms, the alarm output will be generated in a KPIOutout UDRs with outputType 1. A UDR for the same KPI will be generated at the end of the period with outputType 0. periodEnd long This field contains the end time for the period, based on the incoming KDR UDR timestamps. periodStart long This field contains the start time for the period, based on the incoming KDR UDR timestamps. sampleCount long This field contains the number of KDR UDRs that were used for the KPI calculation. threshold string This field contains the level name of threshold object in the service model. value double This field contains the result of the KPI calculation. windowSize long This field contains the length of the period. The period length is determined by windowSize in the the kpi object .
+
+---
+
+# Document 975: Netia FTP Agent Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204999126/Netia+FTP+Agent+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Input/Output Data The Input/Output data is the type of data an agent expects and delivers. The agent produces bytearray types. MIM For information about the MIM and a list of the general MIM parameters, see MIM . Publishes MIM Parmeter Description File Retrieval Timestamp This MIM parameter contains a time stamp, indicating when the file transfer starts. File Retrieval Timestamp is of the date type and is defined as a header MIM context type. Source Filename This MIM parameter contains the name of the currently processed file, as defined at the source. Source Filename is of the string type and is defined as a header MIM context type. Source Filenames This MIM parameter contains a list of file names of the files that are about to be collected from the current collection directory. Note! When the agent collects from multiple directories, the MIM value is cleared after collection of each directory. Then, the MIM value is updated with the listing of the next directory. Source Filenames is of the list<any> type and is defined as a header MIM context type. Source File Count This MIM parameter contains the number of files that were available to this instance for collection at startup. The value is static throughout the execution of the workflow, even if more files arrive during the execution. The new files will not be collected until the next execution. Source File Count is of the long type and is defined as a global MIM context type. Source Files Left This parameter contains the number of source files that are yet to be collected. This is the number that appears in the Execution Manager in the Running Workflows tab in the Backlog column. Source Files Left is of the long type and is defined as a header MIM context type. Source Files Size This parameter provides the size of the file that is about to be read. The file is located on the server. Source File Size is of the long type and is defined as a header MIM context type. Source Host This MIM parameter contains the name of the host from which files are collected, as defined in the Source or Advanced tabs. Source Host is of the string type and is defined as a global MIM context type. Source Pathname This MIM parameter contains the path name, as defined in the Source tab. Source Pathname is of the string type and is defined as a global MIM context type. Note! Even if a relative path was defined when configuring the Netia FTP collection agent, (see the section Source Tab in Netia FTP Agent Configuration ), for example, ../../data/ftp_in , the value of this parameter will include the absolute path: /data/ftp_in . Source Username This MIM parameter contains the login user name, as defined in the Source tab. Source Username is of the string type and is defined as a global MIM context type. Accesses The agent does not itself access any MIM resources.
+
+---
+
+# Document 976: JMS Collector Agent Configuration - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204673708/JMS+Collector+Agent+Configuration
+**Categories:** chunks_index.json
+
+To open the JMS Collector agent configuration dialog from a workflow configuration, you can do either one of the following: double-click the agent icon select the agent icon and click the Edit button The Agent Configuration contains configurations to establish connections with the JMS server and subscription sessions. JMS Collector agent configuration Setting Description Setting Description Profile Enter the JMS profile that you want used to establish the connection. For further information see JMS Profile . Username Enter a user name to apply when initiating the connection with the JMS server. This field is optional. Password Enter a password to use when initiating the connection with the JMS server. This field is optional. Note! There may be instances where setting the username and password for the JNDI server will result in an error where the agent will not be able to access the server. When this happens, you will have to set the username and password in the properties list in the JMS Profile, using the following security context: For username, use: java.naming.security.principal For password, use: java.naming.security.credentials Durable Subscription Enable Durable Subscription To enable the agent to create a durable topic subscription, select this check box. If the Destination is of type queue, the agent will fail to initiate. Name Enter a unique name that identifies the topic endpoint of the client. Provide this to use a durable subscription. ID Enter a unique client ID. This is an optional parameter as it can be set in the configured ConnectionFactory object. Pre-Acknowledge Routing Enable Pre-Acknowledge Routing Select this option to have the content of incoming message routed to the next specified Route before an acknowledgement is sent back to the JMS server. When enabled, to route the UDR, the JMS Collector agent uses the same thread that it used when the JMS message was collected. This way, the agent can use another agent, e g Inter Workflow, to store incoming messages before they are acknowledged. This routing will send the bytearray UDR type, and encoded using the MZ Tag encoder. For further information on MZ Tagged Formats, see Format Management Overview in the Ultra Reference Guide . Route The route where the message is sent to before an acknowledgment is sent back to the server.
+
+---
+
+# Document 977: Encoder Agent Configuration Real-time Workflow - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204672913/Encoder+Agent+Configuration+Real-time+Workflow
+**Categories:** chunks_index.json
+
+You open the Encoder processing agent configuration dialog from a workflow configuration. To open the Compressor processing agent configuration, click Build  New Configuration . Select Workflow from the Configurations dialog. When prompted to Select workflow type, select Realtime. Click Add agent and select Encoder from the Processing tab of the Agent Selection dialog. Open Encoder configuration dialog - real-time workflow, Encoder tab Setting Description Setting Description Encoder List of available encoders introduced via the Ultra Format Editor and the default built-in encoder for the internal format (MZ format tagged UDRs), see the section Encoder Options below for a full description Encoder Options There are four different Encoder options; CSV Format, JSON Format, MZ Tagged Format, MZ Tagged Format (Compressed). CSV Format The CSV Format selection defines that CSV is to be used. Open CSV Format Selection Options The following options are available when this selection is set: Setting Description Setting Description UDR Type Opens the UDR Type selection box where the desired UDRs can be chosen Format Select the desired format, The available options are Unix, Mac, Windows, Excel , and Custom . Delimiter When the Custom format is chosen, the delimiter input field allows you to set the desired delimiter. Use Quote Enable this checkbox if you want to use a quote. Quote Enter the quote format Line Break When the Custom format is chosen, the line break input field allows you to set the line break. JSON Format The JSON Format selection defines that JSON is to be used. Open JSON Format Selection Options The following options are available when this selection is set: Setting Description Setting Description Indented Output If enabled, indentation will be applied to the output data. Inline Map Field If enabled, this sets inline fields mapped for the designated fields. Select the UDR Type and the target Field using the Browse button. MZ Tagged Format The MZ Tagged Format selection defines that the built-in MZ Tagged Format is to be used. Open MZ Taged Format Selection Options MZ Tagged Format (Compressed) The MZ Tagged Format (compressed) selection defines that the built-in Compressed MZ Tagged Format is to be used. Open MZ Taged Format (Compressed) Selection Options
+
+---
+
+# Document 978: Shut Down Workflows and Desktops - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204996941/Shut+Down+Workflows+and+Desktops
+**Categories:** chunks_index.json
+
+To shut down workflow groups, workflows and Desktops: Open Execution Manager , and check the status of all Workflow Groups groups (Enabled / Disabled). This step is necessary to identify which groups need to be resumed after the upgrade is completed. If there is a mix of enabled and disabled groups, make sure to record all  Enabled  groups, as you will need this information during the Resume Workflow Execution process. Otherwise if all groups are enabled, you can proceed to the next step. Note! Make sure to check the status of System Task-related groups to determine if they also need to be resumed after the upgrade. The Workflow Groups can be disabled using either the Execution Manager in Desktop or via the command line. The example below shows how to disable all Workflow Groups via command line wfgroupdisable . $ mzsh mzadmin/<password> wfgroupdisable * Stop all workflows that are not disconnected and let them finish execution. Ensure that all users shut down all connected Desktops. If you want to see which Desktops that are connected, you can use the following command: $ mzsh mzadmin/<password> pico -view Note! This command will also display other pico instances, such as Execution Contexts.
+
+---
+
+# Document 979: DRObjectRouter - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204742329/DRObjectRouter
+**Categories:** chunks_index.json
+
+An object router exists on Collection and Processing agents. In case several outgoing routes are defined, the object router manages them all. The router defines consume methods for DRUDR and byte[]. In case an agent will route specific data on different routes, the consume method that takes a route index, must be used. The route index can be resolved using the getRouteIndex method that takes the name of the route as argument. The object router also keeps internal counters of how many UDRs/bytes that have been forwarded. These may be used to collect statistics within the agent and are also available as MIM values.
+
+---
+
+# Document 980: wfdebug - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204743982/wfdebug
+**Categories:** chunks_index.json
+
+usage: wfdebug <pattern matching expression for workflow names> ... <ON|OFF> This command is used to enable or disable debug information for a workflow. Note that turning on the Debug mode might slow down the workflow due to log filing. Return Codes Listed below are the different return codes for the unregister command: Code Description Code Description 0 Will be returned if the command was successful. 1 Will be returned if the argument count is incorrect.
+
+---
+
+# Document 981: Workflow Group - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204670560
+**Categories:** chunks_index.json
+
+The workflow group configuration enables you to manage workflow groups. A workflow group can consist of one or several workflows, or Workflow Group members, which enables you to configure several workflows as a single entity. The group consists of several workflows, and/or workflow groups, each with a diverse setup of scheduling, load balance, and event notification. In this section you will find all the information you need to create, configure, and execute a workflow group. This section includes the following subsections: Creating a Workflow Group Configuration Managing a Workflow Group Suspend Execution Workflow Group States
+
+---
+
+# Document 982: Kafka Batch Forwarding Agent Configuration - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/301138272/Kafka+Batch+Forwarding+Agent+Configuration
+**Categories:** chunks_index.json
+
+You open the Kafka collection agent configuration dialog from a workflow configuration. Click Build  New Configuration. Select Workflow from the Configurations dialog. When prompted to Select workflow type , select Realtime. Click Add agent and select Kafka from the Processing tab in the Agent Selection dialog. Open Kafka batch forwarding configuration. There are no configuration settings for the Kafka batch forwarding agent. The agent must be preceded by an Analysis or Aggregation Agent that produces KafkaRecord UDRs. Note! You must configure a Kafka profile in the Execution tab in Workflow Properties for the workflow configuration to be valid.
+
+---
+
+# Document 983: Python Collection Agent - Real-Time - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205686508/Python+Collection+Agent+-+Real-Time
+**Categories:** chunks_index.json
+
+The Python collection agent can collect data from any source supported by Python in real-time by defining an execute block. It also uses an Interpreter profile that is used to configure the Python executable. Using the Python collection agent allows you to control the workflow execution from the execute block and to stop routing when requested, from the stopInput block. Open Example of a workflow including the Python collection agent This section includes the following subsections: Python Collection Agent Configuration - Real-Time Function Blocks for the Python Collection Agent - Real-Time Python Collection Agent Input/Output Data and MIM - Real-Time Python Collection Agent Events - Real-Time
+
+---
+
+# Document 984: The Ultra Module - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204744223/The+Ultra+Module
+**Categories:** chunks_index.json
+
+A saved format is referred to by the qualified name under which it was saved (its module name). In APL or UFDL, it can be referred to by the module name followed by a dot and the name of the internal definition. Alternatively import statements can be used to avoid the necessity of always specifying the module name. The import Statement (APL Code) In Analysis and Aggregation agents, module names are not needed if the format is selected in the UDR Types list in the configuration dialog of the agent. Also, the APL Editor allows selection of the UDR types from a list. Right-click in the Code Area to display the UDR Assistance... via which the UDR Internal Format Browser can be opened. If none of these lists are used, the full format name must be referred to, or the import keyword must be used. The module name must be prefixed with ultra. to distinguish format imports from APL code imports. Example - Referring to UDR Types in the APL Editor The module in this example is named Default.CDR , and contains the target_internal CDR_TI which is to be used in a function created in the APL Editor . Case 1 - import statement import ultra.Default.CDR; CDR_TI newUDR() { CDR_TI myUDR = udrCreate( CDR_TI ); myUDR.field1 = 22; myUDR.field2 = 55; return myUDR; } Case 2 - no import Default.CDR.CDR_TI newUDR() { Default.CDR.CDR_TI myUDR = udrCreate( Default.CDR.CDR_TI ); myUDR.field1 = 22; myUDR.field2 = 55; return myUDR; } The import Statement (UFDL Code) It is possible to split different blocks of a format between several format definitions. In these cases, the import statement may be used to avoid referring to the module name. The ultra. prefix is not needed (or allowed) in the UFDL import statement. Using import in UFDL Code Suppose there is a format definition with the module name Default.AMA containing an internal myInt , and a new format definition must include the internal in the in_map . This can be accomplished in two ways: Case 1 - import import Default.AMA; in_map exMap : external( myCDR ), internal( myInt ), target_internal( myCDR_TI ) { automatic; }; Case 2 - no import in_map exMap : external( myCDR ), internal( Default.AMA.myInt ), target_internal( myCDR_TI ) { automatic; }; Note! Referring to ASN.1 structures from outside the format definition requires the ASN.1 module (if defined) to be part of the reference. When invoking the import ultra. function from within the folder that contains the UFDL file, you do not need to specify the folder name. Name Lookup Rules Consider the following ASN.1 block example. Depending on from where a format name is referred, the name lookup works differently. References from within the asn_block specification: If there is a name in the asn_block specification, choose this name. If there is a name in the same format definition, choose this name. Evaluate the import statements. References from within the same module but outside of the asn_block : If there is a name in the same format definition (outside of any asn_block specifications), choose this name. If there is a name in the asn_block specification, choose this name. Evaluate the import statements. Example - Shortened ASN.1 Block asn_block { exchangeRec DEFINITIONS IMPLICIT TAGS ::= BEGIN main_udr ::= SEQUENCE // Field specifications }; Note! References to existing ASN.1 formats in UFDL requires the ASN.1 module to be part of the reference. Suppose the previous external specification, saved under the name Default.myASNformat , is to be included in a new in_map : Case 1 - import import Default.myASNformat.exchangeRec; in_map exMap : external( main_udr ), internal( myInt ), target_internal( myCDR_TI ) { automatic; }; Case 2 - no import in_map exMap : external( Default.myASNformat. exchangeRec.main_udr ), internal( myInt ), target_internal( myCDR_TI ) { automatic; };
+
+---
+
+# Document 985: ECS Forwarding Agent Configuration - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204607320/ECS+Forwarding+Agent+Configuration
+**Categories:** chunks_index.json
+
+To open the ECS forwarding agent configuration, go to Build  New Configuration . Select Workflow from the Configurations dialog. When prompted to Select workflow type , select Batch . Click Add agent and select the Forwarding tab in the Agent Selection dialog. Select the Ecs agent. Double-click the agent icon or right-click the icon and select Edit agent , to display the Agent Configuration dialog. ECS forwarding agent configuration dialog ECS Tab Setting Description Setting Description Add Click Add to select from a list of MIM Fields in the MIM Browser. Logged MIMs MIM values to be associated with a UDR when sent to the ECS. Thread Buffer Tab See the description in section Thread Buffer Tab in Workflow Template .
+
+---
+
+# Document 986: KafkaOffset - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/301138521/KafkaOffset
+**Categories:** chunks_index.json
+
+The kafkaOffset UDR is used to control from which position (offset) you want to start collecting data. It only applies if you have selected the Start At Request option in the Kafka Real-Time Collection Agent Configuration . The Kafka Collection agent waits for the kafkaOffset UDR before starting to consume data. The offset information can be persisted and tracked by, for example, using the Aggregation agent, or forwarding to an external database. Field Description Field Description offsets (map<string,map<int,long>>) This field is populated with offset information. The string identifies the topic. As offsets in Kafka are unique per partition, this maps partition identifiers (int) to offsets (long).
+
+---
+
+# Document 987: Workflow Bridge Collection Agent Transaction Behavior, Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205035336/Workflow+Bridge+Collection+Agent+Transaction+Behavior+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Transaction Behavior
+
+---
+
+# Document 988: Merge Files Collection Transaction Behavior and Input/Output Data - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205653247/Merge+Files+Collection+Transaction+Behavior+and+Input+Output+Data
+**Categories:** chunks_index.json
+
+Transaction Behavior Emits Command Description Command Description Begin Batch Emitted right before the first file in a Merged File group batch. End Batch Emitted when the last file of a sub directory has been processed or when a Merge Closing Condition is reached. Retrieves Command Description Command Description Cancel Batch In case a cancelBatch is generated, all files in that merged set will be canceled as one batch. Depending on the workflow configuration, the batch (consisting of several input files) will either be stored in ECS or the workflow will abort and the files belonging to the batch will be left untouched. Hint End Batch If a Hint End Batch message is received, the collector splits the batch after the current file has been processed. After a batch split, the collector emits an End Batch message, followed by a Begin Batch message (provided that there is data in the subsequent block). Input/Output Data The agent produces CollectedFileUDR types.
+
+---
+
+# Document 989: Error Correction System - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205032833/Error+Correction+System
+**Categories:** chunks_index.json
+
+The Error Correction System (ECS) is used when UDRs fail validation and manual intervention is needed before they can be successfully processed. Batches are sent to the ECS using an APL command. To send UDRs, the ECS forwarding agent is required. To collect data from the ECS, the ECS collection agent is used. UDRs may be examined, deleted, or updated in the ECS Inspector. This section contains the following subsections: ECS Maintenance System Task ECS Forwarding Agent ECS Collection Agent ECS Inspection ECS Statistics Example - ECS handling of UDRs Example - ECS handling of Batches
+
+---
+
+# Document 990: Analysis Agent Configuration - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204738075/Analysis+Agent+Configuration
+**Categories:** chunks_index.json
+
+You open the Analysis processing agent configuration dialog from a workflow configuration. To open the Analysis collection agent configuration, click Build  New Configuration . Select Workflow from the Configurations dialog. When prompted to Select workflow type, select Batch . Click Add agent and select Analysis from the Processing tab of the Agent Selection dialog. Hint! When you double-click the dotted triangle in the lower right corner of the Configuration dialog, the code area is maximized. This is a useful feature when coding. The Configuration... dialog differs slightly depending on if the workflow configuration is of the batch or real-time type. The differences are described in the sections below, Batch Workflows, and Real-Time Workflows. When the Analysis agent configuration dialog is confirmed, a compilation is performed to extract the configuration data from the code. Note! Complex code and formats may take a while to compile. Batch Workflows The configuration dialog consists of two tabs: Analysis and Thread Buffer. If the routing of the UDRs (the udrRoute command) is left out, the outgoing connection point disappears from the dialog, disabling a connection to a subsequent agent. Open Analysis agent configuration dialog - Analysis tab Analysis Tab The Analysis tab consists of the following settings: Setting Description Setting Description Code Area This is the text area where the APL code, used for UDR processing, is entered. Code can be entered manually or imported. There is also a third possibility, which is to set an import command stated to access the generic code created in the APL Code Editor. Entered code will be color coded depending on the code type, and for input assistance, a pop-up menu is available. See Analysis Agent Syntax Highlighting and Right-click Menu for further information. Below the text area there are line, column and position indicators, for help when locating syntax errors. Compilation Test... Compiles the entered code to evaluate the validity. The status of the compilation is displayed in a dialog. Upon failure, the erroneous line is highlighted and a message, including the line number, is displayed. Outline Use this button to display or hide the APL Code Editor Outline navigation panel. The navigation panel provides a view of all the blocks, variables, and methods in an APL code configuration and makes it possible to easily navigate between different types in the APL code. For further information on the Outline navigation panel, see the section, APL Code Editor Outline in Analysis APL Code Editor . UDR Types Enables selection of UDR Types. One or several UDR Types that the agent expects to receive may be selected. Refer to Analysis Agent Input and Output Types for a detailed description. Set To Input Automatically selects the UDR Type distributed by the previous agent. For further information about the pop-up menu in the Code Area and the UDR Internal Format browser, see the section Text Editor in Administration and Management in Legacy Desktop . Thread Buffer Tab The use and settings of private threads for an agent, enabling multi-threading within a workflow, are configured in the Thread Buffer tab. For further information, see the section Thread Buffer Tab in Workflow Template . Real-Time Workflows An Analysis agent may be part of the batch as well as real-time workflows. The dialogs are identical, except for the Thread Buffer tab which is not present in real-time workflows. Other than that, the agent is configured in the same way. There are, however, some restrictions and differences to consider when designing a real-time workflow configuration: APL plug-ins with transaction logic are not allowed. The agent will not perform any validation during workflow configuration - the workflow will abort upon activation of illegal code. Note, the user must therefore keep track of what type of plug-ins are invoked. Published MIMs may only be of global type. In order to make functions thread-safe they must be preceded by the synchronized keyword, which will make it possible to alter global variables. It is possible to read global variables from any function block, however, to avoid race conditions with functions updating the global variables, they must only be accessed from within synchronized functions. Synchronized functions cannot utilize the udrRoute command. Function blocks related to batch handling cannot be used. See the APL Reference Guide for further details on the specific commands.
+
+---
+
+# Document 991: Dialog UDR - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204741031/Dialog+UDR
+**Categories:** chunks_index.json
+
+The Dialog UDR is used to create a dialog box on the current page. Open The following fields are included in the Dialog UDR : Field Description Field Description addAutomatic (boolean) This field may contain information if the Dialog should be added to the page automatic when Dialog UDR is added to a Button UDR or Link UDR. attributes (map<string,string>) This field may contain extra attributes to be added. closeButton (boolean) This field may contain information if a button to close the dialog should be added or not. Default is true. closeOnClick (boolean) This field may contain information if the dialog should be closed when user clicking outside dialog. Default is true. closeOnEsc (boolean) This field may contain information if the dialog can be closed with ESC button. Default is true. closeText (string) This field may contain the text showed on the close button. Default is Close. cssClasses (list<string>) This field may contain a list of extra values added to class attribute. This is typically used to style the component. Please read more on Bootstrap . dialogBody (ComponentUDR) This field contain a Component UDR that will be present in the dialog body. header (string) This field may contain a dialog header text. id (string) This field may contain the id of the component okButton (ButtonUDR) This field may contain a ok button that will be placed in the footer of the dialog. size (string) This field may contain the size of the dialog. Possible values are the constants: SMALL , LARGE , XL Default is empty meaning MEDIUM. topPlacement (boolean) This field may contain a information if the dialog should be present in the top of the page or in the middle. Default is false.
+
+---
+
+# Document 992: SAP Batch Agent Events - Real-Time - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204642795/SAP+Batch+Agent+Events+-+Real-Time
+**Categories:** chunks_index.json
+
+Agent Message Events There are no agent message events for this agent. Debug Events Debug messages are dispatched in debug mode. During execution, the messages are displayed in the Workflow Monitor. You can configure Event Notifications that are triggered when a debug message is dispatched. For further information about the debug event type, see Debug Event . The agent produces the following debug events: Input charging request in XML format Invalid charging request in XML format Successful charging answer in XML format Charging error in XML format
+
+---
+
+# Document 993: Disk Agents in Real-Time Workflows - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204610658/Disk+Agents+in+Real-Time+Workflows
+**Categories:** chunks_index.json
+
+This section describes how to configure the Disk agents in real-time workflows. The section contains the following subsections: Real-Time Disk_Deprecated Collection Agent Real-Time Disk_Deprecated Forwarding Agent
+
+---
+
+# Document 994: JMS Collector Agent Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205000818/JMS+Collector+Agent+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Input/Output Data The agent produces JMSCycle UDR types. MIM For information about the MIM and a list of the general MIM parameters, see MIM . This agent does not publish or access any MIM parameters.
+
+---
+
+# Document 995: External Reference Profile - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204671724/External+Reference+Profile
+**Categories:** chunks_index.json
+
+The External Reference profile enables you to use configuration values that originate from property files or exported environment variables from the Platform's startup shell. You can use the values provided by External Reference profiles in the workflow and agent profile configurations. The External Reference profile is loaded when you start a workflow that depends on it. Changes to the profile become effective when you restart the workflow. This section includes the following subsections: External Reference Profile Configuration Using External Reference in Agent Profile Fields Using External Reference in Workflows Creating External Reference Files AWS S3 Support for External Reference Profile Using Passwords in External Reference Setting External Reference Values in DB
+
+---
+
+# Document 996: MQTT Agent Events - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205686211/MQTT+Agent+Events
+**Categories:** chunks_index.json
+
+Agent Message Events There are no agent message events for this agent. Debug Events There are no debug events for this agent.
+
+---
+
+# Document 997: Daily Maintenance - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204613368/Daily+Maintenance
+**Categories:** chunks_index.json
+
+The following maintenance tasks should be performed daily: Make sure every service is running Check CPU/Disk/RAM/Network usage - spot trends: declining, growing, flat Ensure there is enough disk space Ensure there is no SWAP being used Ensure that daily backups have been taken
+
+---
+
+# Document 998: Updating the Installation Properties for Platform - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204637789/Updating+the+Installation+Properties+for+Platform
+**Categories:** chunks_index.json
+
+Update the installation parameters in the file install.xml to suit the local installation. The following subsections contain listings of all the installation parameters within the install.xml file, including example and/or default values. This section includes the following subsections: Installer Properties for Platform Additional Platform Properties in install.xml Properties for Oracle Properties for PostgreSQL Properties for SAP HANA
+
+---
+
+# Document 999: MediationZone Command Line Tool mzsh - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204647755/MediationZone+Command+Line+Tool+mzsh
+**Categories:** chunks_index.json
+
+The Command Line Tool mzsh is a shell that can be used both as a system administration tool and as a Platform client. The mzsh enables you to access different parts of the system depending on if the platform is running or not, or if you are logged in or not.
+
+---
+
+# Document 1000: Amazon SQS Forwarding Agent - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/299663522/Amazon+SQS+Forwarding+Agent
+**Categories:** chunks_index.json
+
+The SQS Forwarding Agent forwards data to Amazon Simple Queue Service. The agent operates in cycles of three steps: Consumes UDRs of type sqsForwarderCycleUDR , meaning that the agent needs a preceding Analysis agent that creates and populates these UDRs. Sends the UDR contents to Amazon SQS. Awaits replies from Amazon SQS, then forwards the response to an Analysis agent. The response is of type sqsForwarderCycleUDR . If the field error is populated, then the insert failed. In the example workflow below, data is collected from files, mapped to sqsForwarderCycleUDR , and sent to Amazon SQS. UDRs that are not accepted by Amazon SQS will be forwarded to an Inter Workflow agent. Open Workflow: Collecting from files and forwarding to Amazon SQS. The following procedure shows the key configurations for creating the above workflow Workflow design Create the workflow with the following agents: Agent Configuration Disk Collects files with data that shall be forwarded to SQS. Analysis 1 Creates UDRs of type sqsForwarderCycleUDR and populates them using the collected data. Aws SQS Forwarder Sends data to SQS. Analysis 2 Validates and handles potential errors from failed attempts to forward data. Inter Workflow Sends UDRs that could not be sent to SQS to Inter Workflow storage. Analysis_1 Configure the Analysis _1 Agent to create a sqsForwardCycleUDRs and map its contents from the collected UDRs. See the below example. import ultra.amazon_sqs.ufdl_ultra; consume { if (instanceOf(input,asciiSEQ_TI)){ asciiSEQ_TI ip = (asciiSEQ_TI) input; Sqs.SqsForwarderCycleUDR out = udrCreate(Sqs.SqsForwarderCycleUDR); out.msgBody = ip.message ; out.queueName = ip.queuename; //Group id and deduplication id must be updated when sending to a fifo queue. if (strEndsWith(ip.queuename,"fifo")){ out.msgGroupId = "Group_A"; out.deduplicationId = (string)ip.seqNum; } //custom attributes map<string,Sqs.SqsMessageAttributeUDR> attrMap = mapCreate( string, Sqs.SqsMessageAttributeUDR); Sqs.SqsMessageAttributeUDR dataValue = udrCreate(Sqs.SqsMessageAttributeUDR) ; dataValue.value = "example"; dataValue.dataType = "String"; mapSet( attrMap, "one", dataValue ); Sqs.SqsMessageAttributeUDR dataValue2 = udrCreate(Sqs.SqsMessageAttributeUDR) ; dataValue2.value = "215"; dataValue2.dataType = "Number"; mapSet( attrMap, "two",dataValue2 ); bytearray myBA = baCreate( 1 ); baSet( myBA, 0, 72 ); Sqs.SqsMessageAttributeUDR dataValue3 = udrCreate(Sqs.SqsMessageAttributeUDR) ; dataValue3.value = myBA; dataValue3.dataType = "Binary"; mapSet( attrMap, "three",dataValue3 ); out.msgAttribute = attrMap; debug (out); udrRoute(out); } } Analysis_2 Configure the Analysis_2 Agent to handle potential errors that have occurred when forwarding sqsForwardCycleUDRs to Amazon SQS. All records will be routed as replies from the SQS forwarding agent. Erroneous records will populate the error field of sqsForwardCycleUDR . For successfully forwarded UDRs, the error field will be null. consume { if(input.error != null){ logWarning("UDR could not be sent to Amazon SQS."); udrRoute(input); debug(input); } }
+
+---
+
+# Document 1001: Parquet Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205033977/Parquet+Agents
+**Categories:** chunks_index.json
+
+This section describes Apache Parquet agents to handle data encoded and compressed with Apache Parquet. The Parquet Decoder Agent converts rows from Parquet documents into UDRs to be routed into workflows. The Parquet Encoder Agent converts UDRs into Parquet format to be delivered to output destinations. The Parquet agents are only available for batch workflow configurations. Apache Parquet is a file-based data representation that is known for its efficient data representation. Parquet is built to support fast and effective compression and encoding schemes for simple columnar, complex nested, and raw binary data. Columnar Data Perhaps the most significant design feature of Parquet is its column-oriented storage of data, meaning that values for each column are stored together. Most common formats  like CSV and Avro  are row-oriented. The figure below illustrates row-oriented versus column-oriented storage. Illustration of differences between row- and column-oriented storage Organizing data by columns has many performance advantages. When querying Parquet documents for particular columns, the desired data can be retrieved quickly with less I/O. Unlike row-oriented storage formats like CSV, only the desired columns need to be loaded into memory  resulting in a lower memory footprint and faster queries. Flexible, Extensible Encoding Parquet also allows compression on a per-column basis. Different encoding schemes can be used for different columns, allowing for, say, dictionary-based encodings to be used for columns with enumerated strings or bit packing for columns with small integer values. Self-Describing Schemas Apache Parquet is a file-oriented encoding, and the file includes metadata that specifies schemas for each column, location information of columns, encodings used, etc. Note that this structure implies that you must have access to the entire file before processing. Example Parquet Schema Parquet Concepts The schema in the previous section illustrates Apache Parquet concepts, but it helps to have a good grasp of primitives, nested groups, repetition levels, and logical types. Briefly: Primitives in Apache are the fundamental data types. They consist of integers (for example, int32, int64), floating point (for example, float, double), Boolean (boolean), and bytearray (binary). Nested groups in Apache are the way structured objects (consisting of primitives or lists of groups/primitives) are put together. In the example above, id is a nested group that includes a name (which is itself a nested group) and employeeNumber (an integer primitive). Repetition levels are modifiers that specify whether a column is optional, required, or repeated multiple times. Logical types are used to extend the sparse primitive types. For example, the bytearray data type can be used to specify strings and structured JSON as well as binary data. For further reading on Parquet, see these documents: Apache Parquet Documentation , Parquet Logical Types Definitions , and Maven Repository Apache Parquet . Parquet in MediationZone The section contains the following subsections: Parquet Profile Parquet Agent Configuration Parquet UDR Types Parquet Examples
+
+---
+
+# Document 1002: KPI Management - Non-Distributed Processing - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204742668/KPI+Management+-+Non-Distributed+Processing
+**Categories:** chunks_index.json
+
+The following scheme demonstrates a KPI Management provisioning and processing scenario. Open Provisioning and processing A user provisions a service model configuration directly via a REST interface, or via a KPI profile. Input data is received by the KPI Cluster In agent via KDR UDRs. The KPI Management agent continuously performs the KPI calculations that are based on the service model and the input data. When the timestamps of the input data indicate that a configurable time period has elapsed, the KPI agent sends the calculated KPIs to the workflow This chapter includes the following sections: KPI Management Quick-Start Guide - Non-Distributed KPI Agent KPI Management Service Model Deployment
+
+---
+
+# Document 1003: Shell Script Execution Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204612440/Shell+Script+Execution+Functions
+**Categories:** chunks_index.json
+
+The scriptExec function runs a shell script on the EC where the workflow runs and then returns a UDR that contains the exit value. The mzadmin user must have execute permissions on the specified script file. ScriptResult scriptExec ( string path, string argument [,...]) //Optional Parameter Description Parameter Description path The absolute path of the script. When the directory is set in the path variable of the mzadmin user on the host, only the filename is required. argument Command line argument(s). The total size of the arguments must not exceed 50kB. Returns A ScriptResult UDR containing the following fields: ExitValue (int) - The return code from the shell script. MZError (string) - Error description from the system (if any). OriginalData (bytearray) - This field is always empty. StdError (string) - Script output on StdError. StdOut (string) - Script output on StdOut. hasMZError (boolean) - True if script failed to execute, otherwise false. Note! When the output to stdout or stderr is large, the execution of the script may terminate before the data is fully streamed. This will interrupt the streams and result in partial outputs in the ScriptResult UDR. You may add one more sleep periods in the script to ensure that the output is complete before the execution is terminated. Example - Using scriptExec initialize { ScriptResult rc; rc = scriptExec("/home/mzadmin/scripts/script1.sh", "arg1","arg2"); debug("rc= "+ rc); } consume { udrRoute(input); } Substrings separated by spaces are interpreted as separate arguments by the scriptExec function. If the arguments contain spaces you may substitute these in your APL code and in the script. Example - Substituting spaces Substitute underscores in arguments with spaces in bash script: for ARG in $* do echo ${ARG//_/ } done Substitute spaces in arguments with underscore in APL: initialize { ScriptResult rc; rc = scriptExec("/home/mzadmin/scripts/script1.sh", "This_argument_contains_spaces"); debug(rc.StdOut); } Output: This argument contains spaces
+
+---
+
+# Document 1004: Database Profile - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204671569
+**Categories:** chunks_index.json
+
+In a Database profile configuration, you can create database profiles for use in various agents, profiles, and APL functions. These include: Audit Profile Callable Statements (APL) Database Bulk Functions (APL) Database Table Functions (APL) Database Agents Data Masking Profile Event Notifications Prepared Statements (APL) Data Veracity Profile Shared Table Profile SQL Agents SQL Loader Agent Task Workflows Agents (SQL) What a profile can be used for depends on the selected database type. The supported usage for each database type is described in their respective pages. The Database profile is loaded when you start a workflow that depends on it. Changes to the profile become effective when you restart the workflow. Configuration To create a new Database profile, click the New Configuration button from the Configuration dialog available from Build View , and then select Database Profile from the list of configurations. The profile contains the standard configuration buttons as described in Common Configuration Buttons and one additional button: Button Description Button Description Open Click on this button to Enable External References in an agent profile field. Refer to Enabling External References in an Agent Profile Field in External Reference Profile for further information. The Database profile has two tabs; General and Properties . The General Tab In the General tab, the two radio buttons Default Connection Setup and Advanced Connection Setup make it possible to display different connection options. Default Connection Setup Select the Default Connection Setup radio button to use a preconfigured connection string. Open The Database profile configuration - General tab Setting Description Setting Description Default Connection Setup Select this option to configure a default connection. Advanced Connection Setup Select this option to configure the data source connection using a connection string. For further information, see the section below, Advanced Connection Setup. Database Type Select any of the available database types. You may need to perform some preparations before attempting to connect to the database for the first time. For information about required preparations, see the section below, Database Types. Database Name Enter a name that identifies the database instance. For example, when you configure the profile for an Oracle database, this field should contain the SID. Database Host Enter the hostname or IP address of the host on which the database is running. Type it exactly as when accessing it from any other application within the network. Port Number Enter the database network port. Username Enter the database user name. Password Enter the database password. Enable TLS Truststore Enable TLS/SSL for connection to an SAP HANA Database. This option will be enabled by default. This option applies only to SAP HANA and will only be visible when SAP HANA is selected as the Database Type . For information about advanced connection for SAP HANA with TLS/SSL enabled, you can refer to SAP HANA DB . Note! If the TLS truststore is configured for SAP HANA default connection setup, the following SAP HANA JDBC connection string properties will be added as well: encrypt=true hostNameInCertificate=* For information about SAP HANA connection string properties, you can refer to the SAP HANA documentation at the SAP Help Portal. TLS Truststore Enter the path and filename to the TLS/SSL trust store file that contains the SAP HANA hosting server's certificate. This option applies only for SAP HANA and will only be visible when SAP HANA is selected as the Database Type . TLS Truststore Password Enter the password for the TLS/SSL trust store file. This option applies only to SAP HANA and will only be visible when SAP HANA is selected as the Database Type . Try Connection Click to try the connection to the database, using the configured values. Advanced Connection Setup The Advanced Connection Setup enables you to specify a customized connection string. It can be used for Oracle RAC and Snowflake connections, or when you need to add additional properties to a connection. For more information, see the relevant subsections. Open Database profile configuration - Advanced Connection Setup Setting Description Setting Description Default Connection Setup Select to configure a default connection. For further information, see the section above, Default Connection Setup. Advanced Connection Setup Select to configure the data source connection using a connection string. Database Type Select any of the available database types. You may need to perform some preparations before attempting to connect to the database for the first time, see the respective pages for each database type for information. Connection String Enter a connection string containing information about the database and the means of connecting to it. Notification Service This field is used when the selected Database Type is Oracle. For more information, see Oracle . Username Enter the database user name. Password Enter the database password. Try Connection Click to try the connection to the database, using the configured values. The Properties Tab The Properties tab allows you to configure additional properties for certain database types. Open The Database profile configuration - Properties tab Currently, the following properties can be configured: Database Type Properties Database Type Properties CSV All properties described on the page http://csvjdbc.sourceforge.net/doc.html in the section section "Driver Properties" can be used. MySQL mysql.connectionpool.maxlimit Oracle oracle.pool.connectionwaittimeout oracle.pool.maxlimit oracle.net.encryption_client oracle.net.encryption_types_client oracle.net.crypto_checksum_client oracle.net.crypto_checksum_types_client PostgreSQL postgresql.connectionpool.maxlimit escapeSyntaxCallMode Note! Since PostgreSQL 11, there is support for stored PROCEDURE, prior versions of PostgreSQL support only the stored FUNCTION. Hence, a new connection property called escapeSyntaxCallMode has been introduced by PostgreSQL for users to configure. This property specifies how the driver transforms JDBC escape call syntax into underlying SQL, for invoking procedures or functions. In escapeSyntaxCallMode=select (the PostgreSQL default) mode, the driver always uses a SELECT statement (allowing function invocation only). In escapeSyntaxCallMode=callIfNoReturn mode, the driver uses a CALL statement (allowing procedure invocation) if there is no return parameter specified. Otherwise, the driver uses a SELECT statement. In escapeSyntaxCallMode=call mode, the driver always uses a CALL statement (allowing procedure invocation only) In case you are using Callable Statements with PostgreSQL, you can configure the escapeSyntaxCallMode connection property in the Database Profile. However, if this property is not configured in the Database Profile, it will be using the default escapeSyntaxCallMode =select. If you're utilizing Callable Statements with PostgreSQL, you have the option to set the escapeSyntaxCallMode property either within the Connection String parameters or within the Properties tab of the Database Profile. Should you choose to configure this property in both locations, priority will be given to the setting within the Connection String. SAP HANA sapdb.connectionpool.maxlimit Note! If you have configured any of these properties using topo or the Connection String field when making an Advanced Connection Setup , the properties configured in the Properties tab will override these. Database Types The following table provides information on the database versions supported. Database Version Database Version Cassandra 3.11.3 CSV - DB2 10 Derby 10 MS SQL Server 2008, 2008R2, 2012, 2014, 2016, Azure SQL Database, Azure SQL Data Warehouse/Parallel Data Warehouse MySQL 8 Netezza - Oracle 12cR2/19c PostgreSQL 12/13/14/15/16 Redshift - SAP Hana 2.0 (Please refer to SAP docs on latest supported SPS versions) Snowflake - Sybase IQ The version of Sybase IQ support through the use of the JCONN4 driver Teradata 16.20 TimesTen 11.2 Vertica 8.1 This section includes the following subsections: TimesTen Cassandra CSV Derby IBM DB2 MariaDB MySQL Netezza Oracle PostgreSQL Redshift SAP HANA DB Snowflake SQL Server Sybase IQ Teradata Vertica
+
+---
+
+# Document 1005: UDP Agent Events - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205654388/UDP+Agent+Events
+**Categories:** chunks_index.json
+
+Agent Message Events An information message from the agent, stated according to the configuration done in the Event Notification Editor. For further information about the agent message event type, see Agent Event . Listening on <port> Reported along with the configured port number when the workflow is started. Agent Debug Events There are no debug events for this agent. Loading
+
+---
+
+# Document 1006: SAP CC Batch Agent Input/Output Data and MIM - Batch - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204642759/SAP+CC+Batch+Agent+Input+Output+Data+and+MIM+-+Batch
+**Categories:** chunks_index.json
+
+Input/Output Data The Input/Output data is the type of data an agent expects and delivers. The SAP Batch agent collects and emits UDRs of the 'sapcc' and 'sapcc.batch' type. For further information, see SAP CC Batch UDRs . MIM For information about the MIM and a list of the general MIM p aramete rs, see Administration and Management in Legacy Desktop . Publishes The SAP CC Batch agent does not publish any MIM resources. Accesses The SAP CC Batch agent does not access any MIM resources.
+
+---
+
+# Document 1007: IBM MQ UDRs - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205653017/IBM+MQ+UDRs
+**Categories:** chunks_index.json
+
+The IBM MQ UDRs are designed to handle the connection towards the MQ message queues and the messages that are read and written. If the agent is using dynamic initialization, the connection UDRs are used for setting up the connection. The types MQMessage and MQMessageTopic UDR Types are used for handling the messages. APL commands are used for producing outgoing messages and the UDR types used for this are MQQueueManagerInfo , MQQueue and MQMessage . Connection UDRS If the agent is configured with dynamic initialization, a connection UDR is sent to the Analysis agent at startup. The Analysis agent populates the UDR and routes it back to the IBM MQ Collection agent. The content of the connection UDR will then be used to configure the agent. MQConnectionInfo If the connection mode is set to Queues, MQConnectionInfo will be used as the connection UDR. The following fields are included in the MQConnectionInfo UDR: Field Description Field Description ChannelName (string) The name of the MQ channel. Host (string) The host name of the queue manager host. Port (integer) The port for the queue manager. Properties (map <any,any>)(optional) A map of optional properties to be set, for example, user name. QueueManager (string) The name of the queue manager. Queues (list <string>) A list of queues to listen to. MQConnectionInfoTopic If the connection mode is set to Topics, MQConnectionInfoTopic will be used as the connection UDR. The following fields are included in the MQConnectionInfoTopic UDR: Field Description Field Description ChannelName (string) The name of the MQ channel. Host (string) The host name of the queue manager host. Port (integer) The port for the queue manager. Properties (map <any,any>)(optional) A map of optional properties to be set, for example, user name. QueueManager (string) The name of the queue manager. TopicNames (list <string>) A list of topics to subscribe for. MQConnectionInfoDurableTopic If the connection mode is set to Durable Subscriptions, MQConnectionInfoDurableTopic will be used as the connection UDR. The following fields are included in the MQConnectionInfoDurableTopic UDR: Field Description Field Description ChannelName (string) The name of the MQ channel. DurableSubscriptions (list <string>) A list of subscriptions to listen to. Host (string) The host name of the queue manager host. Port (integer) The port for the queue manager. Properties (map <any,any>)(optional) A map of optional properties to be set, for example, user name. QueueManager (string) The name of the queue manager. MQMessage For each message in the MQ message queue, a UDR is created and sent into the workflow. When the IBM MQ agent receives the MQMessage in return it will remove the message from the queue. The following fields are included in the MQMessage UDR: Field Description Field Description CorrelationID (bytearray) This ID can be used for correlating messages that are related in some way or another, e g requests and answers. The length of this field will always be 24, meaning that fillers will be added to IDs that are shorter, and IDs that are longer will be cut off. Id (bytearray) The message id. Message (bytearray) The message. Persistent (boolean) If set to "true", the message will be sent as a persistent message, otherwise the queue default persistence will be used. ReplyToQueue (string) The name of the queue to reply to. ReplyToQueueManager (string) The name of the queue manager to reply to. SourceQueueName (string) The name of the source queue. MQMessageTopic For each topic message, a UDR is created and sent into the workflow. The following fields are included in the MQMessageTopic UDR: Field Description Field Description DataMessage (bytearray) The message id. MQQueue The MQQueue UDR is a reference to an IBM MQ queue when using APL commands. The UDR is created by the mqConnect function and all fields are read-only. The following fields are included in the MQQueue UDR: Field Description Field Description CurrentDepth (integer) The number of messages currently in the queue. ErrorDescription (string) A textual description of an error. IsError (boolean) Returns true if the UDR contains an error message. IsOpen (boolean) Returns true if the connection was successfully opened. MaxDepth (integer) The maximum number of messages allowed in the queue. MqError (string) The error code provided by IBM MQ when a connection attempt fails or in case of an error related to the mqPut or mqClose commands occurs. QueueManager (string) The name of the queue manager. QueueName (string) The name of the queue to connect to. MQQueueManagerInfo The MQQueueManagerInfo UDR type is used by the APL functions when establishing a connection towards a queue on the Queue Manager for outgoing messages. The following fields are included in the MQQueueManagerInfo UDR: Field Description Field Description ChannelName (string) The name of the MQ channel. Host (string) The hostname of the queue manager host. Port (integer) The port for the queue manager. Properties (map<any,any>) A map of optional properties to be set, for example, user name. QueueManager (string) The name of the queue manager.
+
+---
+
+# Document 1008: Installing the Desktop Launcher - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204644368/Installing+the+Desktop+Launcher
+**Categories:** chunks_index.json
+
+To install and run the Desktop Launcher: Open a browser and go to http://<platform host>:<platform port>/launch/desktop/launcher Download the Desktop Launcher (jar or exe file). Double-click the downloaded file. If you choose to run an .exe file, you can download it from the software package that you receive in <package name>/release/complete/desktop/launcher/bundles/ . Windows associates .jar files with a Java version. This decides which Java version the desktop installer runs on. The association between filetype and program is set in the windows registry in a parameter called jar file . If you choose to run the .exe file, the correct Java version is detected automatically.
+
+---
+
+# Document 1009: Data Veracity Performance Tuning - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204640720/Data+Veracity+Performance+Tuning
+**Categories:** chunks_index.json
+
+You will find the following databases under this tuning guide: 1 Tuning on PostgreSQL 2 Tuning on Oracle 3 Tuning on SAP HANA Tuning on PostgreSQL This section describes how to tune the PostgreSQL database for use with Data Veracity. Much like Oracle, Data Veracity allows the user to improve the performance of PostgreSQL queries. The following will be a suggestion on how to improve the performance. It is always important to consult your DBA before proceeding with any of these suggestions or if they are necessary in your solution. PostgreSQL has certain specific syntaxes that are used for certain data types, the following examples will show how to index in PostgreSQL for string data types, integer data types and timestamps. The following command will show how a string field can be indexed. Index for String fields in PostgreSQL CREATE INDEX dvStrField1 ON dvtestudr ((udr_json ->> 'stringField1')); For fields located within multiple sublevels of UDR, the following command will create a unique index for a field that is located in within the subUDRs. Index for nested fields CREATE INDEX dvStrField1 ON dvtestudr ((udr_json -> 'sub1Field' -> 'sub2Field' ->> 'stringField1')); Following from the example as shown above, to index the UDR field intField1, the search performance could be improved by creating an index in the PostgreSQL database for this field. The following will be an SQL command to create a unique index meant for an integer field in the JSON record. Index for Integer fields in PostgreSQL CREATE INDEX dvIntField1 ON dvtestudr (cast(udr_json ->> 'intField1' AS int)); When it comes to timestamps, a function is the recommended suggestion to make the data type immutable when it is casted for an index. The example will show a sample PostgreSQL function and the command for the index. Index for timestamps CREATE OR REPLACE FUNCTION dvcasttime(text) RETURNS timestamp AS $$SELECT to_timestamp($1, 'YYYY-MM-DD HH24:MI:SS')$$ -- change the timestamp format to the format being used in the field LANGUAGE sql IMMUTABLE; CREATE INDEX dvdDateField1 ON dvtestudr (dvcasttime(udr_json ->> 'dateField1')); Tuning on Oracle This section describes how to tune the Oracle Database for use with Data Veracity. Oracle Installation Be sure to consult your DBA to ensure that all system configuration tasks for the Oracle installation are completed before getting started on Data Veracity. Data Veracity uses Oracle 19c's JSON capabilities for storing data. This provides the capability to improve the performance of the SQL queries from Data Veracity, by applying the Oracle's database features for JSON fields indexing. The following are suggestions to how you may improve performance for Data Veracity, it is highly recommended that you consult your DBA before proceeding with any of these suggestions or if they are necessary in your solution. Open Example of a table created in Data Veracity, viewed using sqlplus The Table above shows a table, created using the SQL generation in the Data Veracity profile. The UDR_JSON field is where the record for every UDR is kept. The UDR is kept in a JSON format and Oracle 19c has a way to allow users to cr eate an index of a field located in the JSON format itself. Open Example UDR with 3 sub UDR levels Take for example, when the user frequently searches for the UDR field intField1, the search performance could be improved by creating an index in the Oracle database for this field. The following will be an SQL command to create a unique index meant for a field in the JSON record. Index for intField1 CREATE UNIQUE INDEX dvIntField1_idx ON dvtestudr (json_value(udr_json, '$.intField1' RETURNING NUMBER ERROR ON ERROR)); If fields located within multiple sublevels of UDR are frequently queried by the user, an index could be created to improve the performance for searching this field. The following SQL command will create a unique index for a field that is located in within the subUDRs. Index for sub1Field.sub2Field.intField CREATE UNIQUE INDEX dvIntSubField2_idx ON dvtestudr (json_value(udr_json, '$.sub1Field.sub2Field.intField' RETURNING NUMBER ERROR ON ERROR)); Tuning on SAP HANA This section describes how to tune the SAP HANA database for use with Data Veracity. General Usage For SAP HANA, memory sizing is especially important due to the data being stored in-memory to avoid the performance penalty of disk I/O. We recommend running the HANA_Configuration_Minichecks script as described in the SAP Knowledge Base Article 3019194 if there is any performance issue and consult with the DBA to implement the suggestions. Additionally, as the number of records in the table and the size of the UDRs varies, it is highly recommended to add query filters using the common fields (e.g. ID, ERROR_CODE, INSERT_TIME, STATE, UPDATE_TIME, WORKFLOW_NAME) to narrow down the search scope for better performance. Memory Allocation In the event that the number of records are large enough to cause the database to run out of memory, you may refer to the SAP Knowledge Base Article 3202692 to adjust the statement_memory_limit accordingly, so that the maximum memory allocation per statement can be increased to an amount which is suitable to the workload. Please consult with your DBA before making the changes. If memory limit errors still occur, consider scaling up the memory of the server hosting the SAP HANA database to allow for a higher limit adjustments. Columnar vs Row-based Tables The SQL generated by the Data Veracity Profile for SAP HANA creates columnar tables, as the performance is generally better compared to row-based. The rule of thumb is that if the majority of table access is through a large number of tables with only a few selected attributes, then columnar storage is preferred. Row-based storage is preferable if most table access involves selecting a few records with all attributes selected. Batch Size In cases where there is a significant network latency between the server and the SAP HANA database, it is recommended to configure the property mz.dv.jdbcBatchSize to limit the fetch size while repairing the records using UI. The default value is 100, meaning 100 rows will be fetched from the database simultaneously, which might not be optimal for large result sets or when significant network latency is observed. As a larger value will result in a higher memory consumption, we recommend increasing it gradually while monitoring the platform memory usage, to prevent the Platform from running out of memory. The property can be configured using the topo command, for example: mzsh topo set topo://container:<platform-container-name>/pico:platform/val:config.properties.mz.dv.jdbcBatchSize 5000
+
+---
+
+# Document 1010: mzcli Textual Pattern Matches - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/547980447/mzcli+Textual+Pattern+Matches
+**Categories:** chunks_index.json
+
+In resemblance to Regular Expressions, when searching through text strings of names and other textual patterns in mzcli, there are two characters that help you filter text according to certain criteria: The asterisk '*' is a wildcard for one or more characters. The question mark '?' is a wildcard for any single character. Note! If you want to use the '*' and '?' wildcards when you are not logged in, the wildcards have to either be enclosed with single or double quotation marks or preceded with a backslash ''. For example: mzcli mzadmin/dr wfgrouplist * will work. mzcli mzadmin/dr wfgrouplist "*" will work. mzcli mzadmin/dr wfgrouplist * -mode D will not work. The period '.' punctuation mark is not a wildcard and is treated as a normal punctuation mark character.
+
+---
+
+# Document 1011: Overview External Version Control - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+
+
+---
+**End of Part 44** - Continue to next part for more content.
