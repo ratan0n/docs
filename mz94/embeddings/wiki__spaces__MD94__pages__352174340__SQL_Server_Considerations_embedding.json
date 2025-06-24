@@ -1,0 +1,25 @@
+{
+  "id": "wiki__spaces__MD94__pages__352174340__SQL_Server_Considerations",
+  "title": "SQL Server Considerations - MediationZone Documentation 9.4 - InfoZone",
+  "url": "https://infozone.atlassian.net/wiki/spaces/MD94/pages/352174340/SQL+Server+Considerations",
+  "categories": [
+    "space:MD94"
+  ],
+  "text": "When distributing data to an SQL Server table, the following must be taken into consideration: The table must have at least one UNIQUE column. The column reserved for the Transaction ID must be of type bigint . Columns of type UNIQUEIDENTIFIER must be set with a function. Hence, map it to NULL in the agent. Columns with an IDENTITY set must be mapped to NULL in the agent. Note! For MS SQL, the column type timestamp is not supported in tables accessed by MediationZone. Use column type datetime instead. See System Administrator's Guide for information about time zone settings.",
+  "chunks": [
+    {
+      "chunk_id": 1,
+      "text": "When distributing data to an SQL Server table, the following must be taken into consideration: The table must have at least one UNIQUE column. The column reserved for the Transaction ID must be of type bigint . Columns of type UNIQUEIDENTIFIER must be set with a function. Hence, map it to NULL in the agent. Columns with an IDENTITY set must be mapped to NULL in the agent. Note! For MS SQL, the column type timestamp is not supported in tables accessed by MediationZone. Use column type datetime instead. See System Administrator's Guide for information about time zone settings.",
+      "title": "SQL Server Considerations - MediationZone Documentation 9.4 - InfoZone",
+      "url": "https://infozone.atlassian.net/wiki/spaces/MD94/pages/352174340/SQL+Server+Considerations",
+      "word_count": 99,
+      "char_count": 581
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-24T04:21:04.772910",
+    "word_count": 99,
+    "char_count": 581,
+    "chunk_count": 1
+  }
+}
