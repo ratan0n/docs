@@ -1,0 +1,383 @@
+# RATANON/MZ93-DOCUMENTATION - Part 88/112
+
+---
+**Dataset:** ratanon/mz93-documentation
+**Part:** 88 of 112
+**GitHub:** https://github.com/ratan0n/docs/tree/main/mz93-documentation
+**Size:** ~67.3 KB
+---
+
+This page describes the steps to set up a Prometheus monitoring server to obtain metrics data from your deployment. Prerequisites The following must be completed before setting up Prometheus: Download the latest LTS release of Prometheus for your operating system from Download | Prometheus . Extract the binaries. Refer to Getting started | Prometheus for more information. Setup with example Prometheus configuration file Go to the extracted Prometheus directory. cd prometheus-* Create a yaml file named prometheus_mz.yaml as follows. # my global config global: scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute. evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute. # scrape_timeout is set to the global default (10s). # A scrape configuration containing exactly one endpoint to scrape: # Here it's Prometheus itself. scrape_configs: # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config. #- job_name: 'prometheus' # # metrics_path defaults to '/metrics' # # scheme defaults to 'http'. # static_configs: # - targets: ['localhost:9090'] - job_name: 'mz' static_configs: - targets: ['localhost:8888'] # port defined in the topo STR config labels: pico: 'platform' - targets: ['localhost:9090'] # port defined in the topo STR config labels: pico: 'ec1' Configuring JMX exporter for Platform server To enable Prometheus to scrape metrics from your Platform and UI, you need to configure the JMX exporter. The JMX exporter will expose and export all the metrics from your Platform and UI, allowing Prometheus server to collect them. Follow the steps below to configure the JMX exporter. Create a yaml file named jmxExporter.yaml as follows. Refer to jmx_exporter/docs at main  prometheus/jmx_exporter for more information on the yaml file. startDelaySeconds: 0 ssl: false lowercaseOutputName: false lowercaseOutputLabelNames: false Add the following jvmargs to the platform topo configuration. mzsh topo set topo://container:main1/pico:platform/obj:config.jvmargs.args  '["-javaagent:common/lib/jmx_prometheus_javaagent.jar=8888:<path>/jmxExporter.yaml"]' Restart the Platform. mzsh restart platform Starting a Prometheus To start the Prometheus, use the following command: cd prometheus-* ./prometheus --config.file=prometheus_mz.yaml --web.listen-address=:10090 Info! By default, Prometheus listens on port 9090, which may conflict with the default port of EC1. You can change the listening port using the --web.listen-address argument as shown above.
+
+---
+
+# Document 2065: Data Model for PCF Session Management Policy - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205656444/Data+Model+for+PCF+Session+Management+Policy
+**Categories:** chunks_index.json
+
+Included in Development Toolkit User's Guide is an example of a data model for PCF Session Management Policy, as defined in: https://www.etsi.org/deliver/etsi_ts/129500_129599/129512/16.08.00_60/ts_129512v160800p.pdf https://www.etsi.org/deliver/etsi_ts/129500_129599/129571/15.03.00_60/ts_129571v150300p.pdf https://www.etsi.org/deliver/etsi_ts/129200_129299/129212/15.03.00_60/ts_129212v150300p.pdf https://www.etsi.org/deliver/etsi_ts/124000_124099/124008/13.07.00_60/ts_124008v130700p.pdf https://www.etsi.org/deliver/etsi_ts/129500_129599/129514/17.05.00_60/ts_129514v170500p.pdf https://www.ieee802.org/802_tutorials/2013-03/8021-IETF-tutorial-final.pdf https://datatracker.ietf.org/doc/html/rfc7042 In order to make full use of the SM Policy and create the needed business logic, it is important to understand the underlying data models. This section outlines the structure and underlying fields of each object in the data model, and contains the following sub sections: SMPolicy Data Model Common Data Model Provisioning PCF Session Management Policy in Desktop Online
+
+---
+
+# Document 2066: Appendix 3 - Task Workflow Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204644296/Appendix+3+-+Task+Workflow+Agents
+**Categories:** chunks_index.json
+
+Task workflows are used to execute system housekeeping tasks such as removing files or cleaning up database tables. The following are the Task Workflow agents we have: 1 Data Hub Task Agent 2 Data Veracity Task Agent 3 Python Task Agent 3.1 General 3.2 MIM 4 SQL Agent 5 Script Agent 6 Unit Test Runner Agent Data Hub Task Agent The Data Hub Task agent is explained in detail in Data Hub Task Agent . Data Veracity Task Agent The Data Veracity Task Agent is explained in detail in Data Veracity Task Agent . Python Task Agent The Python Task Agent runs Python scripts and is configured in two tabs  General where the code is entered and MIM where MIM values can be freely assigned. General Open The Python collection agent configuration - General tab In the General tab, you enter the selected code string that needs to be executed in a task workflow. You can Validate the input code and confirm your choice by clicking on the OK button. Setting Description Setting Description Code Area This is the text area where you enter your code, see Python Writer's Guide for further information. The entered code will be color-coded depending on the code type, and for input assistance, a pop-up menu is available. Below the text area, there are line, column, and position indicators. See Python Code Editor Assistance . Interpreter Select which https://infozone.atlassian.net/wiki/x/SBU0D you want to use. If no selection is made the interpreter that has been set as default in the https://infozone.atlassian.net/wiki/x/uwgzD will be used. MIM Open The MIM tab of the Python Task Agent You can assign MIM values and edit entries using the Add, Edit, Remove, Up , and Down buttons. When you click on the Add button the Add MIM dialog box will open. Open The Add MIM dialog box Here, you can insert the relevant MIM values. Setting Description Setting Description Assigned Select the target assignee to which the MIM will be bound. Name Enter the name of the MIM value Type Select the data type, you can choose from the following supported data types: any, boolean, date, double, int, long , and string . SQL Agent The SQL agent executes an SQL statement or script in the database specified by a database profile. Open SQL agent configuration Setting Description Setting Description Database Click Browse... to select a Database profile. For further information about how to configure a Database profile, see Database Profile . SQL Statement Enter a PL/SQL script or SQL statements. Note! Group several SQL statements within a block. For a single SQL statement omit the semicolon (;) at the end. Script Agent This agent runs a shell script or other executable located on the filesystem of an EC. The workflow will stop when it receives an exit code from the script. If the script returns a non-zero exit code, the workflow will abort. Output to stdout will appear in the debug output from the agent. Warning! It is strongly recommended that you run script task workflows on a separate EC. Running script task workflows on the same EC as other workflows may cause unpredictable errors and loss of data. During a short time before exec() runs the actual script, fork() allocates the same amount of memory for the script as used for the EC. If the memory is not available, the EC will abort with an out-of-memory error and must then be restarted. Open Script agent configuration Setting Description Setting Description Script Name Enter the absolute path and name of the script file or executable that will perform the task. You may omit the path if it is not required by the shell. For instance, to remove files or directories you can simply enter rm or rmdir . Parameters Enter the arguments and options expected by the script. The value will be passed as-is to the shell, except for carriage return characters, which will be handled as a blank spaces. To call the script without options parameters, leave this field blank. Unit Test Runner Agent This task agent executes unit tests. You can customize the queries and define the exact location where the reports are saved. Open Unit Test Runner Task Agent Configuration Setting Description Setting Description Test Discovery Settings Query Enter the unit test run query All Select this option to enter "all" into the query field. Add folder... Select this option to enter the add folder code into the query field. Add name... Select this option to enter a unit test. Report Settings Directory Enter the target directory where the reports will be saved. Interpreter Settings Profile Select the Interpreter profile.
+
+---
+
+# Document 2067: Legacy KafkaResponseUDR - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/301138753/Legacy+KafkaResponseUDR
+**Categories:** chunks_index.json
+
+The KafkaResponseUDR holds data to be sent to the Kafka log, a DRUDR , an error message, and a counter for UDRs not yet persisted. The KafkaResponseUDR generates an acknowledgment message for every persisted UDR to an external system. The following fields are included in the KafkaResponseUDR : Field Description Field Description cycleUDR (DRUDR) This field is for any information that you want to receive when getting the acknowledgment back. data (bytearray) Producer: This field holds data to be passed to the Kafka log by the Kafka Forwarding Agent (producer). Collector: This field is populated with the data read from the Kafka log. errorMessage (string) This field provides a message with information on the error which has occurred. This is a read-only field. key (bytearray) This field can be used for setting a key for messages sent to the broker. offset (long) This is a read-only field. This field is populated by the Kafka Collection agent and contains the offset in the Kafka log from where the message was consumed. outstandingRequestCnt (int) This field is a counter for UDRs that have not yet been persisted. This is a read-only field. If you require to reduce the maximum number of outstanding requests held in the buffer, you can decrease the value for the property buffer.memory in the Kafka profile configuration dialog, in the Producer tab in the Advanced tab. partition (short) Producer: This field holds the partition to which the Kafka Forwarding agent (producer) writes the message. If this field is not populated, the partition is chosen randomly. Collector: This field holds the partition from which the message was consumed by the Kafka Collection agent (consumer).
+
+---
+
+# Document 2068: Workflow Packages Containing Web Services - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204997034/Workflow+Packages+Containing+Web+Services
+**Categories:** chunks_index.json
+
+If you are upgrading from MediationZone 9.0. or later, and have workflow packages containing workflows with Web Services, you need to perform some additional steps before and after the upgrade of MediationZone to achieve a successful upgrade. If you do not perform these steps, the workflows using Web Services in workflow packages will abort after the upgrade. To ensure workflow packages containing workflows with Web Services function correctly after the upgrade, follow these steps: Before initiating the upgrade, generate new versions of the workflow packages containing workflows with Web Services. This needs to be done in an environment where MediationZone 9.1 is already installed. Upgrade MediationZone according to the regular instructions Upgrade . Once the upgrade is complete, import the new versions of the workflow packages that you generated in step 1 and switch to the new workflow package version. See Workflow Packages for more information about Workflow Packages. We recommend that you test the steps in a test environment before the production upgrade.
+
+---
+
+# Document 2069: Audit Tab - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204736680/Audit+Tab
+**Categories:** chunks_index.json
+
+The Audit tab in the Workflow Properties dialog defines what information to enter in the user table(s) as defined in the Audit profile configuration. Either the MIM values are entered from this window, or anything can be sent on with the APL audit functions (from Analysis or Aggregation agents). Note! The Audit tab is only valid for batch workflows. Open Workflow properties - Audit tab Item Description Item Description Enable Audit Turns on audit for the workflow. Profile Click Browse... to select an audit profile from the drop-down list. For further information, see Audit Profile . Column Name The name of the columns as defined in the selected Audit profile. Type The type of the columns as defined in the Audit profile. Assign By Indicates if the column will be populated using APL functions or via configuration using existing MIM values. Valid options are: Method - The column will be populated through any of the APL functions auditAdd or auditSet . The first is used on Counter columns, and the latter on Value columns. MIM - The column will be populated with the MIM value selected in the MIM Resource column. System - Reserved for the Transaction Id. MIM Resource Valid only if MIM is selected in Assign By . Click on the MIM button to display a dialog from which you can select existing MIM values. Log Audit on Cancel Batch If enabled, audit is logged for canceled batches. Note! Counter column values will be reset for canceled batches, while value columns will keep the value they had when the batch was canceled.
+
+---
+
+# Document 2070: PCC Routing Control - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204645897/PCC+Routing+Control
+**Categories:** chunks_index.json
+
+Search this document: PCC Routing Control is an extension of the platform from MediationZone and delivers the capability to route and transform real-time data such as Diameter messages. Prerequisites The reader of this document should be familiar with: Diameter Agents For information about the Terms and Abbreviations used in this document, see the Terminology document. Chapters The following chapters and sections are included: Workflow Packages for Routing Control Routing Control Data Model Provisioning for Routing Control
+
+---
+
+# Document 2071: Getting Started - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205029779/Getting+Started
+**Categories:** chunks_index.json
+
+Verify that the version is on 8.0 or later. You can check the current version by opening the About window in the Desktop, where you can see which pico version the Platform is running on. If the system is running on a version earlier than 8.0, it needs to be upgraded to any of the later versions before the upgrade to version 9.x. Read the upgrade instructions carefully and make sure you understand all the steps. Read the Release Notes for each version in order to understand the new features for each release
+
+---
+
+# Document 2072: mzcli - vcimport - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/547980384/mzcli+-+vcimport
+**Categories:** chunks_index.json
+
+Usage usage: vcimport [options] This command imports exports made with the vcexport command. Option Description Option Description [-d, --directory] This option is mandatory and is used to state from which directory you want to import data. [-y, --dryrun] Use this option to parse import files without importing them. [-f, --folders] Use this option to specify which folders you want to include in the import. For example, mzcli <user name>/<password> vcimport -d MyDirectory/ -f Default ECS will import the configurations in the folders Default and ECS. If this option is not used, configurations in all folders will be included. [-m, --message] Use this option to add a message to identify the import. Return Codes Note! If a key or name conflict occur, the imported data will not overwrite existing configurations. Listed below are the different return codes for the vcimport command: Code Description Code Description 0 Will be returned if the import was successful. 1 Will be returned if the command could not be interpreted, e g if a option that does not exist has been entered. 2 Will be returned if the import failed. 3 Will be returned if the folder you want to import from, stated with the -d, --directory option, does not exist. 5 Will be returned if the folder(s) stated, when using the -f, --folders option, does not exist.
+
+---
+
+# Document 2073: Amazon S3 Collection Agent Events - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205031737/Amazon+S3+Collection+Agent+Events
+**Categories:** chunks_index.json
+
+Agent Message Events An information message from the agent, stated according to the configuration done in the Event Notification Editor. For further information about the agent message event type please refer to Agent Event . Ready with file: filename Reported along with the name of the source file that has been collected and inserted into the workflow. File cancelled: filename Reported along with the name of the current file, each time a Cancel Batch message is received. This assumes the workflow is not aborted; refer to Amazon S3 Collection Agent Input/Output Data and MIM . Debug Events There are no debug events for this agent.
+
+---
+
+# Document 2074: APN Agent - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/285638657
+**Categories:** chunks_index.json
+
+This section describes the APN profile and agent. The agent is a processing agent available in real-time workflow configurations. The APN agent allows push notifications to be sent to mobile devices using Apple certificates. Open An example of APN workflow The agent requires a profile containing configurations for the certificate, and needs to be provided with Title, Body, and Device token for the messages to be sent. There are also two UDR types specific for the APN agent; APNUDR and APNResult . Note! The APN agent does not support HTTP Proxy. Prerequisites The user of this information should be familiar with: Apple Push Notification Service ( https://developer.apple.com/notifications/ ) The section contains the following subsections: APN Profile APN Agent Configuration APN UDRs APN Agent MIM and Events
+
+---
+
+# Document 2075: Updating the Installation Properties for Execution Container - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204637973/Updating+the+Installation+Properties+for+Execution+Container
+**Categories:** chunks_index.json
+
+Installer Properties for Execution Container Execution Container Properties
+
+---
+
+# Document 2076: FTP Collection Agent Events - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205033125/FTP+Collection+Agent+Events
+**Categories:** chunks_index.json
+
+Agent Message Events An agent message is an information message sent from the agent, stated according to the configurations made in the Event Notification Editor. For further information about the agent message event type, see Agent Event . Ready with file: filename Reported, along with the name of the source file, when the file has been collected and inserted into the workflow. File cancelled: filename Reported, along with the name of the current file, when a Cancel Batch message is received. This assumes the workflow is not aborted when a Cancel Batch message is received, see FTP Collection Agent Transaction Behavior for further information. Debug Events Debug messages are dispatched in debug mode. During execution, the messages are displayed in the Workflow Monitor. You can configure Event Notifications that are triggered when a debug message is dispatched. For further information about the debug event type, see Debug Event . The agent produces the following debug events: Command trace A printout of the control channel trace either in the Workflow Monitor or in a file.
+
+---
+
+# Document 2077: ECS Inspector Table - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204672991
+**Categories:** chunks_index.json
+
+Once the search is performed and matches are found the table in the ECS Inspector is populated. Each row represents one UDR or one batch. Note! The ECS Inspector caches the result when the user populates a list (for instance the Error Codes). This is done to avoid unnecessary population of workflow names, agent names, and error codes since it is costly in terms of performance. You have to click on the Refresh button in order to repopulate the search window. Open ECS Inspector - UDRs Open ECS Inspector - Batches Columns The following columns are available in the ECS Inspector table: Column Description Column Description # The table sequence number. Db ID A sequence number, automatically assigned to an entry. Date Date and time when the entry was inserted in the ECS. Workflow Name of the workflow from which the data was sent. Agent Name of the agent that sent the entry to ECS. For UDRs, this is the ECS forwarding agent. For batches, this is a collection agent. UDR Type Available for UDRs. This column displays the UDR type. Cancel Agent Available for batches. This column displays the name of the agent that issued the cancelBatch request. Cancel Message Available for batches. This column displays the message sent with the cancel request. The following example shows a user defined request, defined with APL using an Analysis agent: Example - A user defined request, defined using APL cancelBatch("undefined_number_prefixes."); Error Code The Error Code as defined in the ECS. Error UDR Available for batches. This column displays the type of the Error UDR associated with the batch. Double-click on a table cell in this column to show information about the whole Error UDR. The Error UDR is populated with information needed in a workflow when reprocessing a batch. You can populate the Error UDR either from the Workflow properties dialog (see Workflow Properties, Error tab ), or from an agent using APL (see ECS Collection Agent Configuration ). The fields of the Error UDR automatically appear as MIM values in the reprocessing workflow. Open Workflow Properties dialog - Error tab Example - ErrorUDR myErrorUDR eUDR = udrCreate( myErrorUDR ); eUDR.noOfUDRs = (long)mimGet( "IN", "Outbound UDRs" ); udrAddError( eUDR, "nokSOURCE", "Switch not found." ); cancelBatch( "Incorrect source.", eUDR ); The error UDR format is defined as any other format from the Ultra Format Editor. internal myErrorUDR{ long noOfUDRs; }; RP Group Shows the reprocessing group that the entry is assigned to, if any. Assignments can be made both manually and automatically. In the latter case, an Error Code must be mapped to a reprocessing group. RP State Initially, an entry has the reprocessing state New , that is the entry has not been reprocessed. In order for it to be collectable, it has to be assigned to a reprocessing group. When collected by an ECS collection agent, the state is changed to Reprocessed . Note! Only entries in state New may be collected by the ECS collection agent. The state can manually be changed back to New if needed. Only entries set to Reprocessed can be removed. MIM Values Double-clicking this field displays a new dialog, listing the MIM values. MIM values are configured differently for batches and UDRs: Batch - From the Workflow properties dialog. UDR - From the ECS forwarding agent. Note that to open the MIM values dialog, the MIM Values field(s) have to be populated. Tags Available for UDRs. This column displays any tags that have been set for the UDRs. Last RP State Change This column displays the timestamp when the reprocessing state was last changed. The first time a UDR is sent to the ECS, it is set to state New , so in this case the column displays the timestamp when the UDR was inserted into the ECS. When the UDR is collected for reprocessing or if the state is changed manually, this column is updated with the current timestamp. <search field label(s)> Available for UDRs. If you have configured Searchable Fields in the ECS, the search field labels are displayed as individual columns. See Configuring Searchable Fields in the ECS for further information. Tagging UDR After you have searched for UDRs, you can select specific UDRs that are of interest, tag them, and then save a filter based on the tag. This will display only the tagged UDRs whenever the filter is used. Warning! If you remove the tag that you have specified in the filter, the filter will not work properly. To tag UDRs and save as a filter: After populating the ECS Inspector, select the UDRs you want to tag. Right-click in the table and select the Set Tag on UDR(s)... option. A dialog opens asking you to enter a name for the tag. Open Setting tags Enter the tag name in the Tag Name field and click OK . The selected UDRs are now tagged. Open the Search ECS dialog by clicking on the Search button. Select the Tag checkbox and enter the tag you want to search for in the field to the right of the checkbox. Click on the Save As... button beneath the Saved Filters list. A dialog opens asking you to enter a name for the filter. Enter a name in the Saved Filter Name field and click OK . The dialog closes and the new filter appears in the Saved Filters list. Open Tag Filter The next time you want to view the tagged UDRs, select the saved filter when making your search to only display the tagged UDRs in the ECS Inspector.
+
+---
+
+# Document 2078: Operation and Maintenance - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205658321/Operation+and+Maintenance
+**Categories:** chunks_index.json
+
+Operation and maintenance of MediationZone includes managing picos, configuring access rights for different users and groups, and version handling, among other things.
+
+---
+
+# Document 2079: CSV - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204671592/CSV
+**Categories:** chunks_index.json
+
+This section contains information that is specific to the database type CSV, which can be used for reading data from a CSV file instead of reading from a database. Supported Functions The CSV database can be used with: Database Table Related Functions (APL) Shared Table Profile The CSV files need to be in a separate folder. Since the CSV type only reads from files, no additional preparations are required. Note! When using a CSV database profile in a Shared Table configuration, you have to configure the properties for this using Advanced Connection Setup if you want to use any of the table storage options On Heap , Off Heap , Unsafe , or Primitive Lookup . When properties have not been configured for this, only the Object option will be available. Properties When selecting the CSV database type, you can configure all properties described on the page http://csvjdbc.sourceforge.net/doc.html in the section section "Driver Properties" using the Properties tab in the Database profile. Preparations No specific preparations are required for using the CSV database type.
+
+---
+
+# Document 2080: kill - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204646395/kill
+**Categories:** chunks_index.json
+
+usage: kill [ -l ] Ends the pico instances(s) stated after the kill command. If the - l option is used, a list will be displayed instead. Note! This command is valid only for the MZ_HOME owner. Options The command accepts the following option: Option Description Option Description [-l] Lists all running server processes. Use this command only in operating systems that provide you with a reference to the started JVM, pid on Unix. This will cause an unconditional immediate termination of the running process, with no clean-up nor save operations. Return Codes Listed below are the different return codes for the kill command: Code Description Code Description 0 Will be returned if the command was successful. 1 Will be returned if there are not startables to kill, or if a process you want to kill is running but the pid file is missing, or if the you have no read permission for the pid file belonging to the process you want to kill. 2 Will be returned if the process you want to kill is not running, or if there is no such process available to kill.
+
+---
+
+# Document 2081: HTTP/2 Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204607997/HTTP+2+Agents
+**Categories:** chunks_index.json
+
+This section describes the HTTP/2 agents. The HTTP/2 Server and Client agents are for real-time workflows. The Open API and 5G Profiles can be used with HTTP/2 agents. Open It also includes APL functions for connecting as a client to an external HTTP/2 server. Note! The HTTP/2 Agent code is refactored from MediationZone versions 8.1.9 and 8.2, 10.6. This section contains the following subsections: HTTP/2 Server Agent HTTP/2 Client Agent HTTP/2 UDRs 5G UDRs
+
+---
+
+# Document 2082: JMS Request Agent Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204608171/JMS+Request+Agent+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Input/Output Data The agent produces JMSCycle UDR types. MIM For information about the MIM and a list of the general MIM parameters, see MIM . This agent does not publish or access any MIM parameters.
+
+---
+
+# Document 2083: UI Builder Agent - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204643498/UI+Builder+Agent
+**Categories:** chunks_index.json
+
+This section describes the UI Builder agent. The UI Builder agent receives HTTP requests from client applications and responds with an HTML page that can be built from the Analysis agent. This Agent provisions the creation of customized user interfaces without the HTML code. With the UI Builder agent and UI Builder components, you can create HTML pages to be viewed in a Web browser. To view a page created using UI Builder you must log in with a MediationZone user with write access to the UI Builder. The agent produces the UI Cycle UDR , which contains both request and response fields. The request fields of the UDR include the header, method, body, and client resource URI. After the Analysis agent has processed the request, the UI Builder agent receives the UI Cycle UDR back, which includes the original request as well as the response. Open UI Builder Agent workflow The Agent uses HTML code with the Bootstrap library to create responsive pages and Font Awesome to easily present icons. The Font Awesome library requires internet access, but if no internet access is available, the Line Awesome library can be used instead. Example The following is an example showing how to create an empty page using the UI Builder agent without any APL code in the Analysis Agent: Configure the UI Builder agent as shown: Open Add the following APL code to the Analysis Agent and then draw a route back to the UI Builder Agent: consume{ UICycle cycle = (UICycle) input; cycle.response = udrCreate(UIBuilder.Response); udrRoute(cycle); } Start the workflow and navigate to localhost:8089 using a web browser. You will see the following page: Open Once you log in with a user having access to the agent, you will see the following page: Open This section contains the following subsections: UI Builder Agent Configuration UI Builder Agent Input/Output Data and MIM UI Builder Agent Events UI Builder UDRs UI Builder Examples
+
+---
+
+# Document 2084: Flush Sessions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204612254/Flush+Sessions
+**Categories:** chunks_index.json
+
+This section describes how to flush aggregation sessions in real-time and batch workflows. The following functions for Aggregation flush described here are: 1 Real-Time Aggregation APL Flush Function 2 Batch Aggregation APL Flush Function Real-Time Aggregation APL Flush Function To flush Real-time workflow sessions, run an agent command from the Command Tab of the Aggregation agent in the Workflow Monitor or use the Command Line Tool mzsh. There is a choice of applying the command on all sessions or only on those with a timeout set. There is also an option of attaching information in a string to be available within the command function block in the Aggregation agent. Note! You cannot flush sessions that are stored in Couchbase. Note! The command function block works in the same way as the timeout function block, that is, code has to be written to route the session result and to remove the session. Example - command block in Aggregation agent A simple APL example of command : command { OutputUDR finalUDR = udrCreate( OutputUDR ); finalUDR.user = session.user; finalUDR.IPAddress = (string)session.IPAddress; finalUDR.downloadedBytes = session.downloadedBytes; finalUDR.uploadedBytes = session.uploadedBytes; if (instruction == "extra") { finalUDR.extraBytes = session.extraBytes; } udrRoute( finalUDR ); sessionRemove(session); } Using Workflow Monitor To access the Command tab, you will have to access the Agent Status dialog from the Workflow Monitor. Select the Aggregation agent from the Workflow Monitor and click on the icon that appears above the agent. Open Aggregation agent in Workflow Monitor - Agent Status Button Open Aggregation agent in Workflow Monitor - Command tab Parameter Description Parameter Description Only session with timeout Trigger a flush for sessions that have already timeout. All sessions Trigger a flush for all sessions, regardless if they have already timeout or not. instruction This is an optional string used only when there is a command function block defined within the Aggregation agent. If specified, the string will trigger the command function block in the Aggregation agent through the instruction variable. Refer to the example above and to Variables for further information. Using MZSH Syntax Syntax to run the command function block from mzsh: $ mzsh wfcommand <Workflow Name> <Agent Name> <"true"|"false"> <instruction> Example - Using mzsh to trigger flush A simple mzsh example to trigger a flush for all sessions with the instruction "extra": mzsh wfcommand Default.Aggregation_Workflow Aggregation_Agent_1 "true" extra Parameter Description Parameter Description Workflow Name The name of the workflow that contains the Aggregation agent Agent Name The name of the Aggregation agent in the workflow "true"|"false" Specifies what sessions to apply the command block for. true means apply on all sessions, while false means apply only on sessions with timeout set. To have the sessions removed, the command block must issue sessionRemove(session) . instruction This is an optional string. If specified, the string will be available within the command function block in the Aggregation agent through the instruction variable. Refer to Variables for further information. Batch Aggregation APL Flush Function This section describes the APL function aggregationHintFlushSessions , which is used to timeout all stored sessions that have a timeout value in a batch Aggregation agent. The function is included in the package Batch Aggregation APL Flush Function. The APL function aggregationHintFlushSessions may be called from Analysis APL code or Aggregation APL code in batch workflows. The function is used to indicate that the timeout function block in the APL code for the specified Aggregation agent shall be called for all the sessions in the storage that have a timeout value. The timeout block execution will be performed after the drain function block has been executed in the specified Aggregation agent. The call to the function will not be remembered between batches. Note! Only sessions that have a timeout value will timeout even if the function aggregationHintFlushSessions has been called. To make sure that all sessions have a timeout value, set the Aggregation agent property If Timeout is Missing to Default or Abort . The Aggregation agent property If Timeout is Missing can be found under the tab called General in the Aggregation agent configuration. When executed, the function will throw an exception if it is called from an illegal location or if the agent named aggregationAgentName is not an Aggregation agent in the workflow. Function Definition: void aggregationHintFlushSessions(string aggregationAgentName ) Parameter Description Parameter Description aggregationAgentName The name of an Aggregation agent in the batch workflow Example - Using aggregationHintFlushSessions For example, consider a batch workflow containing one Aggregation agent named "Agg" which has the Aggregation agent property If Timeout is Missing set to Default. Also, consider that the beginBatch function block and the timeout function block in the APL code for the Aggregation agent are defined as in the following code: beginBatch { aggregationHintFlushSessions("Agg"); } timeout { sessionRemove(session); } Finally, consider that there are 10 sessions, with timeout values in the distant future, in the storage when the end of the drain function block in the Aggregation agent has been reached. Then the timeout function block will be executed 10 times, one time for every session in the storage, and thus all the sessions in the storage will be removed. Note! A workflow using aggregationHintFlushSession may get stuck in a loop if all sessions are not removed in the timeout block.
+
+---
+
+# Document 2085: System Event - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205030537/System+Event
+**Categories:** chunks_index.json
+
+In this section some of the circumstances during which the System event is triggered that may be useful for Event Notification configurations are listed: If the Event Server cannot be reached. Message: Cannot access EventServer. If an attempt to resend an event to the EventServer is made. Message: Retrying to send event to listener <listener> at <host>. Retry count <attempt number>. If an event listener is abandoned. Message: The listener <listener> at <host> is abandoned. If a license violation has occurred. Message: Violation report <message>. If a pico instance was disconnected from the Platform by a user. Message: The pico instance <pico instance> at host <host> was disconnected from platform by <user>. When the Platform thread pool size has been set for workflows and workflow groups. Message: The platform thread pool size for workflows and groups is set to <thread pool size>. If the mz.platform.wf.threadpool property cannot be parsed with default thread pool size. Message: Failed to parse the <mz.platform.wf.threadpool> property. Using default size <default thread pool size>. If the mz.platform.wf.threadpool property has been set to a value outside of valid range. Message: The property <mz.platform.wf.threadpool> is outside the appropriate range, have set size to <thread pool size>. If configuration data is missing for a workflow in a workflow group that is being loaded to the GroupServer. Message: Configuration data is missing for workflow <workflow>. If the GroupServer cannot register to the EventServer in order for workflow groups to be loaded or updated. Message: Group server is unable to register to the event server. Groups will not be loaded or updated. If the GroupServer cannot load workflow groups at startup. Message: Group server was unable to load groups during startup. If a workflow group is manually stopped. Message: Group <workflow group> is being manually stopped by the user. If a workflow group is stopping. Message: Group <workflow group> and all its members are stopping. If a workflow group has stopped. Message: Group <workflow group> have stopped. If scheduling cannot be set for a workflow group. Message: Cannot schedule group <workflow group>. If the scheduling cannot be removed for a workflow group. Message: Cannot remove scheduling for group <workflow group>. If a configuration with broken serialization is removed. Message: <DR Exception>. If a workflow configuration cannot be loaded. Message: Failed to load configuration for <workflow>, changing state to invalid state. If an old version of a workflow has been detected running on an EC. Message: Found one old version of the workflow <workflow> with session id <session id> running on an ec. The workflow have been shut down.. If a reconnect attempt to an unreachable workflow has failed and a new attempt is made. Message: <workflow> is unable to reconnect, reconnect is restarted. If the connection to an unreachable workflow has been re-established. Message: Connection to unreachable workflow has been re-established. If a workflow that is supposed to be closed and killed is trying to communicate with the Platform. Message: Warning, a presumed closed and killed workflow <workflow> tried to communicate with the platform, ignoring the message. If an old workflow is detected on an EC when attempting to start a workflow. Message: Warning an old workflow where found on ec <ec> when the workflow <workflow> where to be started, the old one have been forced to stop. If a workflow cannot be shut down on an EC. Message: Workflow <workflow> was unable to shut down on ec <ec>. If a workflow is being manually stopped by a user. Message: Workflow <workflow> is being manually stopped by the user. If a workflow is stopped. Message: <stop message>. If a workflow aborts and the exception in the abort is not used. Message: Workflow <abortException> If trying to retrieve a list with valid workflow configurations, and failing to retrieve any of the workflows. Message: Unable to retrieve workflows from the configuration <workflow>. Due to <cause>. If a workflow or workflow group cannot be enabled or disabled in a Suspend Execution configuration, see Suspend Execution for further information. Message: Unable to send enable/disable signal to the workflows/groups in configuration <configuration>. If configurations are missing in a Suspend Execution configuration, see Suspend Execution for further information. Message: Warning, The following members of the suspend execution configuration where not found and they where not <enabled/disabled>. <configurations>. If a Code Manager event occurs, see Code Manager Event for further information. Message: <Code Manager event message>. Filtering In the Event Setup tab, the values for all the event fields are set by default to All in the Match Value(s) column, which will generate event notifications for all state changes for all workflow groups. Double-click-on the field to open the Match Values dialog where you can click on the Add button to add which values you want to filter on. If there are specific values available, these will appear in a drop-down list. Alternatively, you can enter a hard coded string or a regular expression. The following fields are available for filtering of Group State events in the Event Setup tab: System event specific fields systemMessage - This field contains the message appended with the System event, as described in the previous section. Fields inherited from the Base event The following fields are inherited from the Base event, and described in more detail in Base Event : category - If you have configured any Event Categories, you can select to only generate notifications for System events with the selected categories. See Event Category for further information about Event Categories. contents - The contents field contains a hard coded string with event specific information. If you want to use this field for filtering you can enter a part of the contents as a hard coded string, e g the state you are interested in Idle/Running/Stopping/etc. However, for System events, the content consists of the text "System message:" and then the system message itself, see the description of the system message above. eventName - This field can be used to specify which event types you want to generate notifications for. This may be useful if the selected event type is a parent to other event types. However, since the System event is not a parent to any other event, this field will typically not be used for this event. origin - If you only want to generate notifications for events that are issued from certain Execution Contexts, you can specify the IP addresses of these Execution Contexts in this field. receiveTimeStamp - This field contains the date and time for when the event was inserted into the Platform database. If you want to use timeStamp for filtering, it may be a good idea to enter a regular expression, for example, "2012-04.*" for catching all System events from 1st of April, 2012, to 30th of April, 2012. severity - With this field you can determine to only generate notifications for state changes with a certain severity; Information, Warning, Error or Disaster. This may be useful to filter on if you only want to view System events that generate Warnings for example. timeStamp This field contains the date and time for when the Execution Context generated the event. If you want to use timeStamp for filtering, it may be a good idea to enter a regular expression, for example, "2012-06-15 09:.*" for catching all System events from 9:00 to 9:59 on the 15th of June, 2012. Note! The values of these fields may also be included in the notifications according to your configurations in the Notifier Setup tab.
+
+---
+
+# Document 2086: Workflow Bridge Real-time Forwarding Agent Transaction Behavior, Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204675540/Workflow+Bridge+Real-time+Forwarding+Agent+Transaction+Behavior+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Transaction Behavior
+
+---
+
+# Document 2087: Radius Example Workflow Setup - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205001674/Radius+Example+Workflow+Setup
+**Categories:** chunks_index.json
+
+A Radius agent must always be connected to an Analysis or Aggregation agent, since it is dependent on receiving replies which are issued through APL commands. Open Example Workflow The Analysis agent handles all reply logic. The Radius agent will forward all received packets. The actual discarding and validation of the data is handled in the Analysis agent.
+
+---
+
+# Document 2088: Excel Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205032973/Excel+Agents
+**Categories:** chunks_index.json
+
+This section describes the Excel Decoder and Excel Encoder agents which are processing agents for batch workflow configurations. These agents convert Excel files into UDRs to be routed into a workflow, and then converts the UDRs back into an Excel file to be delivered to the output destination. Open The section contains the following subsections: Excel Decoder Agent Excel Encoder Agent Excel Agents UDR Types
+
+---
+
+# Document 2089: Alarm and Event Triggering/Enablement - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204613734/Alarm+and+Event+Triggering+Enablement
+**Categories:** chunks_index.json
+
+The Alarm and Event UI gives an overview of all alarm and event configurations in the system and a means to enable and disable them. Open Overview of Alarms in the Alarm and Event UI. Open Overview of Events in the Alarm and Event UI. By using an Event Notification configuration it will be possible to filter and stream events of all types and levels produced by various functions in real-time, as data is processed through the system. Valid destinations are files on the local disk, system log, and e-mail notifications. The following events are managed: Code Server events Node failures Node messages Node state changes System startup, shutdown, and failures Task Executor messages Task state changes User actions Workflow state changes Events can be generated in a format recognized by fault management and performance management systems, e.g. an SNMP trap. MediationZone provides for tracing and debug capabilities within its standard functionality. Descriptions and recommendations of what-to-do are provided as part of the standard documentation.
+
+---
+
+# Document 2090: Workflow State Event - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204737119/Workflow+State+Event
+**Categories:** chunks_index.json
+
+This event is dispatched when the Workflow state changes. The following fields are defined: abortReason - Describes the abort reason for a state event of type aborted. executionTime - A Workflow execution time. Note! The match value precision is of milliseconds. workflowState - The new state that the Workflow is in now. See workflow states to know more about different Workflow states. Fields inherited from the Base event The following fields are inherited from the Base event, and described in more detail in Base Event : category contents - Workflow: <Workflow name>, State: <state>, Execution time: <time in milliseconds>, Abort reason: <error msg> eventName origin receiveTimeStamp severity timeStamp Fields inherited from the Workflow event The following fields are inherited from the Workflow event, and described in more detail in Workflow Event : workflowKey workflowName workflowGroupName
+
+---
+
+# Document 2091: AnyType UDR Type - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204744334/AnyType+UDR+Type
+**Categories:** chunks_index.json
+
+The anyType data type specification in XML Schema is mapped to the AnyType UDR data type in the UltraXML namespace. This UDR type contains information about all the elements and text contents of the mapped XML element. Open The AnyType UDR Type Field Type Description Field Type Description attributeMap(map<string,string>) A mapping, from an attribute name to a value, of all the attributes of an element. content(string) The text content in the element. elementMap(map<string,list<AnyType(UltraXML)>>) All the sub-elements within the "anyType" element. This is a mapping from the element name to a list of all the occurrences. Each sub-element is also an "AnyType" UDR. Note! In APL, spaces between the closing angle brackets are required, or compilation fails.
+
+---
+
+# Document 2092: Function Blocks for Agents in Real-Time and Batch Workflows - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204642158/Function+Blocks+for+Agents+in+Real-Time+and+Batch+Workflows
+**Categories:** chunks_index.json
+
+The function blocks described in this section can be used in real-time and batch workflows. The available function blocks are: initialize execute consume stop deinitialize initialize This function block initializes resources and state. def initialize() The initialize function block is executed once for each invocation of the workflow and enables you to assign, for example, a global variable with an initial value. Note! Avoid reading MIM parameters from within initialize . The order by which agents are initialized is undefined and MIM parameters are therefore not necessarily set during the initialize phase. The udrRoute function cannot be used in the initialize block. Example - initialize function block def initialize(): debug('initialize called') execute Note! This function block only applies for the Python collection agents. This function block is the main entry point for collection. def execute() Example - execute function block in a real-time workflow import random from time import sleep def execute(): counter = 0 while not isStopped(): counter += 1 udr = RandomUDR() udr.sequence = counter udr.random = random.randint(0, 100) udrRoute(udr) sleep(1) Example - execute function block in a batch workflow import random def execute(): counter = 0 while counter < 10 and not isStopped(): counter += 1 beginBatch() udr = RandomUDR() udr.sequence = counter udr.random = random.randint(0, 100) udrRoute(udr) endBatch() consume Note! This function block does not apply for the Python collection agent for batch workflows. This function block consumes and processes UDRs that are routed to the agent . def consume(input) The consume function block is executed for each UDR or bytearray passing the agent. Within a consume block, validation, modification and routing can be performed. Each UDR or bytearray is referred to by the input variable. Example - consume function block def consume(input): input.sequence = input.sequence + 1 udrRoute(input) stop This function block is called when the workflow is about to stop. def stop() Note! If you implement this function block, ensure to implement the stop behavior of your code properly by breaking any long running loops etc, that may run after receiving the stop signal. This is because the agent does not automatically break any loops inserted in your code. Your code may also run faster for some workloads when this function block is implemented as your code runs unaltered. Example - stop function block def stop(): debug('stop called') deinitialize This function block is executed right before the workflow stops. def deinitialize() Use the deinitialize block to clean and close resources, for instance external connections. Example - deinitialize function block def deinitialize(): debug('deinitialize called')
+
+---
+
+# Document 2093: SNMP Trap Agent - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204674858/SNMP+Trap+Agent
+**Categories:** chunks_index.json
+
+Open The SNMP Trap agent is used to receive SNMP notifications (traps and informs) and convert them to UDRs. Configuration To open the SNMP Trap agent configuration dialog from a workflow configuration, you can do the following: right-click the agent icon and select Configuration... double-click the agent icon Open SNMP Trap agent configuration dialog In the agent configuration dialog, select the relevant SNMP Collection profile to use. Resolving Trap OIDs The SNMP Trap agent automatically resolves incoming trap OIDs based on MIB definitions from MIB files which are loaded into a profile. This is done for both parts of the notification identifier and the list of variable bindings of the trap. Changing the Port 162 Privileges The standard SNMP trap port 162 is not accessible for in, for instance, a Linux/Unix environment. Make sure to solve this issue. You can either do: Setup port forwarding from 162 to a port that can access using iptables. Change the privileges for port 162, so non-root can access it. Example - How to setup UDP port forwarding to forward all UDP datagrams from port 162 to port 5678 $ sudo iptables -t nat -A PREROUTING -i enp0s3 -p udp --dport 162 -j REDIRECT --to-port 5678 Replace enp0s3 with the proper network interface name. Use ifconfig to find out the name of your Ethernet interface (usually - eth0 ).
+
+---
+
+# Document 2094: Email Agent Configuration - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204672876/Email+Agent+Configuration
+**Categories:** chunks_index.json
+
+You open the Email Agent configuration dialog from a workflow configuration: click the agent icon and select Configuration , or double-click the agent icon. Connection Tab The Connection tab contains configuration settings related to conne cti ng to the email server. Open The Email Ag ent configur ation dialog - Connection tab Setting Description Protocol Select either IMAP or POP3 depending on what your email server supports. Folder From which folder emails will be processed. Note! If using POP3 it will automatically read from the Inbox. Host The URL of the host. Port The ports the email server accepts connections for the chosen protocol. Internal Batch Size The number of messages the agent fetches all contents for at a time. Security Tab The Security tab includes settings that control the secur ity aspe cts of connecting to an email server. Open The Email Agent configuration dialog - Security tab Setting Description TLS Select if using TLS. If left unchecked it is configured to trust all hosts. Keystore Path If TLS is checked. The path to a file that can contain both the keystore and truststore. Keystore Password if TLS is checked. Enter the password of the keystore/truststore file. Email Username Username of the email account which the agent will connect to. Email Password Password of the email account which the agent till connect to. Rules Tab The Rules tab includes settings that control the which em ails to read and what will happen to them after processing. Open The Email agent configuration dialog - Rules tab Setting Description Emails to process Select if you want to process all emails in the selected folder, only unread or only read. Filter on subject Optional parameter that will filter all unprocessed emails on the string input. It will match as long as the subject contains the string. Example: Subject: "Hello world!" Filter on subject: "ell"  matches Filter on subject: "Hello"  matches Filter on subject: "!"  matches Note! This filtering can only be done after fetching emails from the email server, meaning that the MIMs defined might be untrustworthy. Seen Optional parameter that mark the email as read on the email server. Note! If using POP3 it is not possible to set the Seen flag. Deleted Optional parameter that deletes the email on the email server. Flagged Optional parameter that mark the email as flagged on the email server. Note! If using POP3 it is not possible to set the Flagged flag. Note! It's only possible to set the flags for the outgoing rules, not unset them. Meaning that you can't set a read email as unread.
+
+---
+
+# Document 2095: Appendix 4 - Collection Strategies - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205035499
+**Categories:** chunks_index.json
+
+Collection Strategies are used to setup rules for handling collection of files from the Disk, FTP, SFTP, and SCP collection agents. This appendix describes the various collection strategies available. The available collection strategies are: APL Collection Strategy Control File Collection Strategy Duplicate Filter Collection Strategy Multi Directory Collection Strategy
+
+---
+
+# Document 2096: Python Processing Agent - Batch - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205034253/Python+Processing+Agent+-+Batch
+**Categories:** chunks_index.json
+
+The Python processing agent can process UDRs with Python in batch by defining a consume block. It also uses an Interpreter profile that is used to configure the Python executable. Open Example of a workflow including the Python processing agent for batch This section includes the following subsections: Python Processing Agent Configuration - Batch Function Blocks for the Python Processing Agent - Batch Python Processing Agent Transaction Behavior - Batch Python Processing Agent Input/Output Data and MIM - Batch Python Processing Agent Events - Batch
+
+---
+
+# Document 2097: Reading the License File - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204647194/Reading+the+License+File
+**Categories:** chunks_index.json
+
+You may need to retrieve the content from the mz.license file in text. To do so, run the following command: cat mz.license Below are some important information in the license file <license name="<CUSTOMER-NAME>_<ProductVersion>_<LicenseType>" product="mz"> <criteria attribute="database.type" value="multi"/> <criteria attribute="expiration.date" value="2030-01-01 23:59"/> <criteria attribute="license.type" value="PROD"/> <criteria attribute="multi.host.enabled" value="true"/> <criteria attribute="customer.name" value="Acme Corp"/> <licenseditem identity="pf:mz.ultra.avro"/> <licenseditem identity="pf:mz.decoder_avro"/> ... Line 1 - license name consists of the customer name, product version and license type. Line 3 - expiration.date is the date of license expiration. Line 4 - license.type has either the PROD or DEMO as the value. A system with the DEMO license type will stop running when the license expiration date is reached. A system with the PROD license type will continue running when the license expiration date is reached. There will be license violation messages in the System Logs . The license file will be checked during platform start up and at least once per day to determine the validity of the current license. Line 7 and beyond licenseditem is the licensed items included in the product license.
+
+---
+
+# Document 2098: TCP/IP Forwarder UDR Types - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204643391/TCP+IP+Forwarder+UDR+Types
+**Categories:** chunks_index.json
+
+The UDR types used by the TCP/IP forwarding agent can be viewed in the UDR Internal Format Browser . To open the browser click Build  New Configuration  APL Code . In the editing area right-click and select UDR Assistance... to open the UDR Internal Format Browser. Open TCPIPUDR RemoteHostConfig The RemoteHostConfig UDR contains the connection details for the remote host. This UDR is included in all the other UDR types. The following fields are included in the RemoteHostConfig: Field Description Field Description host (string) This field contains the hostname or IP address to the remote host. port (int) This field contains the port to the remote host. ConnectionRequestUDR When the agent receives this UDR, it tries to establish a new connection, or close a connection to a a remote host. The agent then returns the ConnectionStateUDR with information about the current state of the connection. The following fields are included in the ConnectionRequestUDR : Field Description Field Description closeConnection (boolean) This field determines whether the request is for opening or closing a connection. For a new connection, this field is set to false , and to close the connection, this field is set to true . remoteHost (RemoteHostConfig (TPCIP)) This is the RemoteHostConfig UDR that contains the connection details. ConnectionStateUDR The agent returns the ConnectionStateUDR when a ConnectionRequestUDR has been sent and if a connection goes down. The following fields are included in the ConnectionReqeustUDR : Field Description Field Description connectionOpen (boolean) If the connection is valid (see the validAddress field below), this field indicates if the connection is open or not ( true = open and false = closed). remoteHost (RemoteHostConfig (TPCIP)) This is the RemoteHostConfig UDR that contains the connection details. validAddress (boolean) This field indicates if the connection details in the RemoteHostConfig UDR are valid ( true = valid and false = invalid). RequestUDR When the agent receives a RequestUDR it tries to send the included bytearray to the remote host. The following fields are included in the RequestUDR: Field Description Field Description data (bytearray) This field contains the actual data to be sent. remoteHost (RemoteHostConfig (TPCIP)) This is the RemoteHostConfig UDR that contains the connection details. ResponseUDR If the TCP/IP forwarding agent is configured to handle responses, it returns ResponseUDR s to the workflow. The following fields are included in the ResponseUDR : Field Description Field Description data (bytearray) This field contains the response. remoteHost (RemoteHostConfig (TPCIP)) This is the RemoteHostConfig UDR that contains the connection details. Note! An internal buffer in the TCP/IP forwarding agent limits the maximum data size of a response. If the size exceeds 1024 bytes, the response may be split into multiple UDRs. For each response that exceeds the limit, the agent automatically increases the buffer size in a stepwise manner. ErrorUDR The agent returns the ErrorUDR in case a RequestUDR fails. The following fields are included in the ErrorUDR : Field Description Field Description data (bytearray) This is original data from the RequestUDR . This can be used to store the data. ErrorReason (string) This field contains the reason for the failure. ErrorStackTrace (string) This field contains the stack trace from the failure. Note! This field should only be read if absolutely necessary, since it requires a large amount of CPU. remoteHost (RemoteHostConfig (TPCIP)) This is the RemoteHostConfig UDR that contains the connection details. Note! The ErrorUDR type is a subtype of the ResponseUDR type. This means that if, for example, instanceOf(input,ErrorUDR) evaluates to true , then instanceOf(input,ResponseUDR) also evaluates to true .
+
+---
+
+# Document 2099: Decoder Agent - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205032522/Decoder+Agent
+**Categories:** chunks_index.json
+
+The Decoder agent converts raw data to internal UDRs, based on information from a UFDL decoder definition or MZ format tagged UDRs (the MediationZone specific general format). This is a processing agent for batch workflow configu ra tions. For more information on the Ultra format, see Introduction to the Ultra Format Definition Language . The section contains the following subsections: Decoder Agent Configuration Decoder Agent Meta Information Model and Events Decoder Agent Transaction Behavior and Input/Output Data
+
+---
+
+# Document 2100: wfgroupstop - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204744038/wfgroupstop
+**Categories:** chunks_index.json
+
+usage: wfgroupstop [ -immediate ] <pattern match expression for workflow group name>... Stops one or more workflow groups. The workflow group does not stop instantly, but rather waits for all the workflow group members to stop running, before the whole group is fully stopped and return to the Idle state. With this command you compare a single pattern match expression, or several, with the full workflow group name, <folder>.<groupconfigurationname>.<workflowgroupname>, of all the workflows. The command accepts wild cards, such as '*' and '?'. For further information see Textual Pattern Matches . Option Description [-immediate] When this option is used, the workflow group is stopped without waiting for a batch to finish. Return Codes Listed below are the different return codes for the wfgroupstop command: Code Decsription 0-> Will indicate the number of failed group stops or the number of arguments that are incorrect. 1 Will be returned if no user is logged in.
+
+---
+
+# Document 2101: Searching the ECS - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204641101/Searching+the+ECS
+**Categories:** chunks_index.json
+
+
+
+---
+**End of Part 88** - Continue to next part for more content.
