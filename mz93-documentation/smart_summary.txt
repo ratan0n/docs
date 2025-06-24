@@ -1,0 +1,88 @@
+# RATANON/MZ93-DOCUMENTATION - Smart Summary
+
+## Overview
+- **Dataset:** ratanon/mz93-documentation
+- **Documents:** 6007 items
+- **Total Content:** ~6550K characters
+- **GitHub Repository:** https://github.com/ratan0n/docs/tree/main/mz93-documentation
+
+## Main Topics
+1. GTP' Agent MZSH Commands, Events and Limitations - MediationZone Documentation 9.3 - InfoZone
+2. Encoders - MediationZone Documentation 9.3 - InfoZone
+3. Data Model for PCC Buckets - MediationZone Documentation 9.3 - InfoZone
+4. SAP CC Secured Connection - MediationZone Documentation 9.3 - InfoZone
+5. Distributed Storage Profile - MediationZone Documentation 9.3 - InfoZone
+6. mzcli Textual Pattern Matches - MediationZone Documentation 9.3 - InfoZone
+7. Azure Profile - MediationZone Documentation 9.3 - InfoZone
+8. Workflow Validation - MediationZone Documentation 9.3 - InfoZone
+9. APL Collection Strategy Functions - MediationZone Documentation 9.3 - InfoZone
+10. Conditional Trace Access Permissions - MediationZone Documentation 9.3 - InfoZone
+11. JMS Request Agent - MediationZone Documentation 9.3 - InfoZone
+12. GCP Storage Forwarding MultiForwardingUDR Example - MediationZone Documentation 9.3 - InfoZone
+13. Release of New Functionality - MediationZone Documentation 9.3 - InfoZone
+14. Listing Python Processes - MediationZone Documentation 9.3 - InfoZone
+15. JMS Profile - MediationZone Documentation 9.3 - InfoZone
+... and 5992 more documents
+
+## Key Terms & Concepts
+- **file** (mentioned 8511 times)
+- **agent** (mentioned 8304 times)
+- **workflow** (mentioned 7215 times)
+- **data** (mentioned 5711 times)
+- **field** (mentioned 5050 times)
+- **configuration** (mentioned 5011 times)
+- **description** (mentioned 4934 times)
+- **type** (mentioned 4657 times)
+- **value** (mentioned 4139 times)
+- **2025** (mentioned 3751 times)
+- **used** (mentioned 3724 times)
+- **llm_ready** (mentioned 3723 times)
+
+## Content Highlights
+
+### 1. SMPolicy Data Model - MediationZone Documentation 9.3 - InfoZone
+SMPolicy data model store information about different rules regarding the session management in 5G networks. SMPolicy are: Object Description Object Description RulesMapping A flexible mapping table used to map from an external representation to a list of rules
+
+### 2. topo - MediationZone Documentation 9.3 - InfoZone
+usage: topo <subcommand> <options> This command is used to register containers in STR and to create, update, remove, and view pico configurations. This command is valid only for the MZ_HOME owner
+
+### 3. topo - MediationZone Documentation 9.3 - InfoZone
+usage: topo <subcommand> <options> This command is used to register containers in STR and to create, update, remove, and view pico configurations. This command is valid only for the MZ_HOME owner
+
+### 4. mzcli - topo - MediationZone Documentation 9.3 - InfoZone
+usage: topo <subcommand> <options> This command is used to register containers in STR and to create, update, remove, and view pico configurations. This command is valid only for the MZ_HOME owner
+
+### 5. Charging Answer UDRs - MediationZone Documentation 9.3 - InfoZone
+PurchaseOrderUDR This UDR represents the charging answer which could be received from the SAP Convergent Charging Core server in response to a ChargeUDR , a BlankChargeUDR or an EstimateChargeUDR. Field Description Field Description allNotifications (list<NotificationUDR>) Usually, the Notificati...
+
+### 6. Charging Answer UDRs - MediationZone Documentation 9.3 - InfoZone
+PurchaseOrderUDR This UDR represents the charging answer which could be received from the SAP Convergent Charging Core server in response to a ChargeUDR , a BlankChargeUDR or an EstimateChargeUDR. Field Description Field Description allNotifications (list<NotificationUDR>) Usually, the Notificati...
+
+### 7. Administration and Management in Legacy Desktop - MediationZone Documentation 9.3 - InfoZone
+Desktop Background Color You can start several Desktop applications on a specific computer. To tell the difference between the applications and their respective views you can vary the background color of every Desktop
+
+### 8. Administration and Management in Legacy Desktop - MediationZone Documentation 9.3 - InfoZone
+Desktop Background Color You can start several Desktop applications on a specific computer. To tell the difference between the applications and their respective views you can vary the background color of every Desktop
+
+## Usage Guide
+
+### For Claude.ai:
+1. Download files from GitHub repository
+2. Upload this summary as your primary knowledge base
+3. Ask questions about: file, agent, workflow, data, field, configuration
+4. Reference specific documents by title for detailed information
+
+### Example Questions:
+- "What are the main topics covered?"
+- "Tell me about [specific topic from keywords]"
+- "Summarize information about [document title]"
+- "How does [topic A] relate to [topic B]?"
+
+### Repository Links:
+- **HuggingFace Source:** https://huggingface.co/datasets/ratanon/mz93-documentation
+- **GitHub Repository:** https://github.com/ratan0n/docs/tree/main/mz93-documentation
+- **Full Content:** 6007 documents
+- **This Summary:** Key highlights and overview
+
+---
+*Generated by doc2git.py - Smart knowledge extraction and GitHub integration*
