@@ -1,0 +1,371 @@
+# RATANON/MZ93-DOCUMENTATION - Part 68/112
+
+---
+**Dataset:** ratanon/mz93-documentation
+**Part:** 68 of 112
+**GitHub:** https://github.com/ratan0n/docs/tree/main/mz93-documentation
+**Size:** ~70.0 KB
+---
+
+The GCP Profile is used for setting up the access credentials and properties to be used to connect to a Google Cloud Platform service. Currently, the profile can be used with the following profile and agents: GCP PubSub Agents GCP PubSup Profile GCP BigQuery Agent Menus The contents of the menus in the menu bar may change depending on which configuration type has been opened in the currently displayed tab. The GCP Profile uses the standard menu items and buttons that are visible for all configurations, and these are described in Build View . The Edit menu is specific for the GCP Profile configurations. Setting Description Setting Description External References Select this menu item to enable the use of External References in the GCP Profile configuration. This can be used to configure the following fields: Use JSON File Credentials File Form Project Id Private Key Id Private Key Client Email Client Id Other Information For further information, see Using External Reference in Agent Profile Fields and External Reference Profile . Note! If there is a proxy in your network environment, the GCP agents will work with a proxy that does not require authentication. Currently, the GCP agents do not work with a proxy that requires authentication. Refer to HTTP Proxy Support for more details. Configuration JSON File The following settings are available when you have selected Use Json File as the Input Option in the GCP Profile. Open GCP Profile - Use Json File Configuration Setting Description Setting Description Environment-Provided Service Account When MediationZone is deployed in the GCP environment, such as in Compute Engine, enable this option to retrieve the Service Account credentials provided by the environment. Input Option Allows you to select the method for connecting to the GCP service. For the Use JSON File option, you need to create the GCP Service Account Key as a JSON file and download it into the Platform and EC servers. Credentials File The location of the GCP Service Account JSON file containing the credential keys. Note! The JSON file option is not recommended for production dgcp_profile_jsoneployments. It is meant to facilitate ease of testing of the GCP Profile by the workflow designer during development. Form The following settings are available when you have selected Form as the Input Option in the GCP Profile. Open GCP Profile - Form Configuration Setting Description Setting Description Environment-Provided Service Account When MediationZone is deployed in the GCP environment, such as in Compute Engine, enable this option to retrieve the Service Account credentials provided by the environment. Input Option Allows you to select the method for connecting to the GCP service. For Form , the GCP Profile will take the role of the Service Account Key file. It will parse all the credentials in order to connect to the GCP service. Project Id The GCP Project Id that hosts the GCP service that MediationZone should access. Private Key Id The Private Key Id to be used for the service account. Private Key The full content of the private key, or use Secret Profile. Client Email The email address given to the service account. Client Id The Id for the service account client. Other Information The Auth URI, Token URI and info about the certs are to be added into this field.
+
+---
+
+# Document 1594: tree - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204742628
+**Categories:** chunks_index.json
+
+The following JSON schema describes the data format of the tree object type: Loading The tree object type has one or more sub-objects, consisting of properties that describe the hierarchical structure of the dimensions. In the example below, tree1 is a root node and Region , Country , and City are child nodes. Each property in the node tree must have a matching dimension object. Example - JSON Representation "tree": { "tree1": { "Region": { "Country": { "City": {} } } } } Break
+
+---
+
+# Document 1595: KPIAggregatedOutput - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204645777/KPIAggregatedOutput
+**Categories:** chunks_index.json
+
+When aggregated-output is set to true in the service model, the KPI output for each instancePath is grouped in the same KPIAggregatedOutput UDR. When the value is false (default), KPIAggregatedOutput will contain a single KPIOutput UDR.
+
+---
+
+# Document 1596: Tables and Stored Procedures - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204640360
+**Categories:** chunks_index.json
+
+Working Table Following list holds information to be taken into consideration when creating the database table that a Database collection agent collects from, or a Database forwarding agent distributes to. The table must have a Transaction ID column , dedicated to the Database agent's internal use. The column could be named arbitrary however it must be numeric with at least twelve digits. It must also not allow NULL . Reading from or writing to columns defined as BLOB will have a negative impact on performance for both Database agents. It has been proved inefficient to put an index on the Transaction ID column . Entries with Transaction ID column set to -1 (Mark as Collected) or -2 (Cancel Batch) must be attended to manually at regular intervals. The following example shows a working table with a Transaction ID column named txn_id . Example - Working table with Transaction ID column named txn_id CREATE TABLE my_tab ( txn_id NUMBER(12) NOT NULL, a_num VARCHAR2(25) NOT NULL, b_num VARCHAR2(25) NOT NULL, duration NUMBER(10) ); After Collection Stored Procedure If a Database collection agent has been configured to call a stored procedure after collection, it will be called when each batch has been successfully collected and inserted into the workflow. The procedure is expected to take one (1) parameter. The parameter must be declared as a NUMBER and the agent assigns the current Transaction ID to the parameter. The procedure must ensure that the rows with the supplied transaction ID are removed from the table, or their Transaction ID column is set to -1. The following example shows such a procedure that moves the rows to another table. Example - After collection stored procedure CREATE or REPLACE PROCEDURE my_move_sp (txn IN NUMBER) IS BEGIN --copy collected rows to another table INSERT INTO my_collected_data_tab (txn_id, a_num, b_num, duration) SELECT txn_id, a_num, b_num, duration FROM my_tab WHERE txn_id = txn; --now delete the rows DELETE FROM my_tab WHERE txn_id = txn; END; Note! It is recommended for the previously described stored procedure to use an internal cursor with several commits, not to overflow the rollback segments. Database Forwarding Target Stored Procedure If a Database forwarding agent has been configured to use a stored procedure as the Access Type the agent will call this procedure for each UDR that is to be distributed. The stored procedure must be defined to take the parameters needed, often including a parameter for the Transaction ID. In the dialog these parameters are assigned their values. When the procedure is called, the agent will populate each parameter with the assigned value. The following example shows a stored procedure that selects the number of calls made by the a_number subscriber from another table, calls_tab , and uses that value to populate the target table. Example - Database forwarding target stored procedure CREATE OR REPLACE PROCEDURE my_insert_sp (a_num IN CHAR, b_num IN CHAR, txn IN NUMBER) IS BEGIN DECLARE cnt_calls NUMERIC(5); BEGIN SELECT COUNT(*) INTO cnt_calls FROM calls_tab WHERE anumber=a_num; INSERT INTO my_tab (from_num, to_num, txn_id, num_calls) VALUES (a_num, b_num, txn, cnt_calls); END; END; / Cleanup Stored Procedure If a Database forwarding agent uses a stored procedure to populate the target table, a cleanup stored procedure must be defined, that will remove all inserted entries in case of a Cancel Batch in the workflow. The procedure is expected to take one parameter. The parameter must be declared as a NUMBER and the agent will assign the current Transaction ID to the parameter. The following example shows such a procedure that removes all the entries with the current Transaction ID. Example - Cleanup stored procedure CREATE OR REPLACE PROCEDURE my_clean_sp (txn IN NUMBER) IS BEGIN DELETE FROM my_tab WHERE txn_id = txn; END; / After Forwarding Stored Procedure The following example shows a stored procedure that marks the row as safe to read by another system. Example - After forwarding stored procedure CREATE TABLE billing_data ( customer_id varchar2(100) NULL, number_of_calls number(5) NULL, money_to_pay number(9) NULL, txn_id number(12) NULL, txn_safe_indicator varchar2(10) DEFAULT 'UNSAFE' NOT NULL ); CREATE or REPLACE PROCEDURE mark_billing_data_as_safe (txn IN number) IS BEGIN LOOP --updates 5000 rows at the time to spare rollback segments update billing_data set txn_safe_indicator = 'SAFE' where txn_id = txn and rownum <= 5000; EXIT WHEN SQL%ROWCOUNT < 5000; COMMIT; END LOOP; COMMIT; END; The billing system must avoid reading rows that contains 'UNSAFE' in the txn_safe_indicator column, to ensure no data is read that could be rolled back later on.
+
+---
+
+# Document 1597: Common Configuration Buttons - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204638256
+**Categories:** chunks_index.json
+
+Config urati ons that are created in the platform share a button bar that allows interactions and operations to be accessed. These common configuration buttons are applicable to all configuration types except Workflows. Some configuration types may have buttons and those are described in detail in each separate section of the documentation. For more information, see the documentation for each configuration type. Button Description Open Edit Click this button to edit the configuration. Note! Each configuration will only allow 1 user to edit it at any one time. While editing the configuration, it will be locked to the user's session. To release the lock, you must navigate away from the configuration to another page. It is advised not to close the browser tab without navigating away from the configuration first as this will cause the lock to stay in place until timeout. Open New Click this button to create a new configuration of the same type. Open Open Click this button to open another configuration. Open Save Click this button to save changes to an existing configuration. Open Save As Click this button to open the Save As dialog where you can select in which folder you want to save the configuration and enter the name you want to save it as. Open Permissions Click this button to define permissions for the configuration. Open Validate Click this button to check if the configuration is valid. Open References Click this button to see which other configurations the configuration uses, or is used by. Open History Click this button to view the version history of the configuration. Open Help Click this button to access the user documentation. See the different tabs b elow for examples of the Open , Save As , Permissions , References , and History dialogs when using the previous buttons in the table above. Open Dialog Box This window is displayed when the users click the Open button in the configurations screen. It allows previously saved configurations to be loaded in the current instance.  the name permissions and owner are displayed in individual rows. Open You can use the Filter Name field to easily find a given instance. Save As Dialog Box This window is displayed when the users click the Save As button in the configurations screen. it allows the current configuration to be saved to a designated folder. Open You assign a Name and an optional version comment in the fields. Permissions Dialog Box This window is displayed when the users click the Permissions button in the configurations screen. It is used to set individual permissions based on the users' role  the owner itself, and the associated access groups in both read, write and execute permissions. Open Open The Browser options allow the users to select the designated user from a dialog box called User Selection . References Dialog Box This window is displayed when the users click the References button in the configurations screen. Open It displays three tabs that show important information in relation to all references that are part of the current configuration. The Used By tab lists all references that are currently used in the configuration, and the Users list the active users that have access to these references. The Access shows the access group and the listed users under them. History Dialog Box This window is displayed when the users click the History button in the configurations screen. Open It shows the available Version digit, the Modified date, Modified by , and the Comment which lists an optional comment for the listed version.
+
+---
+
+# Document 1598: XML Schema Support - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204744281
+**Categories:** chunks_index.json
+
+This chapter describes the XML addition to the Ultra Format Definition Language (UFDL). This addition enables you to compile a subset of XML Schema element definitions and to decode the XML input data. This chapter includes the following sections: Overview External - XML Records IPDR Compliance XML Schema Limitations An XML Format Example
+
+---
+
+# Document 1599: System Administrator's Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205815899
+**Categories:** chunks_index.json
+
+Search this document: This document describes the MediationZone system and its various options regarding maintenance, adjustments, and security that you need to know as a system administrator. Chapters The following chapters are included: System Overview log4j APL Logging Configurations HTTP Proxy Support Basic Administration Command Line Tool Network Security Java Configuration High Availability Setup Backup and Disaster Recovery Procedures Database Configuration Couchbase Launcher Service Interface PCC System Administration Setting up Prometheus and Grafana Log Forwarding
+
+---
+
+# Document 1600: Java Configuration - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205881478/Java+Configuration
+**Categories:** chunks_index.json
+
+Out of Memory There are a few parameters for the JVM that might need to be adjusted a little for a given server installation. Depending on the amount of available primary memory and the amount of disk swap space, it might be necessary to inform the JVM how much memory it is allowed to allocate. The Unix process, running an EC, can fork itself depending on configurations in individual agents. The Disk forwarding agent, for instance, can be configured to run an external binary after every forwarded file. The JVM performs a native fork-call to do this, and the forked JVM process will initially have the same memory footprint as the parent process. If there is not enough primary memory and/or swap space available, the EC will abort with the following exception: java.io.IOException: Not enough space at java.lang.UNIXProcess.forkAndExec(Native Method) If this happens, the maximum heap size for the JVM must be lowered, or additional memory must be added to the machine. Lowering the memory can be done by using the JVM argument -Xmx , which is specified for all pico configurations. The following line is an example of how to specify this JVM argument in the STR. mzsh topo set topo://container:<container>/pico:<pico>/obj:config.jvmargs  'xmx:["-Xmx128M"]' Unfortunately, it is difficult to recommend a value. This JVM argument specifies the maximum heap size, meaning that the JVM will probably not reach this limit for a while, depending on how the JVM manages its heap. That, in turn, means that the forking will work for a while, and when the heap size in the JVM has grown large enough, the fork will fail in case there is no free memory pages available in the machine. The only possible recommendation is to lower the maximum heap size value, or to add more system resources (memory or swap disk). If the physical host is running more than one Execution Context, then the memory allocation of these Execution Contexts must be taken into account as well. The JVM also has a kind of memory called direct memory, which is distinct from normal JVM heap memory. You may need to increase the direct buffer memory when Shared Tables have been configured to use off-heap memory. This can be done by either by increasing the maximum heap size, which increases both the maximum heap and the maximum direct memory, or by only increasing the maximum direct memory using the JVM argument XX:MaxDirectMemorySize . The more memory a JVM is given, the better it will perform. However, make sure that the heap never "pages". The sum of all maximum heaps must fit in physical memory. Make sure to adapt these values to better fit the memory in the installed machine. Increasing the heap size for an EC can make a big difference to performance.
+
+---
+
+# Document 1601: SAP HANA Database Creation - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205029638/SAP+HANA+Database+Creation
+**Categories:** chunks_index.json
+
+The creation of the database must be made by the SAP HANA UNIX user, on the machine where SAP HANA is installed. The SAP HANA UNIX user is assumed to perform the installation steps below. Create the SAP HANA database instance. The working directory is saphana . $ ./saphana_create_instance.sh [<SAP HANA admin user>] [<SAP HANA admin password>] If no error occurs, the database creation is now complete and the rest of this section can be ignored. Hint! After the instance creation script is executed, there will be a log file in the /tmp directory that can be used for troubleshooting. The mz_db.log file contains SAP HANA responses from the database creation. If the script fails, clean up the system before the next try: Stop DB (this is needed to drop it): hdbsql -i 90 -d SystemDB -u SYSTEM -p QAmzadm1n "ALTER SYSTEM STOP DATABASE MZ" Drop DB: hdbsql -i 90 -d SystemDB -u SYSTEM -p QAmzadm1n "DROP DATABASE MZ" If you require to change any installation parameter defined in the install.xml , the installation must be restarted from the generation step. For further information, see SAP HANA Preparations . Hint! The SAP HANA audit policy only works for the user  SYSTEM  due to the parameter  FOR SYSTEM . To use a different user, change  SYSTEM  to the desired username. For further information, refer to Auditing Activity in SAP HANA .
+
+---
+
+# Document 1602: dimension - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204742619/dimension
+**Categories:** chunks_index.json
+
+The following JSON schema describes the data format of the dimension object type: Loading A dimension represents a category in a data set and is used for grouping KPIs. The dimension object type has one or more sub-objects, consisting of properties that map it to a KDR field. You can map a dimension to different fields based on the expected value in the KDR field type . In the example below, the dimension Region is mapped to the field region_name for the types record_a and record_b. Example - JSON Representation "dimension": { "Region": { "kdr_record_type_a": "region_name", "kdr_record_type_b": "region_name" }, "Country": { "kdr_record_type_a": "country_name", "kdr_record_type_b": "country_name", } } Break
+
+---
+
+# Document 1603: Repair Jobs - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205684918/Repair+Jobs
+**Categories:** chunks_index.json
+
+The Repair Jobs will display all currently running repair jobs and completed repair jobs. Repair jobs are triggered from Data Veracity Search, to find out how to trigger a repair job, refer to Search & Repair . Open Repair Jobs Query Results Repair jobs Sort Order Sorting is based on Javas default sorting behaviors depending on the data type of the values(for example, sorting of alphabetical characters in Java is case sensitive). Repair jobs that are in progress will be displayed with a progressive status bar of the repair job. Info! Data Veracity will only have up to 2 concurrent repair jobs running at any one time for each Data Veracity UDR table. Note! The repair job history listing will remain in Repair Jobs for up to 14 days only! Warning! The repair job history is saved in memory, whenever the platform is restarted, all history will be lost! Upon a failed repair job, the status will display a yellow Warning label with a description of the error that caused the job to fail. Open Example - Successful and failed completed jobs
+
+---
+
+# Document 1604: SAP JCo Uploader Agent Preparations - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204642889/SAP+JCo+Uploader+Agent+Preparations
+**Categories:** chunks_index.json
+
+The following is required in order to use the SAP JCo Uploader agent: You must run the sapjco3.jar. Add <file location>/sapjco3.jar to the classpath for the jar files for the relevant Execution Context. In the example below, the SAP jar files are located in MZ_HOME/3pp , the configuration includes the jar files required to use any of the SAP CC agents, and the Platform database is Derby: Example. Note! Ensure that you include existing paths, so that they are not overwritten. $ mzsh topo get topo://container:<container>/pico:platform/obj:config.classpath $ mzsh topo get topo://container:<container>/pico:<ec>/obj:config.classpath $ mzsh topo set topo://container:<container>/pico:<ec name>/obj:config.classpath.jars ' ["lib/picostart.jar", "3pp/common_message.jar", "3pp/common_util.jar", "3pp/core_chargingplan.jar", "3pp/core_chargingprocess.jar", "3pp/core_client.jar", "3pp/logging.jar", "3pp/sap.com~tc~logging~java.jar", <file location>/sapjco3.jar"]' $ mzsh topo set topo://container:&lt;container>/pico:platform/obj:config.classpath.jars ' ["lib/derby.jar","lib/picostart.jar", "lib/javassist.jar", "lib/codeserver.jar", "lib/codeserver_common.jar", "<file location>/sapjco3.jar"]' Place the libsapjco3.so file in the MZ_HOME/common/lib/native directory of the Platform Container and each Execution Container. Create a database connection, e g Oracle, Derby, or MySQL. Create a table to keep track of file states. See the example below: Example - JCO Uploader state table CREATE TABLE "MZ_SAP_JCO_UPLOADER_STATE" ("WF_NAME" VARCHAR2(100 BYTE), "FILENAME" VARCHAR2(100 BYTE), "START_POSITION" NUMBER, "END_POSITION" NUMBER); CREATE INDEX "UPLOADER_STATE_INDEX1" ON "MZ_SAP_JCO_UPLOADER_STATE" ("FILENAME", "WF_NAME");
+
+---
+
+# Document 1605: General UI Builder UDRs - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204675071/General+UI+Builder+UDRs
+**Categories:** chunks_index.json
+
+This section contains the following general UDRs: UICycle UDR Request UDR Response UDR Cookie UDR Script UDR
+
+---
+
+# Document 1606: Using mzcli - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/547979295/Using+mzcli
+**Categories:** chunks_index.json
+
+When using mzcli, you need to know the execution mechanisms, the options and arguments for the command, as well as the different ways you can set the options. All of this is described in this section. Executing mzcli Commands mzcli Usage and Options mzcli Profiles
+
+---
+
+# Document 1607: Workflow Execution State UDRs - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204741385/Workflow+Execution+State+UDRs
+**Categories:** chunks_index.json
+
+The Workflow Bridge forwarding agent sends information to the Workflow Bridge real-time collection agent to report workflow state changes. The state information is delivered in a WorkflowStateUDR .
+
+---
+
+# Document 1608: Python Connector Agent Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204642346/Python+Connector+Agent+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Input/Output Data
+
+---
+
+# Document 1609: Executing mzcli Commands - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/547979316/Executing+mzcli+Commands
+**Categories:** chunks_index.json
+
+To execute the mzcli commands you can either run: java -jar mzcli.jar mzcli <options> <command> or, omit the mzcli : java -jar <name of jar file> <options> <command> If no <command> is stated, mzcli will go into an interactive mode session, for example: java -jar mzcli.jar [mzcli] --host --port You can then run the commands directly without starting them with java -jar mzcli.jar mzcli --host --port . In non-interactive mode, the command and its arguments can be stated in the same command, for example: java -jar mzcli.jar [mzcli] --host --port <command> [<arguments>] Example - mzcli command creating a system export file $ java -jar --host 198.33.1.55 --port 5599 mzcli.jar systemexport -overwrite export_file Example - mzcli command Below are a few examples of how you can use mzcli provided you have done one of the following: configured properties created a profile entered interactive mode To list all available workflows: $ java -jar mzcli.jar wflist Default.HTTP2.workflow_1 (1) prep_csv.export_csv.win (1) prep_csv.import_csv.win (1) SystemTask.Configuration_Cleaner.Configuration_Cleaner (1) SystemTask.DataVeracity_Maintenance.DataVeracity_Maintenance (1) SystemTask.System_Backup.System_Backup (1) SystemTask.System_Log_Cleaner.System_Log_Cleaner (1) To list only valid workflows: $ java -jar mzcli.jar wflist -valid Default.HTTP2.workflow_1 (1) SystemTask.Configuration_Cleaner.Configuration_Cleaner (1) SystemTask.DataVeracity_Maintenance.DataVeracity_Maintenance (1) SystemTask.System_Backup.System_Backup (1) SystemTask.System_Log_Cleaner.System_Log_Cleaner (1)
+
+---
+
+# Document 1610: Preparing the Database - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204676317/Preparing+the+Database
+**Categories:** chunks_index.json
+
+Follow these steps to prepare the Impala database: Open a browser and and enter URL of the Hue interface. Create a staging directory. Open the file browser in Hue. Select a directory in the file browser, e.g. /user/impala/uploads Click the New button and then select directory. Enter the name of the new directory, e.g. staging and then click Create . Select the directory in the file browser. Click the Actions button and then select Change Permissions . Update the permissions to make the new directory available to the UNIX user(s) that is used to start the ECs. Create a database and a table to be used by Data Hub. Select Impala from Query Editors . Enter a CREATE DATABASE statement in the editor and then click the Execute button. Note! A PARTIONED BY clause is optional. However, it is highly recommended since it will improve the performance of queries that restrict results by the partitioned column. A partition column of INT type also make it possible to use the Data Hub task agent to automatically remove old data from the table. For further information about the Data Hub task agent, see Data Hub Task Agent . Data Hub is limited to handle one partition column. A STORED AS PARQUET clause is required. If you omit this clause, Data Hub will fail to update the table. Click the Refresh button. Enter a CREATE TABLE statement in the editor and then click the Execute button. The CREATE TABLE statement may contain the following data types: STRING INT FLOAT DOUBLE BOOLEAN BIGINT REAL SMALINT TINYINT TIMESTAMP Example - Creating a table in Impala CREATE TABLE IF NOT EXISTS mytable (id STRING, start BIGINT, stop BIGINT) PARTITIONED BY (yearmonthday INT) STORED AS PARQUET TBLPROPERTIES ('transactional'='false'); When you run the Data Hub agent, temporary tables will be created in the same schema. These tables will be visible in Hue but hidden in the system.
+
+---
+
+# Document 1611: TCP/IP Forwarding Agent Events - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204740904/TCP+IP+Forwarding+Agent+Events
+**Categories:** chunks_index.json
+
+Agent Message Events There are no message events for this agent. Agent Debug Events There are no debug events for this agent.
+
+---
+
+# Document 1612: Kafka Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/301137921
+**Categories:** chunks_index.json
+
+This section describes the Kafka agents and profile. The agents are used to forward and collect messages using Kafka. Kafka is a cluster-based software executed externally outside of MediationZone. Kafka uses a high throughput publish-subscriber messaging model. It persists all messages and by design, it decouples the publisher from the subscriber. This means that the forwarding agent will keep writing to the log even if the collection agent terminates. The Kafka forwarding agent is available in real-time workflows and is listed among the processing agents while the Kafka collection agent is available in both batch and real-time workflows and is listed among the collection agents. In this release we have built two new Kafka agents that will replace the previous ones in a later release. In this documentation, the previous agents and profile are referred to as, Legacy Kafka agents and Legacy Kafka profile. Subsections This sections contains the following subsections: New Kafka Agents Legacy Kafka Agents
+
+---
+
+# Document 1613: Python Manager - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204671163/Python+Manager
+**Categories:** chunks_index.json
+
+With Python Manager you manage Python executables. To open the Python Manager, go to Manage and select Python Manager in the Tools & Monitoring section. Open The Python Manager Python Manager Table The Python Manager table provides you with information about the available Python installations in the system. You can add an interpreter by clicking the Add button at the bottom. This opens the Add Interpreter window. Double-clicking an existing interpreter opens the Edit Interpreter window. Using these options you can add/configure the following details: Column Description Name The name of the Python installation. Location The location of the Python executable in the file system. Working Directory The working directory to be used. Use As Default Select if this Python installation is to be used as default interpreter for agents that do not specify a Python Interpreter Profile. Use In Editor Select if this Python installation is to be used for code completion in the Python Code Editor. This Python installation has to be available on the platform. To remove an existing interpreter, select an interpreter and click Remove . There are also the Up and Down buttons to move/rearrange interpreters in the table.
+
+---
+
+# Document 1614: Azure Event Hub Producer Agent Events - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204672297/Azure+Event+Hub+Producer+Agent+Events
+**Categories:** chunks_index.json
+
+Agent Message Events There are no agent message events for this agent. For information about the agent message event type, see Agent Event . Debug Events There are no debug events for this agent. Loading
+
+---
+
+# Document 1615: APN Profile - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/285638748/APN+Profile
+**Categories:** chunks_index.json
+
+To use Apple Push Notification functionality, you need an Apple Entitlement certificate specified in the APN profile. This profile is loaded when you start a workflow that relies on it. Any changes to the profile will take effect once you restart the workflow. Configuration In the APN profile configuration, enter the details required to register the Apple Push Certificate. Open APN profile configuration Setting Description Setting Description File Path Enter the path and file name of the Apple Push certificate in this field. Password Enter the password for the certificate in this field. Bundle Id Enter the bundle id for the certificate in this field. Production Select this check box if the certificate is a production certificate. Otherwise, it will be considered a development certificate.
+
+---
+
+# Document 1616: Compression Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205032128/Compression+Agents
+**Categories:** chunks_index.json
+
+This section describes the Decompressor and Compressor agents. These are processing agents that are available in batch workflow configurations. The Decompressor agent receives compressed data batches in Gzip format, extracts them, and routes the decompressed data forward in the workflow. An empty or corrupt batch is handled by the agent according to your configuration. The Compressor agent receives data batches, compresses the data to Gzip format, and routes the compressed data forward in the workflow. Prerequisites The reader of this User's Guide should be fa milia r with APL. This section includes the following subsections: Compressor Agent Decompressor Agent
+
+---
+
+# Document 1617: threshold - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204742637
+**Categories:** chunks_index.json
+
+The threshold objects contain a set of level objects that define limits for the KPIs. When a limit is exceeded within a defined period, a threshold object and a level object are referenced in the KPIOutput UDRs. You can define the limit values for a threshold object in ascending or descending order. The following JSON schema describes the data format of the threshold object type: Loading The threshold object type has the following properties: Property Description orderDescending orderDescending controls in which order thresholds are evaluated and if alarms should be triggered when levels are exceeded from below or from above. Set this property to true for descending order and false for ascending order. levels levels must contain a set of level sub-objects, which describe the alert levels that are associated with a threshold object. The level object type contains the following properties: Property Description alarmDescription alarmDescription may contain an arbitrary string. value value must contain a numerical threshold value. A level object must have at least one level. Example - JSON Representation "threshold": { "Region.AD": { "orderDescending": true, "levels": { "1": { "alarmDescription": "", "value": 500 }, "2": { "alarmDescription": "", "value": 400 }, "3": { "alarmDescription": "", "value": 300 }, "4": { "alarmDescription": "", "value": 200 }, "5": { "alarmDescription": "", "value": 100 } } } } Break
+
+---
+
+# Document 1618: Authorization Server Properties - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204648132
+**Categories:** chunks_index.json
+
+This section describes the different properties that are being used in the Authorization Server. These properties are divided into several blocks with each block corresponding to a particular element of the Authorization Server. The following is an example of parameters that have been configured accordingly to the requirements. enabled=true # -------------------------------------------------------------------------------- # Storage Properties # -------------------------------------------------------------------------------- # Only used when storage type is "database". PostgreSQL or Oracle DB only storage.database.profile-name=<Path.DBProfileName> storage.database.poolsize=8 # Only used when storage type is "file-based" storage.file-based.storage-location=/Users/limyizhan/Workspace/mz9/mz-drx/mediationzone/storage/oauth2.storage # The storage type can be either "file-based" or "database" storage.type=file-based # -------------------------------------------------------------------------------- # Server Properties # -------------------------------------------------------------------------------- # Validity period in seconds for access token generated server.access-token-expiry=1800 # -------------------------------------------------------------------------------- # Management Api Properties # -------------------------------------------------------------------------------- management-api.enable-basic-auth=true # HTTP Basic Authentication Password management-api.password=DR-4-6912EB66E4E5FDF6035DBF848195669A # HTTP Basic Authentication Username management-api.username=mzadmin # -------------------------------------------------------------------------------- # JSON Web Token (JWT) Properties # -------------------------------------------------------------------------------- jwt.key-id=selfsigned jwt.key-password=DR-4-6912EB66E4E5FDF6035DBF848195669A jwt.keystore-location=/Users/limyizhan/Downloads/keystore_server.jks jwt.keystore-password=DR-4-6912EB66E4E5FDF6035DBF848195669A # Only RS256, RS384 and RS512 are supported jwt.signature-algorithm=RS256 Storage The OAuth2 Service stores provisioned scopes and registered clients into memory or persistent storage. The storage configuration is used to determine where the data should be stored. For Database type storage, see Authorization Server Storage Database Schema for details on creating the table for Authorization Server. Parameter Name Description Parameter Name Description type Type of storage to be used. The value can be one of the following: file-based (Default) - The data will be stored in a file-based storage. database - The data will be stored in a database. Note! Only PostgreSQL and Oracle database are currently supported. file-based.storage-location Location of the file-based storage. Will be created if not found. Only used when storage type is set to "file-based" Note! For fresh installs, the last path in the location should be non-existent as the Authorization server will create it automatically. database.profile-name The Database Profile Name in MZ to be used. Only used when storage type is set to "database". The value of the profile name should include the directory name as shown in the desktop UI. Example - Database Profile Name storage { database { profile-name="REST.PRF_DB" } type="database" } database.poolsize The size of the connection pool, representing the number of database connections that are kept open and ready for use. Only used when storage type is set to "database". Server The server configuration for the OAuth2 Service that will determine where the access token endpoint will be hosted on and the access token expiry. Parameter Name Description Parameter Name Description access-token-expiry Validity period in seconds for access token generated. Management API The Management API is used to provision scopes and register clients via HTTP. Clients need to be registered before any access token can be requested. The Management API configuration is used to configure the base endpoint in the Authorization Server that will be used to host the Management API. For more information on the function of Management API, see Management API . Parameter Name Description Parameter Name Description enable-basic-auth Enables the HTTP Basic Authentication for Management API. Note! It is recommended to have enable-basic-auth set to true. This is so the list of clients and scope will not be accessible to anyone without the proper credentials mentioned below. username Username for HTTP Basic Authentication (if enabled). password Password for HTTP Basic Authentication (if enabled). Must be encrypted using "mzsh encryptpassword" command. JWT The Authorization Server generates the JSON Web Token (JWT) and requires the JWT to be digitally signed. Currently, only the RSA private/public key pair signing method is supported. The JWT block is used to configure the keystore and the RSA private/public key pair details. Parameter Name Description Parameter Name Description keystore-location Path to the keystore where the RSA private/public key pair used for JWT is stored. Only Java KeyStore (JKS) format is supported. keystore-password Password of the keystore. Must be encrypted using mzsh encryptpassword command. key-id Alias of the RSA private/public key pair used for JWT. key-password Password of the RSA private/public key pair used for JWT. signature-algorithm Signature algorithm to be used for JWT signing. Only RS256, RS384 and RS512 are supported.
+
+---
+
+# Document 1619: SAP HANA Preparations - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204604229
+**Categories:** chunks_index.json
+
+This section describes the preparations necessary when installing SAP HANA as a database and includes the following subsections: Extract Database Definition Files to SAP HANA SAP HANA Database Creation
+
+---
+
+# Document 1620: SFTP Forwarding Agent MultiForwardingUDR Input - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204643070
+**Categories:** chunks_index.json
+
+When the agent is set to use MultiForwardingUDR input, it accepts input of the UDR type MultiForwardingUDR declared in the FNT folder. The declaration follows: internal MultiForwardingUDR { // Entire file content byte[] content; // Target filename and directory FNTUDR fntSpecification; }; The content of the MultiForwardingUDR will be stored at the path that you have set in the fntSpecification field. Use the APL functions fntAddString and fntAddDirDelimiter to set the value of this field. For further information about these functions, see 16. FNTUDR Functions in APL Reference Guide . When the files are received they are written to temp files in the DR_TMP_DIR directory situated in the root output folder. The files are moved to their final destination when an end batch message is received. A runtime error will occur if any of the fields have a null value or if the path is invalid on the target file system. A UDR of the type MultiForwardingUDR which has a target filename that is not identical to its precedent is saved in a new output file. Note! After a target filename that is not identical to its precedent has been saved, you cannot use the first filename again. For example: Saving filename B after saving filename A, prevents you from using A again. Instead, you should first save all the A filenames, then all the B filenames, and so forth. Non-existing directories will be created if the Create Non-Existing Directories check box under the Filename Template tab is selected, if not, a runtime error will occur. When MultiForwardingUDR s are expected configuration options referring to bytearray input are ignored. For further information about Filename Template, see Filename Template Tab in Workflow Template(old) . Example - APL code to send MultiForwardingUDRs This example shows the APL code used in an Analysis agent connected to a forwarding agent expecting input of type MultiForwardingUDR s. import ultra.FNT; MultiForwardingUDR createMultiForwardingUDR (string dir, string file, bytearray fileContent){ //Create the FNTUDR FNTUDR fntudr = udrCreate(FNTUDR); fntAddString(fntudr, dir); fntAddDirDelimiter(fntudr);//Add a directory fntAddString(fntudr, file);//Add a file MultiForwardingUDR multiForwardingUDR = udrCreate(MultiForwardingUDR); multiForwardingUDR.fntSpecification = fntudr; multiForwardingUDR.content = fileContent; return multiForwardingUDR; } consume { bytearray file1Content; strToBA (file1Content, "file nr 1 content"); bytearray file2Content; strToBA (file2Content, "file nr 2 content"); //Send MultiForwardingUDRs to the forwarding agent udrRoute(createMultiForwardingUDR ("dir1", "file1", file1Content)); udrRoute(createMultiForwardingUDR ("dir2", "file2", file2Content)); } The Analysis agent mentioned previously in the example will send two MultiForwardingUDR s to the forwarding agent. Two files with different contents will be placed in two separate sub folders in the root directory. If the directories do not exist, the Create Non-Existing Directories check box in the forwarding agent Configuration dialog under the Filename Template tab must be selected.
+
+---
+
+# Document 1621: Log Filter - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/314998785/Log+Filter
+**Categories:** chunks_index.json
+
+In the Log Filter tool, you can edit log settings for the picos and update the logging dynamically. To view the Log Filter, go to Manage  Tools & Monitoring and then select Log Filter . Open Log Filter In Log Filter you have the following settings: Setting Description Setting Description Picos Select the pico(s) you want to update log settings for. If you select several picos, only one pico name will be displayed but you will see their names when hovering the number to the left of the pico. Refresh Click on this button to refresh the list of available picos. Some may have been added or removed since you opened the Log Filter. Reset Select this check box to remove all updated settings and revert to the default settings which are as follows: Stacktrace: ON Level: Set to the value of system property: pico.log.level Package: Any package/class. File: No additional file Stacktrace Select this check box to configure whether the stacktrace should be included in the log or not. Available options in the drop-down are ON and OFF . Level Select the lowest level of severity you want to log in this drop-down; ERROR , WARN , INFO , CONFIG , DEBUG , TRACE , FINEST . You can also select ALL to log all events regardless of severity, and OFF to stop all logging for the selected picos . Caution! If you set a detailed log level, such as DEBUG, TRACE, or FINEST, logging will be done for all classes in the selected pico(s), including APL logging, which may have a negative impact on performance. To avoid excessive logging when using these log levels, you can select the Package check box, described below, and enter a package, for example, aplLogger to only do logging for APL. Package Select this check box to only log events for a specific *.mzp package or class. Specify the package name or class in the field to the right. This setting can be useful if you have built your own DTK packages, or if you need help from support. Note! When you use the Package option and state aplLogger, you can also specify a specific workflow by appending it like this: aplLogger.<workflow name>. File Select this check box to send logging an additional file with the filename specified in the field to the right. If you only select this check box and nothing else, the same logging will be done in both the regular log files and the additional file, but if you make any other log settings and select this check box, the other setting will only be applied for the logging in the additional file and not for the regular logging. Update Click on this button to apply your changes to the log settings for the selected pico(s). Clear Click on this button to clear all settings you have made.
+
+---
+
+# Document 1622: Python Agents Example - Real-Time - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204642389/Python+Agents+Example+-+Real-Time
+**Categories:** chunks_index.json
+
+This section provides an example of how you can use the Python processing and Python Connector agents for machine learning. In this example the classic iris dataset is used. With the help of scikit-learn a model of this dataset is built to predict observations. The iris dataset consists of 3 different types of iris' (Setosa, Versicolor, and Virginica) petal and sepal length, with 50 observations each, totaling 150 observations. The problem is presented as a supervised learning problem, with the aim of predicting the species of an iris using measurements of petal and sepal lengths. There is a production flow, where queries are served via web services requests, and an exploration flow for model validation. Open Workflow example with Python processing and Python Connector agents Workflow Configuration The sections below provide descriptions of agent configurations for this example workflow. WS_Handler The Analysis agent is configured to handle requests from the web services agent. The request is translated into a format required by the machine learned model. Responses from the model are sent back to the web services agent as the result of the prediction. Open Example - Code for WS_Handler import ultra.Iris.UFL_Types; import ultra.ws.Iris.PRF_WebService.Xtraining; consume { debug(input); if (instanceOf(input, WSCycle_predict)) { WSCycle_predict cycle = (WSCycle_predict) input; PredictObservation obs = udrCreate(PredictObservation); obs.observation = listCreate(double, cycle.param.sepal_length, cycle.param.sepal_width, cycle.param.petal_length, cycle.param.petal_width); obs.context = cycle; udrRoute(obs, "observation"); } if (instanceOf(input, PredictObservation)) { PredictObservation obs = (PredictObservation) input; WSCycle_predict cycle = (WSCycle_predict) obs.context; Response response = udrCreate(Response); response.iris = obs.prediction; cycle.response = response; udrRoute(cycle, "response"); } } Predict The Python processing agent processes UDRs by defining a consume block, and uses the selected Interpreter profile that is used to configure the Python executables. The input is either a UDR of type InstallModel in which case the current model is replaced by a recently trained model, or a UDR of type PredictObservation in which case the information in the input is used as input to the model to predict the species of iris. Open Example - Code for Predict import pickle model = None targets = None def consume(input): if isinstance(input, InstallModel): global model, targets model = pickle.loads(input.model) targets = input.targets elif isinstance(input, PredictObservation): if model: idx = model.predict([input.observation])[0] input.prediction = targets[idx] else: input.prediction = 'please install model' if input.testing: debug(input) udrRoute(input, 'test_prediction') else: udrRoute(input, 'prediction') Python_Connector The Python Connector agent is configured to bind on port 3810 from which the data will be received. The types accepted for routing are PredictObservation (Iris.UFL_Types) and InstallModel (Iris.UFL_Types) on route r_1. Open The Python Connector agent implements a custom API that does all the workflow interaction and provides a high level API to the exploration tool. Open Example - Code for Python Connector API import pickle from .UFL_Types import InstallModel from .UFL_Types import PredictObservation def install_model(model, targets): udr = InstallModel( model=pickle.dumps(model), targets=targets) udrRoute(udr) def predict(observation): udr = PredictObservation( observation=observation, testing=True) udrRoute(udr) return udrConsume().prediction __all__ = ['install_model', 'predict'] Exploration Tool You start the workflow, open the exploration tool of your choice, and run your script. Open
+
+---
+
+# Document 1623: Terminology - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205816269
+**Categories:** chunks_index.json
+
+Search this document: Below are the terms and acronyms used throughout the MediationZone documentation. Terms Term Definition Agent An application that executes a specific task in a workflow. There are three types of agents: collection, processing and forwarding agents. Analysis Programming Language A structured programming language, used by the Analysis and Aggregation agents to analyze or manipulate UDR fields. Asynchronous agent An asynchronous agent enables the workflow to process multiple UDRs simultaneously by using a queue for each output route. Batch A file, containing external data records, that can only be collected by offline workflows. Offline workflows are also referred to as batch workflows. Begin Batch Indicates the start of a data batch to be fed into a workflow. All collection agents emit Begin Batch messages at the beginning of a data batch. Cancel Batch A message initiated by any agent that wants to cancel the current batch. Cell Cells contain a set of Container Groups. At the time of writing, only one predefined cell ( default ) is available. Collection Agent An agent that collects and inserts data into workflows, including file based and UDR based collectors. Configuration Configurations in the system include all the objects that you find in the Configuration Browser, for example, workflow configurations, agent profiles, workflow groups, Ultra formats, or alarm detectors. Data Batch The data transferred through a Workflow between a Begin Batch and End Batch message. In file based mediation, a data batch often contains a complete file. End Batch Indicates the end of a data batch fed into a Workflow. Error Correction System A central repository for erroneous records and batches. Execution Container In addition to the Platform Container, a MediationZone system may have several Execution Containers. Each container supports running any number of Execution Contexts (ECs) and Service Contexts (SC). Execution Context Execution Contexts are responsible for executing workflows. Execution Contexts may run both in the Platform Container and in any number of Execution Containers. Forwarding Agent An agent that distributes data from workflows. System A MediationZone system, refers to a Platform Container and any number of Execution Containers. System Installation The result of one or more Container installations, including the Platform Container. Meta Information Model MIM - Some agents in a workflow need information from the workflow or other agents in order to operate. For example, an agent that produces a file might need the source file name and the number of processed UDRs to be used in the outgoing file name. MediationZone uses the Meta Information Model to enable this. MIM resource An identifier for a specific resource, published by the Workflow or an agent. MIM resources are static during the workflow execution. MIM value The current value of a MIM resource. MIM resources can be assigned their values either statically, or when receiving Begin Batch or End Batch messages. MZ_HOME The installation directory of a container. Pico Configuration A set of attributes in the STR that defines a pico instance. Pico Instance A segment of MediationZone that is also a Java Virtual Machine (JVM). Pico Instances can be of the different types: Execution Context (EC) Command Line Platform Desktop Service Context (SC) Platform A core part of MediationZone that is responsible for providing services to other pico instances. Platform Container Each MediationZone system must have one Platform Container that includes the Platform. Additional Platform Containers may exist in a system, for high availability, but only one is active at a time. The Platform Container may also have Execution Contexts (EC) and Service Contexts (SC). Processing Agent An agent that processes data in a workflow. In a workflow, a processing agent can either have one incoming and one outgoing data stream, or just one incoming data stream. Profile A global configuration that is used by the agents. Some agents require a profile to finalize the configuration of the agent. Related UDRs Partial UDRs that originate from the same long-duration data exchange between two devices. Session An information record that MedationZone samples at any time during execution of a workflow. This record enables a recovery of the exact status of the workflow, when a failover occurs. In MediationZone, a session is considered to be closed either when a timeout occurs or when a predefined closing criteria (an APL if condition) is met. A session remains active until it is removed with the sessionRemove() function. Service Context Service Contexts are responsible for providing running distributed services that are required by various components in the system. Service Contexts may run both in the Platform Container and in any number Execution Containers. STR Container Each MediationZone installation is assigned a container name, to identify it uniquely within a MediationZone system. Put differently, the container name is an identifier for an MZ_HOME directory on a particular host. One host (physical or virtual) may hold several Containers, each one with a unique name and installed in separate MZ_HOME directories. Containers are used by STR to reference a MediationZone installation on a host. Pico instances can be defined for one or more containers. STR Container installation The result of running the MedationZone setup scripts to install the software in a (MZ_HOME) directory on a physical or virtual host. STR Container Group A Container Group contains a set of containers. At the time of writing, only one predefined Container Group ( default ) is available. Synchronous Agent A synchronous agent finishes processing of each UDR before it retrieves the next UDR in the queue. System A MediationZone system, refers to a Platform Container and any number of Execution Containers. System Installation The result of one or more Container installations, including the Platform Container. System Topology Registry A data structure that holds configurations, service configurations, and attributes that control the behavior of MediationZone. The data in STR can be edited in the System Administration GUI, text editor, or via the Command Line Tool (mzsh). Ultra The MediationZone format management system. Ultra Format Definition Language UFDL - An enriched programming language used to describe the physical structure of incoming and outgoing (external) data, internal (working) formats, as well as decoding and encoding rules. Usage Detail Record UDR - the MediationZone translation of what otherwise is known as CDR, Call Detail Record. Workflow A workflow is an executable object that is represented by a Workflow Table row in a Workflow configuration, an Execution Manager row, and a Workflow Monitor view. A workflow is included in a w orkflow configuration . You define a Workflow in the w orkflow configuration , further described in the Desktop User's Guide. Workflow Configuration A Workflow configuration consists of: A process-definition of agents and the routes between them (referred to as a template) Workflow Properties One or several workflow table rows (see Workflow) Workflow Group A group of workflows that are configured as a single entity and share criteria for scheduling and execution. Acronyms Acronym Definition APL Analysis Programming Language CRC Cyclic Redundancy Check DB Database EC Execution Context ECS Error Correction System FTP File Transfer Protocol GTP GPRS Tunneling Protocol GUI Graphical User Interface HA High Availability HOCON Human Optimised Config Notation HTTP Hypertext Transfer Protocol IP Internet Protocol IPDR Internet Protocol Data Record JAR Java Archive JMX Java Management Extensions JVM Java Virtual Machine MIB Management Information Base MIM Meta Information Model MZ MediationZone OS Operating System RAC (Oracle) Real Application Clusters RCP Remote Communication Protocol REST Representational State Transfer RTBS Real-Time Billing System SC Service Context SCP Secure Copy Protocol SFTP SSH File Transfer Protocol SID (Oracle) System ID STR System Topology Registry SQL Structured Query Language TCP Transmission Control Protocol TLS Transport Layer Security UDR Usage Detail Record UFDL Ultra Format Definition Language XML Extensible Markup Language
+
+---
+
+# Document 1624: Archiving - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204613709/Archiving
+**Categories:** chunks_index.json
+
+MediationZone offers the possibility to archive data batches for a configurable period of time. The Archiving agent sends all data batches it receives for archiving. Each data batch is saved as a file in a specified file repository with a corresponding reference to the file in the database. The Archive Inspector offers the possibility of browsing and purging these files. Depending on the selected profile, the archive services are responsible for naming and storing each file and to purge outdated files on a regular basis. Using the directory templates and base directories specified in the Archive profile window, directory structures are dynamically built when files are stored. For instance, a directory name be based on any MIM, and be changed on a daily or hourly basis. The archive services will automatically create all directories it needs below the base directories. Each Archiving agent can be configured to use a separate archive profile for its files, containing information about the target directory and the removal of stored files. In the example below, a workflow is using Archiving agents to store input and output. Open Example of a workflow utilizing Archiving agents to store data batches Archive Inspection with its search functionality can be used to search for files for a specified period. The figure below is an example of the Archive inspector. Open Searching for archived files from Archive inspector
+
+---
+
+# Document 1625: Categorized Grouping Agent Overview - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204999295/Categorized+Grouping+Agent+Overview
+**Categories:** chunks_index.json
+
+The Categorized Grouping agent is a processing agent designed to divide incoming data into categories. Each category can contain data from one or more files. When a category closing condition is met, the data collected in a category can be grouped with an external script and the result will be emitted into the workflow. Categorizing Incoming data is divided into categories by the agent. All data assigned the same categoryId will be accumulated in one category. It is performed according to conditions set in APL in the analysis agent, usually preceding the Categorized Grouping agent. Grouping The incoming data accumulated in a category can be grouped into one or several files. Each categorized set of data sent to the agent will have an associated filename, set either by default or in the APL configuration. If no filename is configured in the preceding APL agent a DEFAULT_FILENAME will be automatically set by the agent for each category. The default file will always be situated in the top directory of its category. Closing Conditions A category will be closed as soon as one of the configured closing conditions is met. There are four different closing conditions available to configure in the agent. It is also possible to use APL to add a closing condition. To close a category from APL, it is enough that one UDR sets the closing condition to true . When a closing condition for a category is met, an external script is executed generating a file containing all the data of one category. If the Grouping feature is not enabled, the filename associated with incoming data is ignored and only one file is created for each category. The resulting file is emitted upon a closing condition. This is useful when splitting is desired and grouping is not needed. The external script will not be used. Categorized Grouping Related UDR Types The UDR types created by default in the Categorized Grouping agent can be viewed in the UDR Internal Format Browser in the CatGroup folder. To open the browser open an APL Editor, in the editing area right-click and select UDR Assistance... ; the browser opens.
+
+---
+
+# Document 1626: Distributed Storage Profile - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204671675
+**Categories:** chunks_index.json
+
+The Distributed Storage profile enables you to access a distributed storage solution from APL without having to provide details about its type or implementation. The use of the Distributed Storage profile and profiles for specific distributed storage types, such as Couchbase and Redis, makes it easy to change the database setup with a minimum impact on the configured business logic. This simplifies the process of creating flexible real-time solutions with high availability a nd perform ance. Note! If you switch between selecting Couchbase and Redis, the Distributed Storage iterator functions differ. For Couchbase you use dsCreateKeyIterator , and for Redis you use dsCreateREKeyIterator . For further information, see Distributed Storage Functions in the APL Reference Guide . Open Distributed Storage profile concept APL provides functions to read, store and remove data in one or multiple distributed storage instances within the same workflow. It also provides functions for transaction management and bulk processing. For information about which APL functions are applicable to the Distributed Storage profile, see the APL Reference Guide . The Couchbase and Redis profiles are available for use with the Distributed Storage profile . For further information about these profiles, see Couchbase Profile and Redis Profile . The Distributed Storage profile is loaded when you start a workflow that depends on it. Changes to the profile become effective when you restart the workflow. Configuration To create a new Distributed Storage profile configuration, click the New Configuration button in the upper left part of in Build View , and then select Distributed Storage Profile from the menu. The contents of the menus in the menu bar may change depending on which configuration type has been opened in the currently displayed tab. The Distributed Storage profile uses the standard menu items and buttons that are visible for all configurations, and these are described in Common Configuration Buttons . Open The Distributed Storage profile dialog Setting Description Setting Description Storage Type Select a storage type from the drop-down list. Profile Select the storage profile that you want to apply.
+
+---
+
+# Document 1627: User Documentation - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/overview
+**Categories:** chunks_index.json
+
+This release contains the following enhancements: New command line interface Automatic rollback will be triggered when upgrading fails. A rollback also can be manually triggered and a number of bug fixes for: Desktop Devkit MZSH Documentation Installation FTP SCP SFTP SAP RFC SAP CTS+ SQL System Log Workflow UI Events Realtime batch Execution Manager Configuration Browser Conditional Trace Azure Kafka Diameter Liquibase Audit Conditional Trace Pico Parquet JSON Decoder Ultra among others. See Bug Fixes for more details. Information about where the release can be accessed is available here: Release Information . Overall user documentation is available at: https://infozone.atlassian.net/wiki/spaces/MD93 . Enjoy!
+
+---
+
+# Document 1628: APL Container Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204677873/APL+Container+Functions
+**Categories:** chunks_index.json
+
+The APL Container functions enable you to manage bundles of data objects according to your specific requirements. Note! These functions support only the string data type. The following functions for APL Container described here are: 1 romapCreateTableFromFile 2 romapGetValue 3 romapGetSize romapCreateTableFromFile The romapCreateTableFromFile function enables you to load a large file to the Execution Context memory, and create a look-up table from it. The command reads a file and creates a read-only file of key-value data pairs. any romapCreateTableFromFile ( string fileName , char delimiter , any oldTable ) Parameter Description Parameter Description fileName The name of the (input) file that is about to be converted into a look-up table. Note! If the romapCreateTableFromFile function reads two different values of the same key, you cannot control nor choose which of the values is registered as the key's value in the table, as every key should be unique. delimiter The delimiter character that the (input) file includes oldTable The name of the look-up table that has previously been created with this function for the same fileName . May be Null. Note! This parameter enables you to increase performance by reusing a table that has already been read. It is especially practical when you only want to add a small amount of data. Returns A read-only table that is used in subsequent calls to romapGetValue romapGetValue The romapGetValue function enables you to fetch a specific value from a specific table. string romapGetValue ( any tableObject , string key ) Parameter Description Parameter Description tableObject The object that is returned from romapCreateTableFromFile . For further information see the section above, romapCreateTableFromFile. key The key for which the function should return the value Returns The value of the specified key romapGetSize The romapGetSize function returns the size of a specific table. int romapGetSize( any tableObject ) Parameter Description Parameter Description tableObject The object that is returned from romapCreateTableFromFile . For further information see the section above , romapCreateTableFromFile. Returns The size of the specified table
+
+---
+
+# Document 1629: Encryption Agent - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204641042
+
+
+---
+**End of Part 68** - Continue to next part for more content.
