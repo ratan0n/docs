@@ -1,0 +1,325 @@
+# RATANON/MZ93-DOCUMENTATION - Part 62/112
+
+---
+**Dataset:** ratanon/mz93-documentation
+**Part:** 62 of 112
+**GitHub:** https://github.com/ratan0n/docs/tree/main/mz93-documentation
+**Size:** ~60.1 KB
+---
+
+**Categories:** chunks_index.json
+
+The following table describes the different data types available in APL. The second column states if the data type is a primitive, or an object. The third column indicates the default value that an uninitialized variable will obtain. Data type P/O Def val Range Description Example boolean P false 1 Byte Boolean value ( true|false ). boolean aBool=true; byte P 0 1 Byte, -128 to +127 Single byte integer value. byte aNumber=127; char P '0' 1 Byte A single character value. char aCharacter='a'; short P 0 2 Bytes, -32,768 to +32,767 Short integer value. short aNumber=31000; int P 0 4 Bytes, -2,147,483,648 to +2,147,483,647 Integer values have normal Java syntax, for instance: 42, 0x2A An integer literal is always of the most narrow integer type that can contain the value. This normally works as expected, since numeric types can be implicitly converted to any wider numeric type. int aNumber=2147483640; float P 0/0 4 Bytes, 1.40129846432481707e-45 to 3.40282346638528860e+38 (positive or negative) Single-precision floating point. float aValue=0.5; double P 0/0 8 Bytes, 4.94065645841246544e-324d to 1.79769313486231570e+308d (positive or negative). Double-precision floating point. When using floating-point literals, (that is, float (f) or double (d) values) all floating-point literals without trailing d is considered float literals. Note! For instance 0.5 and 0.5d will not give identical values Double types may contain positive or negative infinity. double aValue=432482943.1; double POS_INFINITY=1.0/0.0; double NEG_INFINITY=-1.0/0.0; long P 0 8 Bytes, -263 to +(263 -1) Long integer value. long aNumber=92233720368547; bigint O 0 Unlimited Provides storage for any integer value. bigint aNumber; bigdec O 0 Unlimited Provides storage for any integer value with a decimal point. Values assigned to bigdecimal variables in APL must be suffixed with b. Example bigdec aNumber = 123.4567b; bigdec aNumber; string O null Unlimited Values assigned to string variables in APL must be surrounded with double quotes. A character preceded by a backslash () is an escape sequence and has a special meaning to the compiler. The following sequences are available: t - Tab b - Backspace n - Newline r - Carriage return f - Formfeed ' - Single quote character " - Double quote character  - Backslash character Some string comparison functions use regular expressions. If special characters such as "*", "?" are to be used as characters in the regular expression, they must be escaped with two backslashes in the APL since these strings will be parsed twice. For instance, the following function will return the index of the question mark in the string: strREIndexOf("Am I right?", "?") String values surrounded with triple double quotes are referred to as multiline strings. You can span the content of these string across line boundaries. Multiline strings does not support, or need, escape characters. All characters, including double quotes, are assigned as they appear. string aString = "foobar"; string mlString = """{ "key1": "value 1", "key2": "value 2" }"""; any O null Can be assigned any value of any type. any aVar; aVar = 1; aVar = "foobar"; bitset O null Represents a bit string that grows as needed. The bits are indexed by non-negative integers. bitset aBitset; bytearray O null Bytearray type. bytearray anArray; date O null Holds date and time, including the timezone. date aDate; ipaddress O null Holds IP address information. Both IPv4 and IPv6 are supported. ipaddress anIp = ipLocalHost(); list <type> O null List of objects of the specified type. If a list of lists is to be declared the ">" characters must be separated by at least one space, not to conflict with the ">>" operator. That is, list<list<int> >intLists; list<int>intList; map O null Hash maps allowing key/value pairs to be defined. map<string, int> aMap = mapCreate(string, int); table O null Special type used to hold table data used by the table commands. table aTable = tableCreate("Default", anSQL); UDRType O null Holds a reference to a UDR. The UDRType must be a defined format or compilation will fail. There is also a special format available for generic UDRs called drudr and is of drudr type. MyDefinedType aUDR; drudr anyUDR; uuid O null 128 bits Immutable universally unique identifier (UUID). uuid u=uuidCreateRandom(); The variable types follow Java standard regarding object reference vs. value semantics. All types use value semantics when compared through the '==' and '!=' boolean operators and objects use reference semantics for all other operators, like assignments '='. Example - Reference Semantics Two date variables (objects) and two long variables (primitives) are used to illustrate the reference semantics. In the case of date variables, they will always contain the same value regardless of being updated via myDate_A or myDate_B since they point to the same object. date myDate_A = dateCreateNow(); date myDate_B = myDate_A; long myLong_A = 10; long myLong_B = myLong_A; if (myDate_A == myDate_B ) { // true } if (myLong_A == myLong_B) { // true } // Change value on A variables dateAddHours(myDate_A, 22); if (myDate_A == myDate_B) { // still true, points to same object } myLong_A = 55; if (myLong_A == myLong_B) { // false, primitives always hold their own values } Type Casting It is possible to cast between different types with regular Java syntax. The instanceOf function is used to evaluate dynamic types since an incorrect type conversion will cause the workflow to abort with a runtime error. Example - Type casting /* APL code for two UDR types */ consume { if( instanceOf( input, UDRType1 ) ) { UDRType1 udr1 = (UDRType1) input; // Handle UDRType1 ... } else { UDRType2 udr2 = (UDRType2) input; // Handle UDRType2 ... } } As an extension to the regular conversions, all types may be casted to string type. Note that some types are subtypes of other types and can be directly assigned. Examples are: All types are subtypes of the any type. int is a subtype (narrowing) of long . All UDR types are subtypes of the general base type drudr . Some UDR types are subtypes of other UDR types (depending on Ultra definitions). There is also a number of built-in type conversion functions (refer to the section below, Access of UDR Fields). Access of UDR Fields UDR fields are accessed with the '.' separator. For instance, to access the field myField within the UDR type variable theUDR , the syntax would be: theUDR.myField = 5; debug( theUDR.myField ); If the field name is a variable instead of a string, udrGetValue/udrSetValue can be used to set/get field values dynamically. Access of non-present fields will return the default value for the specific type. Field presence is evaluated with udrIsPresent. When writing to a UDR field on a null object, a NullPointerException will be thrown, see example: Example - Access UDR fields myUDR theUDR = null; int a = theUDR.myField // Will Not throw NullPointerException theUDR.myField = 0; // Will throw NullPointerException To avoid exceptions, first make sure that the UDR is not a null object: Example - Check for null value if( theUDR != null ) { theUDR.myField = 0; } For further information about UDR related functions, see UDR Functions . Access of Input UDR Within the consume block, the incoming UDR can be accessed using the special variable input . The instanceOf function may be useful in case of dealing with several UDR types.
+
+---
+
+# Document 1448: The Result of the Export - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204611209/The+Result+of+the+Export
+**Categories:** chunks_index.json
+
+When using the vcexport command, each folder with configurations that you select to export will get its own new folder in the target directory stated with the command. In each folder one xml file and one schema file will be generated for each configuration. The schema file contains information about any directory structures included. The xml file will have an extension that indicates what type of configuration it is, e g .wf for workflows, .ultra for Ultras, etc. Open Export Format The purpose of schemas in VC-export/import Each configuration exported with the vcexport command is accompanied with an associated schema. This schema contains information required by the vcimport command when translating the exported data back into the format used internally in the system. The schema contains an entry for each type of "storable" present in the corresponding configuration. The term "storable" refers to the mechanism used internally in the system when serializing/deserializing configurations. This arrangement, separating configuration data and its schema, is made with the aim to keep the exported configurations as concise, clutter-free and humanly readable as possible. The schemas are not usable as general-purpose XML schemas for validation of configurations in external tools. The use of XML schema is incidental, and is just a convenient way of capturing the information needed to support the import/export functionality. When comparing two versions of the same configurations you should also compare their respective schemas. In many cases, the schemas will be identical, but in certain situations there will differences in the schema files. These situations include: A storable is only present in one of the versions (for example, a specific workflow agent was added). In this case, one of the schemas will contain an additional entry for this type. A storable instance has a data value set to "null" in one of the versions, and has a value assigned in the other. In this case, the schema will differ since a type cannot be determined for the null value in one of the versions. This is due to a limitation in the' "storable" mechanism. If you want to import one of the two versions after comparing them you should typically use the schema associated with it. However, it is also possible to manually assemble a schema containing the union of both schemas, which will include all storables used for both versions. There is generally no harm in having too much information in the schema. The current scope of the vcformat is to be: humanly readable, contextually understandable and comparable. Although it is possible to successfully perform off-line merges of configuration versions in many situations, this is not officially a use case supported by the format, since the format is a mirror of the internal data structures used within the system and not something formally specified and documented.
+
+---
+
+# Document 1449: Data Hub User's Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204676300
+**Categories:** chunks_index.json
+
+Loading Data Hub provides the ability to store and query large amounts of data processed by the system. Typical usage of Data Hub includes: Data tracing Temporary archiving Analytics Integration with external systems Staging data for further processing Data Hub requires access to Cloudera Impala, which provides high-performance, low-latency SQL queries on data stored in an Hadoop filesystem (HDFS). The Data Hub Forwarding Agent bulk loads data in CSV files to HDFS and then inserts it into a Parquet table in the Impala database specified by a Data Hub Profile . The table data is then available for query via Data Hub Query . In a production environment, it is recommended that the size of the collected files ranges between 1 to 100 MB. Though it is possible to collect and process small batches the overhead of handling a large number of files will have significant impact on performance. You may remove old data from the Impala database with the Data Hub task agent. Prerequisites The reader of this document should be familiar with: Cloudera Impala ( https://www.cloudera.com ) Loading Loading
+
+---
+
+# Document 1450: Database Forwarding Agent Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205684741/Database+Forwarding+Agent+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Input/Output Data The input/output data is the type of data an agent expects and delivers. The agent consumes the selected UDR type. MIM For information about the MIM and a list of the general MIM parameters, see Administration and Management in Legacy Desktop . Publishes MIM Parameter Description Database This MIM parameter contains the name of the database the agent is distributing to. Database is of the string type and is defined as a global MIM context type. Table This MIM parameter contains the name of the working table or the stored procedure the agent is distributing to. Table is of the string type and is defined as a global MIM context type. Accesses Various resources, if MIM parameter or function assignments are made in the Assignment tab.
+
+---
+
+# Document 1451: IBM DB2 - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204639460/IBM+DB2
+**Categories:** chunks_index.json
+
+This section contains information that is specific to the database type IBM DB2. Supported Functions The IBM DB2 database can be used with: Database Table Related Functions (APL) Database Collection/Forwarding Agents Prepared Statements (APL) SQL Collection/Forwarding Agents Preparations A database driver is required to connect to the IBM DB2 database. This driver must be stored in the Platform. Follow these steps to set up the IBM DB2 driver on the Platform: Download the IBM DB2 driver ( jcc.jar ) for the appropriate IBM DB2 database version. Copy the downloaded file to the directory MZ_HOME/3pp in the Platform. Restart the Platform and EC's for the change to take effect. You should be able to select the IBM DB2 option from the Database profile after this step.
+
+---
+
+# Document 1452: KPI Management Scaling Considerations - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204645751/KPI+Management+Scaling+Considerations
+**Categories:** chunks_index.json
+
+This section describes details of the KPI Management implementation that you should take into account when deploying KPI Management in a production environment. Operating System The default maximum number of file descriptors and processes in your OS may be insufficient for the Spark cluster. If the number of file descriptors is exceeded, it will be indicated by the error message "too many open files" in the Spark driver log. The procedure below describes how to increase the limit on a Linux system. The error "java.lang.OutOfMemoryError: unable to create new native thread" indicates that the maximum number of processes is exceeded. To increase this number, you typically need to change the settings in the file /etc/security/limits.conf . For further information about how to update this file, see your operating system documentation. Spark To scale out the Spark applications, you can increase the number of slave hosts for the Spark cluster or increase the number of CPUs on existing hosts. Follow these steps to scale out the Spark applications: Stop the KPI Management workflows. Shut down the Spark cluster. Shutdown all Kafka and Zookeepers. Update the Spark service configuration. If you are not only adding CPUs on existing host but also new slave hosts, you need to add these to the configuration. Increase the number of Kafka partitions. In order for the Spark service to work, the required number of partitions for each topic must be equal to the setting of the property spark.default.parallelism in the Spark application configuration. Remove the checkpoint directory. $ rm -rf <checkpoint directory>/* Restart Kafka and Zookeeper. Submit the Spark application. Start the KPI Management workflows. ZooKeeper The Spark application connects to the ZooKeeper service and you must ensure that the maximum number of client connections is not exceeded since this will cause errors during the processing. The default maximum number of connections is 60 per client host. The required number of connections directly corresponds to the total number of running Spark executors.
+
+---
+
+# Document 1453: ECS Forwarding Agent Transaction Behavior, Input/Output Data, MIM, and Events - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204738686/ECS+Forwarding+Agent+Transaction+Behavior+Input+Output+Data+MIM+and+Events
+**Categories:** chunks_index.json
+
+Transaction Behavior The agent does not emit or retrieve any commands. Input/Output Data The input/output data is the type of data an agent expects and delivers. The agent consumes selected UDR types. MIM For information about the MIM and a list of the general MIM parameters, see Administration and Management in Legacy Desktop . Publishes MIM Value Description Agent Name The name of the agent. Inbound UDRs The number of UDRs routed to the agent. Accesses The agent does not itself access any MIM resources. Agent Message Events There are no agent message events for this agent. Debug Events There are no debug events for this agent.
+
+---
+
+# Document 1454: Properties for PostgreSQL - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204637835
+**Categories:** chunks_index.json
+
+You need to set the following properties in install.xml for a PostgreSQL database: Property Description Property Description install.pg.owner Default value: mzowner This property specifies the PostgreSQL username for the database owner. This user will own all the data definitions in the PostgreSQL instance to be created. This property also use as database schema. Note! The installation fails if the same username is configured for both the database owner, install.pg.owner , and the mz.jdbc.user . install.pg.password Default value: mz This property specifies the password for the database owner, defined with the install.pg.owner variable described above. install.pg.db.name Default value: mz This property specifies the name of the PostgreSQL database name. Note! The name has to be stated in lower case since PostgreSQL does not support names in upper case. install.pg.host Default value: 127.0.0.1 This property specifies IP address or hostname of the database instance. install.pg.port Default value: 5432 This property specifies the PostgreSQL database port. install.pg.tb.space.tab Default value: pg_default This property specifies the name of the tablespace to use to create the table in. install.pg.tb.space.idx Default value: pg_default This property specifies the name of the tablespace to use for the index.
+
+---
+
+# Document 1455: Data Hub User's Guide - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204676300/Data+Hub+User+s+Guide
+**Categories:** chunks_index.json
+
+Loading Data Hub provides the ability to store and query large amounts of data processed by the system. Typical usage of Data Hub includes: Data tracing Temporary archiving Analytics Integration with external systems Staging data for further processing Data Hub requires access to Cloudera Impala, which provides high-performance, low-latency SQL queries on data stored in an Hadoop filesystem (HDFS). The Data Hub Forwarding Agent bulk loads data in CSV files to HDFS and then inserts it into a Parquet table in the Impala database specified by a Data Hub Profile . The table data is then available for query via Data Hub Query . In a production environment, it is recommended that the size of the collected files ranges between 1 to 100 MB. Though it is possible to collect and process small batches the overhead of handling a large number of files will have significant impact on performance. You may remove old data from the Impala database with the Data Hub task agent. Prerequisites The reader of this document should be familiar with: Cloudera Impala ( https://www.cloudera.com ) Loading Loading
+
+---
+
+# Document 1456: SFTP Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204674722/SFTP+Agents
+**Categories:** chunks_index.json
+
+This section describes the SFTP collection and forwarding agents. The collection agent is available for batch and real-time workflows. The forwarding agent is available for batch workflows. Prerequisites The reader of this information should be familiar with: The SSH2 and SFTP protocols ( http://tools.ietf.org/html/draft-ietf-secsh-filexfer-03 ) APL code The section contains the following sub-sections: SFTP Agents Preparations SFTP Collection Agent SFTP Forwarding Agent
+
+---
+
+# Document 1457: Excel Encoder Agent Configuration - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204641197/Excel+Encoder+Agent+Configuration
+**Categories:** chunks_index.json
+
+To open the Excel Encoder agent configuration dialog from a workflow configuration, you can do the following: right-click the agent icon and select Configuration... select the agent icon and click the Edit button The Agent Configuration dialog contains the following settings: Open The Excel Encoder agent configuration dialog Setting Description Setting Description File Extension Select the file extension of the expected Excel file in this drop-down list.
+
+---
+
+# Document 1458: Amazon S3 Collection Agent - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204738005/Amazon+S3+Collection+Agent
+**Categories:** chunks_index.json
+
+The Amazon S3 collection agent collects files from a specified bucket and region in Amazon and inserts them into a workflow. Initially, the source location is scanned for all files matching the current filter. In addition, the Filename Sequence and Sort Order settings may be used to further manage the matching of files, although they may not be used at the same time since it will cause the workflow to abort. All files found will be fed one after the other into the workflow. When a file has been successfully processed by the workflow, the agent offers the possibility of moving, renaming, removing or ignoring the original file. The agent can also be configured to keep files for a set number of days. In addition, the agent offers the possibility of decompressing compressed (gzip) files after they have been collected. When all the files are successfully processed, the agent stops to await the next activation, whether it is scheduled or manually ini tiat ed. The section contains the following subsections: Amazon S3 Collection Agent Configuration Amazon S3 Collection Agent Events Amazon S3 Collection Agent Transaction Behavior Amazon S3 Collection Agent Input/Output Data and MIM
+
+---
+
+# Document 1459: Provisioning for Routing Control - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205656399/Provisioning+for+Routing+Control
+**Categories:** chunks_index.json
+
+Provisioning of Routing Details, Routing Destinations, Route Mapping, and Use Cases is handled through APL functions or the Web UI. Provisioning always targets a specific, internally predefined, area. Changes in one area are not reflected in the other. There are two different areas (TEST and PROD) the provisioning can target. A typical use case would be to provision data to the TEST area and, when considered ready, copy the content of TEST to PROD where a workflow can access them. Using two different areas - one for provisioning and one for runtime - makes it possible to test the configurations before moving them into production. This chapter includes the following sections: APL - PCC Provisioning Plugins Provisioning Routing Control in Desktop
+
+---
+
+# Document 1460: REST Client_Deprecated Agent Example - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204642555/REST+Client_Deprecated+Agent+Example
+**Categories:** chunks_index.json
+
+The file that is linked below includes two different examples of workflow configurations that use the REST Client_Deprecated agent: WF_REST_EXAMPLE_NOAUTH periodically sends GET and POST requests to http://httpbin.org . Debug events are generated to display the responses from the server. No authentication is used. WF_REST_EXAMPLE_OAUTH20 sends a single query, when the workflow starts, via the Twitter REST API at https://api.twitter.com . Debug events are generated to display the response from the server. OAuth 2.0 is used for authentication. WF_REST_EXAMPLE_SESSION periodically sends GET requests to http://httpbin.org . The APL in this example has been configured to extract the redirect location from the response header and reprocess the request. The workflow uses an Aggregation agent to keep track of the number of reprocessing attempts. The APL configuration also handles token expiration. However, token expiration will not occur since the REST Client_Deprecated agent has not been configured to use authentication. Example workflows: REST_example_export.zip Note! In order to run the workflow WF_REST_EXAMPLE_OAUTH20 , you must first register an application at https://apps.twitter.com . Once the registration is completed, you will receive a "Consumer Key" and a "Consumer Secret". Use these to set the Client ID and the Client Secret in the Authentication tab of the REST Client_Deprecated agent. Before you use the Twitter REST API, read the Rate Limiting documentation . If your registered application exceeds the rate limit, it may be blacklisted.
+
+---
+
+# Document 1461: Real-Time Disk_Deprecated Collection Agent Configuration - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204644671
+**Categories:** chunks_index.json
+
+To open the real-time Disk_Deprecated collection agent configuration, click Build  New Configuration . Select Workflow from the Configurations dialog. When prompted to Select workflow type , select Realtime . Click Add agent and select Disk Deprecated from the Agent Selection dialog. Double-click the agent icon or right-click the icon and select Edit agent , to display the Agent Configuration dialog. Disk_Deprecated Tab The Disk_Deprecated tab contains settings related to the placement and handling of the source files to be collected by the agent. Open Disk_Deprecated collection agent - Disk_Deprecated tab File Information Setting Description Setting Description Directory Enter the path of the source directory on the local file system of the EC, where the source files reside. The path can be absolute or relative to the $MZ_HOME environment variable. During processing of a file, it will be temporarily stored in a subdirectory under DR_TMP_DIR in the specified directory. Filename Enter an expression that matches the source files on the local file system. Regular expressions according to Java syntax applies. For further information, see: http://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html Example. To match all filenames beginning with TTFILE , type: ready_TTFILE.* Note! Collecting a file while it is open for writing in another application may cause loss of data. For this reason, it is recommended that you rename files after moving them to the source directory. The renamed files should include a suffix or prefix that is also included in the Filename expression. Compression Select Gzip to decompress files before collection and insertion into the workflow. If the collected files are not compressed, select No Compression . Polling Interval (ms) Enter the interval, in milliseconds, at which the source directory is to be scanned for new files. File Reader Size The agent moves files to the temporary directory for processing in bulk. Enter the maximum number of files to be included in each bulk move operation. Read Size (b) Enter the buffer size to be used for for reading files. When a decoder is selected the agent produces FileSend UDRs that contain one decoded UDR. On the other hand, when a decoder is not selected, the FileSend UDRs contain bytearrays which are split according to the value of Read Size (b) . Note! For performance reasons, it is recommended to set this value to a multiple of 1024. No of Thread(s) Enter the number of worker threads that should be used for file collection. This field determines the number of files that the agent can process concurrently. You should typically set the number of threads to match the number of workflow threads. To ensure that the files are processed in timestamp order, set No of Thread(s) to 1 and also select the checkbox Sort Files . Sort Files Select this checkbox to sort the files that are moved to the temporary directory for processing. The files are sorted according to timestamp in ascending order. Due to multithreading, the files may not be processed in this order. Timeout Handling Timeout (ms) When the agent routes the first partial data set to the workflow, a timeout counter starts. The timeout counter is reset when the workflows acknowledge reception of the complete file. If the timeout counter is exceeded the collected file is either moved to a user-specified directory or After Collection strategy is applied. Enter the timeout value in milliseconds. Move Files on Timeout Select this checkbox to move timed out files to an automatically created subdirectory that you specify in the Directory setting. Note! When this checkbox is cleared and a timeout occurs, the After Collection strategy is applied. Path When Move Files on Timeout is selected, enter the target directory for files that are subject to timeout handling. After Collection Move/Rename Select this radio button to move the source files to the directory specified in the Destination field, after the collection. If you use the Prefix or Suffix fields, the file is renamed as well. Enter the path of the directory on the local file system of the EC into which the source files should be moved after collection. The path can be absolute or relative to the $MZ_HOME environment variable. Note! It is possible to move collected files from one file system to another, however it will have a negative impact on performance. Prefix/Suffix Enter the prefix and/or suffix to append to the beginning/end of the name of the source files, after the collection. These fields are available if you have selected Move or Rename . Note! If you have selected Rename , the source files are renamed in the current directory. Make sure not to assign a Prefix or Suffix that result in files names that match the regular expression in Filename , or the files will be collected over and over again. Search/Replace Note! To apply Search and Replace , select Move/ Rename . Search : Enter the part of the filename that you want to replace. Replace : Enter the replacement text. Search and Replace operate on entries in a way that is similar to the Unix sed utility. The identified filenames are modified and forwarded to subsequent agents in the workflow. This functionality enables you to perform advanced filename modifications as well: Use regular expression in the Search entry to specify the part of the filename to extract. Note! A regular expression that fails to match the original file name will abort the workflow. Enter Replace with characters and meta characters that define the pattern and content of the replacement text. Remove If this radio button is selected, the source files are removed from the source directory after collection. Decoder Tab The Decoder tab contains settings related to decoding of the collected data. Open Disk_Deprecated collection agent - Decoder tab Open Disk_Deprecated collection agent when MZ Tagged Format is selected - Decoder tab
+
+---
+
+# Document 1462: GCP PubSub Publisher Agent Transaction Behaviour - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205000319/GCP+PubSub+Publisher+Agent+Transaction+Behaviour
+**Categories:** chunks_index.json
+
+This section describes the transaction behavior of the GCP PubSub Publisher agent. For more information about general transactions, see, Transactions, in Workflow Monitor . Emits This agent does not emit anything. Retrieves This agent does not retrieve anything.
+
+---
+
+# Document 1463: Disk Forwarding MultiForwardingUDR Input - Batch - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205032668
+**Categories:** chunks_index.json
+
+When the agent is set to use MultiForwardingUDR input, it accepts input of the UDR type MultiForwardingUDR declared in the package FNT. The declaration follows: internal MultiForwardingUDR { // Entire file content byte[] content; // Target filename and directory FNTUDR fntSpecification; }; The content of the MultiForwardingUDR will be stored at the path that you have set in the fntSpecification field. Use the APL functions fntAddString and fntAddDirDelimiter to set the value of this field. For further information about these functions, see FNTUDR Functions in APL Reference Guide . When the files are received they are written to temp files in the DR_TMP_DIR directory situated in the root output folder. The files are moved to their final destination when an end batch message is received. A runtime error will occur if any of the fields have a null value or if the path is invalid on the target file system. A UDR of the type MultiForwardingUDR which has a target filename that is not identical to its precedent is saved in a new output file. Note! MultiforwardingUDRs with their own specific target filenames will be saved into their specific output files. UDRs with filename A will be saved to filename A and UDRs with filename B will be saved to filename B regardless of precedence. Non-existing directories will be created if the Create Non-Existing Directories check box under the Filename Template tab is checked. If not checked, a runtime error will occur if a previously unknown directory exists in the FNTUDR of an incoming MultiForwardingUDR . Every configuration option referring to bytearray input is ignored when MultiForwardingUDR s are expected. Example - APL code to send MultiForwardingUDRs This example shows the APL code used in an Analysis agent connected to a forwarding agent expecting input of type MultiForwardingUDR s. import ultra.FNT; MultiForwardingUDR createMultiForwardingUDR (string dir, string file, bytearray fileContent){ //Create the FNTUDR FNTUDR fntudr = udrCreate(FNTUDR); fntAddString(fntudr, dir); fntAddDirDelimiter(fntudr);//Add a directory fntAddString(fntudr, file);//Add a file MultiForwardingUDR multiForwardingUDR = udrCreate(MultiForwardingUDR); multiForwardingUDR.fntSpecification = fntudr; multiForwardingUDR.content = fileContent; return multiForwardingUDR; } consume { bytearray file1Content; strToBA (file1Content, "file nr 1 content"); bytearray file2Content; strToBA (file2Content, "file nr 2 content"); //Send MultiForwardingUDRs to the forwarding agent udrRoute(createMultiForwardingUDR ("dir1", "file1", file1Content)); udrRoute(createMultiForwardingUDR ("dir2", "file2", file2Content)); } The Analysis agent mentioned previous in the example will send two MultiForwardingUDR s to the forwarding agent. Two files with different contents will be placed in two separate sub folders in the root directory. The Create Non-Existing Directories check box under the Filename Template tab in the configuration of the forwarding agent must be checked if the directories do not previously exist.
+
+---
+
+# Document 1464: AMQP Agent - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204606315/AMQP+Agent
+**Categories:** chunks_index.json
+
+This section describes the AMQP agent. This is a collection agent for real-time workflow configurations. The AMQP (Advanced Message Queueing Protocol) agent enables you to act as an AMQP client communicating with AMQP. Open Example workflows for AMQP as subscriber and publisher Prerequisites The reader of this information should be familiar with: AMQP Refer to http://www.rabbitmq.com/amqp-0-9-1-reference.html for documentation of RabbitMQ Supported Features The AMQP agent supports the following: Setting up connections with username and password Configuring multiple brokers for HA Connection over TLS Receiving messages from any number of queues Publishing messages to any number of queues Control over what queue(s) the agent is subscribing to and publishing to from within the workflow The section contains the following subsections: AMQP Agent Configuration AMQP Agent Input/Output Data and MIM AMQP Agent Events AMQP UDRs
+
+---
+
+# Document 1465: Ultra Format Definition Language (UFDL) - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204647680
+**Categories:** chunks_index.json
+
+The MediationZone Ultra formatting subsystem manages the decoding of information that originates from network elements. The information is converted to internal UDRs (usage data records) that can be processed by MediationZone agents, such as the Analysis Agent and Aggregation Agent. It also provides functionality to encode the internal UDRs to different output formats. Ultra is configured with a language called the Ultra Format Definition Language (UFDL). There are six main building blocks of UFDL: External formats - describes the way data is structured physically. This information is used by Ultra when decoding and encoding the data to include real-time requests and answer messages. Internal formats - describes a UDR (fields and types) that can be accessed from a MediationZone agent In maps - describes how to map the information of an external format to an internal format (for a decoder) Out maps - describes how to map the information of an internal format to an external format (for an encoder) Decoders  a declaration of a decoder that converts an external format to an internal format Encoders - a declaration of an encoder that converts an internal format to an external format Open Relationship between UFDL building blocks Open Example of data converted using Decoder and Encoder agents Ultra includes support for, and has been deployed using, numerous different physical formats. Direct support is included for any format described in ASN.1 (BER and PER), and XML Schema (XML). Ultra also contains a specification language to describe other physical formats, such as proprietary tagged records, fixed size records and binary data structures down to bit-level. Among other formats, this language has been used to provide support for AMA, INAMA, TAP2, TAP3, EMI, and a number of proprietary equipment vendor formats. It is important to note that based on format specifications, MediationZone generates code for decoding and encoding functionality automatically. This means that there is no interpretation, with associated performance penalties, performed at runtime. The following two figures illustrate how raw source data is defined as a UDR called udrAsciiSwitch in ULTRA. Open Raw source data file content Open UDR representation in ULTRA of raw source data
+
+---
+
+# Document 1466: SAP CC REST Agent - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/292618241/SAP+CC+REST+Agent
+**Categories:** chunks_index.json
+
+SAP Convergent Charging provides a rating and charging solution for high-volume processing in service industries. It delivers pricing design capabilities, high-performance rating, and convergent balance management. The SAP CC REST agent provides an easy way to integrate MediationZone with SAP Convergent Charging on SAP Cloud (RISE) environments. The SAP CC REST agent is a real-time agent that can send requests to SAP Convergent Chargings charging and loading services on SAP Cloud. The SAP CC REST agent communicates with the workflow by using a dedicated set of UDRs. The SAP CC REST agent accepts either the SAPCCChargingRequest or the SAPCCLoadingRequest as input, for the Charging service or Loading service, respectively. Either the SAPCCChargingRequest or the SAPCCLoadingRequest UDR, containing both the request and the response will be returned as output. For further information about the SAP CC REST UDR types, see SAP CC REST UDRs . Prerequisites The reader of this information should be familiar with: SAP Convergent Charging Concepts SAP Convergent Charging REST APIs ( SAP Help Portal - SAP Online Help ) The section contains the following subsections: SAP CC REST Agent Configuration SAP CC REST Agent Input/Output Data and MIM SAP CC REST UDRs
+
+---
+
+# Document 1467: Configuration Diff - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204742043
+**Categories:** chunks_index.json
+
+The Configuration Diff tool allows you to view two configurations or two versions of the same configuration side by side . You can choose from a list of two types of configurations to view and compare: APL and Ultra. The differences between the two configurations are highlighted in blue. To open Configuration Diff, click the Tools button in the upper left part of the Desktop window. Then double-click on Configuration Diff . You can also open the Configuration Diff tool from the APL Code editor, Ultra Format editor, Unit Test editor, or Python Module editor by selecting the Diff button located in the upper right part of the the Desktop window. Two panes are displayed when Configuration Diff opens. Select values for each pane: Field Description Field Description Configuration To select the configurations that you want to compare, select the Browse... button to the right of the Configuration field for each display pane. You can also display and view encrypted configurations. If you select an encrypted configuration, you are prompted to enter the relevant password to decrypt the configuration. History To select a different version of the same configuration, use this drop-down box to select the version you want to display. You can also display and view encrypted configurations. If you select an encrypted configuration, you are prompted to enter the relevant password to decrypt the configuration. Navigate through the differences by scrolling both panes in parallel using the scroll bar to the right of either pane. To scroll through each pane separately, hover over the pane that you want to scroll through, and use the scroll wheel on your mouse. To skip through each difference, use the navigation buttons displayed at the top left of the dialog: Button Description Button Description Previous Click this button to skip to the previous difference in the configurations. The previous difference is highlighted in green. Next Click this button to skip to the next difference in the configurations. The next difference is highlighted in green. Refresh Click this button to display the updated version of the configuration. Configurations are not locked when you display them in Configuration Diff. If another user has modified and saved a configuration that you are viewing in this tool, you can click this button to view the latest updated version.
+
+---
+
+# Document 1468: PlainText UDR - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204643750/PlainText+UDR
+**Categories:** chunks_index.json
+
+The PlainText UDR is used to create a plain text element. There are elements to set if the text should be bold or italic . You can use the following APL code to create text with both bold and italic styles PlainText myText = udrCreate(PlainText); myText.value = "This text has the styles bold and italic."; myText.italic = true; myText.bold = true; The following fields are included in the PlainText UDR : Field Description Field Description attributes (map<string,string>) This field may contain extra attributes to be added. bold (boolean) This field may contain a boolean if the text should be bold. The default is false. cssClasses (list<string>) This field may contain a list of extra values added to class attribute. This is typically used to style the component. Please read more on Bootstrap . id (string) This field may contain the id of the component italic (boolean) This field may contain a boolean if the text should be italic. The default is false. preFormatted (boolean) This field may contain a boolean if the text is already formatted. The default is false. value (string) This field contain the text.
+
+---
+
+# Document 1469: Web Service Provider Agent Input/Output Data, MIM and Events - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204643901/Web+Service+Provider+Agent+Input+Output+Data+MIM+and+Events
+**Categories:** chunks_index.json
+
+Input/Output Data
+
+---
+
+# Document 1470: Azure Event Hub Consumer Agent Events - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204606567/Azure+Event+Hub+Consumer+Agent+Events
+**Categories:** chunks_index.json
+
+Agent Message Events There are no agent message events for this agent. For information about the agent message event type, see Agent Event . Debug Events There are no debug events for this agent.
+
+---
+
+# Document 1471: mzcli - wfgroupremovewf - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/547980112/mzcli+-+wfgroupremovewf
+**Categories:** chunks_index.json
+
+Usage usage: wfgroupremovewf <workflow group name> <regexp for workflow name(s)> This command removes one or more workflows from a workflow group. Note! With wfgroupremovewf you cannot remove all the workflows from a group as this will result in an invalid workflow group configuration. In that case, the command aborts and an error message informs you about the abort cause. Since the workflow group should not be emptied, the command enables you to remove all the workflows from the workflow group only if the workflow group also contains a workflow group. This means that after removing all the workflows the parent workflow group is not empty. See the figure below, The wfgroupremovewf Command. Open The wfgroupremovewf command Return Codes Listed below are the different return codes for the wfgroupremovewf command: Code Description Code Description 0 Will be returned if the command was successful. 1 Will be returned if the number of arguments is incorrect. 2 Will be returned if the group is not found. 3 Will be returned if the workflow(s) you want to remove cannot be found. 4 Will be returned if there is no connection to Mgmt_Utils. 5 Will be returned if the group is locked. 6 Will be returned if the updating of group data failed. 7 Will be returned if the configuration lock could not be released. 8 Will be returned if the group is empty (all members have been removed).
+
+---
+
+# Document 1472: tree - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204742628/tree
+**Categories:** chunks_index.json
+
+The following JSON schema describes the data format of the tree object type: Loading The tree object type has one or more sub-objects, consisting of properties that describe the hierarchical structure of the dimensions. In the example below, tree1 is a root node and Region , Country , and City are child nodes. Each property in the node tree must have a matching dimension object. Example - JSON Representation "tree": { "tree1": { "Region": { "Country": { "City": {} } } } } Break
+
+---
+
+# Document 1473: External - XML Records - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204744316/External+-+XML+Records
+**Categories:** chunks_index.json
+
+XML Schema complex types are interpreted as UDR types. Elements and attributes within complex types are interpreted as UDR fields, and field types vary according to the XML schema definitions. This chapter includes the following sections: XML Data Type Mapping AnyType UDR Type XML Schema Extensions
+
+---
+
+# Document 1474: Legacy KafkaExceptionUDR - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/301138706
+**Categories:** chunks_index.json
+
+The KafkaExceptionUDR is used to return a message if an error occurs. Field Description Field Description message (string) This field provides a message with information on the error which has occurred.
+
+---
+
+# Document 1475: The Web Service WSCycle UDR Type - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204643983/The+Web+Service+WSCycle+UDR+Type
+**Categories:** chunks_index.json
+
+The WSCycle UDR represents an operation that is specified in the WSDL file. The naming structure is WSCycle_[operationName] . The agent using a WS profile will have as many input and output types as operations in the web service defined by the WS profile. The number of fields and field types in a WSCycle UDR will be set based on how the Web Service operation is defined in the WSDL file. Each WSCycle UDR contains the number of fields necessary to hold the information needed when sending or receiving a request or response. For example an operation with nothing in the input and output messages and no declared fault types will have no other fields than the ones from the AbstractWSCycle UDR. Open WSCycleUDR The structure of the WSCycleUDR_operationName depends on the definition of the operation in the WSDL file. The following table will present more information about possible fields. Field Description Field Description param (type corresponding to the input type) This field exists only if the operation has at least one request message type in its input message declaration. The param field type corresponds to the type defined in the XML schema, simple or complex type. If it is a complex type, a UDR containing fields corresponding to the types in the complex type will be created. Note! If the name of a complex input type in the XML Schema starts with a lower case character, the input type might be represented by several fields. The name of each of the fields is the name of the input type, prefixed by param_ . response (type corresponding to the output message of the operation) This field exists only if the operation has a response message that is not empty. The field shall be set before the WSCycleUDR is routed back to a Web Service Provider agent to send back a response message to the requester. This field is set to a value corresponding to the response message when the WSCycle UDR comes from a Web Service Request agent. fault_FaultTypeName (FaultTypeName is optional) It is possible to declare fault types for an operation. Messages of the fault types can be sent back from a Web Service instead of an ordinary response message. To send back a fault message instead of an ordinary response message, you have to set one of the fault fields. The FaultTypeName part of the field name will be the name of the declared fault type.
+
+---
+
+# Document 1476: Unit Test Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205654926/Unit+Test+Functions
+**Categories:** chunks_index.json
+
+In addition to the Python functions described in Functions, Exceptions, Types, and Constants , the following functions are available for Unit Tests. does not include any native assert functionality, this functionality can be found in the common python libraries. Add the Python Module and use in the unit test. Note! To access the Unit Test functions described below from a Python Module you can import the testkit module. This is useful when you write test-related helper functions. Finalizers addFinalizer This function adds a finalizer function to be called at scope exit. def addFinalizer(func, *args, **kwargs) Parameter Description Parameter Description func A function *args Positional arguments to be passed to the function **kwargs Keyword arguments to be passed to the function Returns An object with a remove() method Example - addFinalizer res = createResource() addFinalizer(res.destroy) finalizers A Python context manager that defines an extra finalization scope. There are two pre-defined finalization scopes; one on the module level and one for each test function. These two scopes should be enough for normal use. Example - finalizers with finalizers: res = createResource() addFinalizer(res.destroy) ... # res.destroy() is called at 'with scope' exit. Conditional testing SkipException Tests can be skipped by raising the SkipException exception in the test function blocks, or the initialize function block. class SkipException(message=None) Parameter Type Parameter Type message str Example - SkipException def initialize(): raise SkipException('All tests are skipped') def test(): raise SkipException('This test is skipped') Log functions logSearch Searches for entries in the System Log matching the given criteria. Returns an iterator with all matching entries. def logSearch(fromDate=None, toDate=None, severities=None, areas=None, wfName=None, wfGroupName=None, agentName=None, userName=None, message=None) Parameter Type Parameter Type fromDate drdate toDate drdate severities list[str] areas list[str] wfName str wfGroupName str agentName str userName str message str Example - logSearch def test(): myit = logSearch(fromDate=drdate('2021-01-26 16:00:00.0 UTC'), toDate=drdate('2021-01-30 23:59:59.0 UTC')) for logEntry in myit: print(logEntry) logRemove Removes the log entry with the specified id. def logRemove(id) Parameter Type Parameter Type id str Workflow functions These functions are event driven, meaning that an event is fired when the function is called. This means that if you use wfStart and immediately call wfIsRunning after it might return false as the workflow has yet to start. It might be necessary to loop over some of these functions while waiting for the status to changed. wfAdd Adds a new workflow to an existing workflow template. def wfAdd(wfName, parameters=None) Parameter Type Parameter Type wfName str parameters dict[str, any] Example - wfAdd def test(): # Add a workflow wfAdd('Default.test.workflow_1') or def test(): # Add a workflow and specify parameter values wfAdd('Default.test.workflow_1', {'Time Unit': 'SECONDS', 'Interval': 4}) wfDelete Deletes a workflow. def wfDelete(wfName) Parameter Type Parameter Type wfName str Example - wfDelete def test(): wfDelete('Default.test.workflow_1') wfExists Returns True if the workflow exists. def wfExists(wfName) Parameter Type Parameter Type wfName str Example - wfExists def test(): wfExists('Default.test.workflow_1') wfStart Starts the workflow. If successful, the workflow has been started but may not yet be running. def wfStart(wfName, ec=None) Parameter Type Parameter Type wfName str ec str Example - wfStart def test(): # Starts the workflow on the default EC wfStart('Default.test.workflow_1') or def test(): # Starts the workflow on ec1 wfStart('Default.test.workflow_1', ec='ec1') wfSetDebugMode Sets the workflow debug mode. Debug mode can be set before starting the workflow or after it has become running. def wfSetDebugMode(wfName, on) Parameter Type Parameter Type wfName str on bool Example - wfSetDebugMode def test(): wfSetDebugMode('Default.test.workflow_1', True) wfStart('Default.test.workflow_1') or def test(): wfStart('Default.test.workflow_1') # Wait until wf is running wfSetDebugMode('Default.test.workflow_1', True) wfIsCompleted Returns True if the workflow completed. def wfIsCompleted(wfName) Parameter Type Parameter Type wfName str Example - wfIsCompleted def test(): wfIsCompleted('Default.test.workflow_1') # False wfStart('Default.test.workflow_1') wfIsCompleted('Default.test.workflow_1') # False wfStop('Default.test.workflow_1') # Wait a sec for the workflow to actually stop wfIsCompleted('Default.test.workflow_1') # True wfIsRunning Returns True if the workflow is running. def wfIsRunning(wfName) Parameter Type Parameter Type wfName str Example - wfIsRunning def test(): wfIsRunning('Default.test.workflow_1') # False wfStart('Default.test.workflow_1') # Wait for the workflow to actually start wfIsRunning('Default.test.workflow_1') # True wfStop('Default.test.workflow_1') wfIsRunning('Default.test.workflow_1') # False wfIsAborted Returns True if the workflow aborted. def wfIsAborted(wfName) Parameter Type Parameter Type wfName str wfAbortMessage Returns the workflow abort message, if any. def wfAbortMessage(wfName) Parameter Type Parameter Type wfName str Example - wfAbortMessage def test(): if wfIsAborted('Default.test.workflow_1'): print(wfAbortMessage('Default.test.workflow_1')) else: pass # do something Event functions Below is a general example for all event functions. Our workflow ('Default.test.workflow_1') used in the example below is a simple workflow with a pulse agent connecting to an analysis agent where we debug the input. For information on how to format the filter see: Event Types(3.0) . Example - Event functions def test(): # Create an event buffer for our test workflow eventBuffer = eventBufferCreate(filter=dict(eventName='Debug Event', workflowName='Default.test.workflow_1'), ttl=60) # Make sure we are debugging as the filter is looking for debug events wfSetDebugMode('Default.test.workflow_1', True) # Start the workflow wfStart('Default.test.workflow_1') # Wait until some events have been produced # and then search the buffer events = eventBufferSearch(eventBuffer) for x in events: # Print only the agent message from the event iterator print(x.agentMessage) # Optionally destroy the buffer # it will be destroyed at the end of scope otherwise eventBufferDestroy(eventBuffer) eventBufferCreate Creates an event buffer where events matching filter are stored in memory for later inspection. Returns the event buffer to be used in calls to other event buffer functions. def eventBufferCreate(filter=None, ttl=None, maxSize=None) Parameter Type Parameter Type filter dict[str, any] ttl float maxSize int eventBufferDestroy Destroys the event buffer and releases any resources associated with it. def eventBufferDestroy(buffer) Parameter Type Parameter Type buffer object eventBufferSearch Searches for events in the event buffer matching filter. Returns an iterator with all currently matching events, with most recent event first. def eventBufferSearch(buffer, filter=None) Parameter Type Parameter Type buffer object filter dict[str, any]
+
+---
+
+# Document 1477: SAP CTS+ Export - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/318308390/SAP+CTS+Export
+**Categories:** chunks_index.json
+
+The CTS+ integration in MediationZone uses a "loose coupling" approach for handling exports. This means that the export process is performed within MediationZone , and then the exported file is manually made available to CTS+ for transport and import into target systems. To make a CTS+ export: Create the System Export: Use the System Export tool in Desktop, or the mzsh command line tool to generate the export file in MediationZone. Make the System Export available to TMS: Once the export file is created, follow the steps in the SAP CTS+ documentation on the SAP Help Portal - SAP Online Help to upload the file to TMS. When it is available, the export can be imported into target systems via the SAP CTS+ API. Note! When setting up your configurations and system exports, the entire export content will be imported into the target system. To ensure smooth integration we recommend that you: Use External References for system-specific variables. This ensures configurations are valid for both the source and target systems, with only the External References being system-specific. For more details, see External Reference Profile . Limit your exports to include only the use cases you intend to import into other systems.
+
+---
+
+# Document 1478: FTPS Collection Agent Configuration - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205652738
+**Categories:** chunks_index.json
+
+
+
+---
+**End of Part 62** - Continue to next part for more content.
