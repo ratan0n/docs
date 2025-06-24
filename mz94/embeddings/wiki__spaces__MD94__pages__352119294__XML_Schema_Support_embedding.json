@@ -1,0 +1,25 @@
+{
+  "id": "wiki__spaces__MD94__pages__352119294__XML_Schema_Support",
+  "title": "XML Schema Support - MediationZone Documentation 9.4 - InfoZone",
+  "url": "https://infozone.atlassian.net/wiki/spaces/MD94/pages/352119294/XML+Schema+Support",
+  "categories": [
+    "space:MD94"
+  ],
+  "text": "This chapter describes the XML addition to the Ultra Format Definition Language (UFDL). This addition enables you to compile a subset of XML Schema element definitions and to decode the XML input data. This section has the following subsections: Overview External - XML Records IPDR Compliance XML Schema Limitations An XML Format Example",
+  "chunks": [
+    {
+      "chunk_id": 1,
+      "text": "This chapter describes the XML addition to the Ultra Format Definition Language (UFDL). This addition enables you to compile a subset of XML Schema element definitions and to decode the XML input data. This section has the following subsections: Overview External - XML Records IPDR Compliance XML Schema Limitations An XML Format Example",
+      "title": "XML Schema Support - MediationZone Documentation 9.4 - InfoZone",
+      "url": "https://infozone.atlassian.net/wiki/spaces/MD94/pages/352119294/XML+Schema+Support",
+      "word_count": 53,
+      "char_count": 338
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-24T03:21:10.428697",
+    "word_count": 53,
+    "char_count": 338,
+    "chunk_count": 1
+  }
+}
