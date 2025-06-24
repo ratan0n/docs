@@ -1,0 +1,383 @@
+# RATANON/MZ93-DOCUMENTATION - Part 18/112
+
+---
+**Dataset:** ratanon/mz93-documentation
+**Part:** 18 of 112
+**GitHub:** https://github.com/ratan0n/docs/tree/main/mz93-documentation
+**Size:** ~69.7 KB
+---
+
+This section includes information about the SCP forwarding agent transaction behavior. For information about the general transaction behavior, see Workflow Monitor . Emits The agent does not emit anything. Retrieves The agent retrieves commands from other agents and based on them generates a state change of the file currently processed. Command Description Begin Batch When a Begin Batch message is received, the temporary directory DR_TMP_DIR is first created in the target directory, if not already created. Then, a target file is created and opened in the temporary directory. End Batch When an End Batch message is received, the target file in DR_TMP_DIR is closed and, finally, the file is moved from the temporary directory to the target directory. If backlog functionality is enabled an additional step is taken where the file is moved from DR_TMP_DIR to DR_POSTPONED_MOVE_DIR and then to the target directory. If the last step failed the file will be left in DR_POSTPONED_MOVE_DIR. Cancel Batch If a Cancel Batch message is received, the target file is removed from the DR_TMP_DIR directory.
+
+---
+
+# Document 371: Online Charging Function (OCF) - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204648046/Online+Charging+Function+OCF
+**Categories:** chunks_index.json
+
+Definition Online Charging Function (OCF) is defined using the Charging architecture and principles outlined by 3GPP TS32.240 (Ref 1) as the baseline. It is constructed as a set of capabilities to facilitate charging for telecom network connectivity services delivered by the CSP characterized by, and limited to: Interoperability with the core network The ability to interoperate with network elements via the Diameter Ro and Gy interfaces Interoperability with Charging Domain components Integration and call-flow orchestration between the OCF, Account Balance Management Function (ABMF), and Rating Function (RF) via a supported interface Interoperability with the Charging Gateway Function (CGF) via a supported interface, in order to facilitate CDR generation and data flow to downstream Billing Domain (BD) systems Commercial Models and purposes Direct B2C connectivity Direct B2B connectivity Telecom network inbound roaming Telecom network outbound roaming This Right to Use (RTU) grants the licensee the right to use DigitalRoutes MediationZone software in accordance with this definition.
+
+---
+
+# Document 372: SQL Processing Agent Events - Real-Time - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204740798/SQL+Processing+Agent+Events+-+Real-Time
+**Categories:** chunks_index.json
+
+Agent Message Event There are no message events for this agent. Debug Events Debug messages are dispatched in debug mode. During execution, the messages are displayed in the Workflow Monitor . You can configure Event Notifications that are triggered when a debug message is dispatched. For further information about the debug event type, see Debug Event . The agent produces the following debug events: SQL: sql-statement Example - SQL debug event SQL: INSERT INTO test_table (NUM, DATA) VALUES (?, ?) The debug message is sent when the SQL agent creates its SQL string to send to the database.
+
+---
+
+# Document 373: Data Hub Forwarding Agent Transaction Behavior - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204644986/Data+Hub+Forwarding+Agent+Transaction+Behavior
+**Categories:** chunks_index.json
+
+This section describes the transaction behavior of the Data Hub agent. For more information about general transactions, see, Transactions, in Workflow Monitor . Emits This agent does not emit anything. Retrieves The agent retrieves commands from other agents. Based on these commands the agent changes the state of the processed local file. Command Description Begin Batch When a Begin Batch message is received a local temporary file is created in MZ_HOME/tmp . Consume When a consume message is received the agent will write the incoming data to the local temporary file. Commit When a Commit message is received, the agent will send the local temporary file to the staging directory in Impala. Once the file has been transferred, the agent will insert the transferred data into a temporary database table. The agent then copies the data in the temporary table to the selected database table and removes all temporary files and tables. If the agent is recovering from an error, the agent will only remove the local temporary file. Rollback If a Rollback message is received, the agent will remove the local temporary file.
+
+---
+
+# Document 374: Inspection - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204998019
+**Categories:** chunks_index.json
+
+When workflows are executed, the agents may generate various kinds of data, such as logging errors into the System Log, or sending erroneous data to the Error Correction System (ECS), etc, and there are various Inspectors available where you can view such information. To open an Inspector, click on the Manage menu in Desktop and select the Inspector you want to open in the Data Management section. Note! The ECS Inspector and ECS Statistics are only available in Legacy Desktop The following Inspectors are available to analyze the data: Aggregation Session Inspector See Aggregation Session Inspector . Archive Inspector See Archive Inspector . Duplicate Batch Inspector See Duplicate Batch Inspector . Duplicate UDR Inspector See Duplicate UDR Inspector . ECS Inspector See ECS Inspector . ECS Statistics See ECS Statistics . Loading
+
+---
+
+# Document 375: desktop - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204646377/desktop
+**Categories:** chunks_index.json
+
+usage: desktop This command starts the Desktop Launcher. Return Codes Listed below are the different return codes for the desktop command: Code Description Code Description 0 Always returns 0.
+
+---
+
+# Document 376: Pico Manager - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205658339
+**Categories:** chunks_index.json
+
+All servers, processes, and threads related to an executing MediationZone instance are controlled and monitored using the Pico Manager. It also enforces potential restrictions in regards to hardware configurations that might apply for workflows and applications. Using the Pico Manager, the system administrator can: Register new picos. Start, stop, delete and change configuration of existing picos. Examples of configuration for an Execution Context (EC) pico are memory allocation, date formats, ports, java and security settings. Open Example of Pico Management usage The EC picos can also be assigned to groups. These groups simplify transfer of configurations between systems by providing an added layer of abstraction. For instance, the execution settings of a workflow configuration can be setup for a group instead of several individual ECs. This is useful since the name and number of ECs may differ between systems. Open Example of Pico Viewer usage To improve security, MediationZone can be configured to deny any new Desktop client access to the system until the system administrator has registered the IP address in the Pico Manager.
+
+---
+
+# Document 377: Security Functionality - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205816416/Security+Functionality
+**Categories:** chunks_index.json
+
+MediationZone can be configured to use secure and authenticated communication between the different, distributed parts of the system. X.509 certificates are used to ensure the authenticity of the client and server and TLS is used to encrypt the information passed between the client and the server. All communication between the Access, Control, and Execution Zones can be configured in this manner. Additionally, the communication between the different services in the Control Zone can also be configured to use this capability. MediationZone also supports encryption of all or a selection of configuration items. Encrypted configurations can be executed according to the access control profile of the user, but can never be read or modified without providing the password provided at the time of encryption. This mechanism is useful to enforce Intellectual Property Rights (IPR) protection, as well as to make sure that an end user cannot read or make modifications to an approved and tested configuration. Encrypted configurations will not be possible to view after a System Export operation.
+
+---
+
+# Document 378: mzcli - wfgroupdisable - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/547980028/mzcli+-+wfgroupdisable
+**Categories:** chunks_index.json
+
+Usage usage: wfgroupdisable <pattern matching expression for workflow group names> ... [ -mode < a >] This command disables one or more workflow groups. Options The command accepts the following options: Option Description Option Description [ -mode < a > ] Disable only workflow groups marked with a specified mode: a - Only Autostart groups are disabled. Return Codes Listed below are the different return codes for the wfgroupdisable command: Code Description 0 Will be returned if the command was successful. 1 Will be returned if the argument count is incorrect. 2 Will be returned if the user is not found or not logged in. 3 Will be returned if no matching workflow group was found.
+
+---
+
+# Document 379: Base Event - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205030500
+**Categories:** chunks_index.json
+
+A Base event is the parent of all events, except for the user defined events. Since it is the parent it means that all events will inherit the fields of the base event . Note! Subscribing to base events is not recommended since it will match every event produced in the system, which may generate a high volume of events. Base events contains the following information: category - Not utilized for Base event. contents - A hard coded string containing event specific information; the original event message. For instance, for the ECS Insert Event, this string will contain the type of data sent to ECS, the workflow name, the agent name, and the UDR count. For information about the contents field, see the specific event types (this table). eventName - The name of the Event, that is, any of the types described in this section, for example, Base event, Code Manager event or Alarm event. origin - The IP address of one of the following: Execution Context - On which the workflow that issues the event is running. Platform - If this is not a Workflow event. Desktop - If this is a User Event. receiveTimeStamp - The date and time for when an event is inserted in the platform database. For example, this is the time used in the System Log. severity - The severity of the event. May be any of: Information, Warning, Error or Disaster. The default value is Information. timeStamp - The date and time taken from the host where the event is issued.
+
+---
+
+# Document 380: Database Bulk Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205656810/Database+Bulk+Functions
+**Categories:** chunks_index.json
+
+The Database Bulk functions enable you to bundle multiple queries into one SQL statement. This significantly improves the throughput due to reduced need of context switching and network traversals. The functions are intended for batch usage only. All functions without the parameter disableCommit will be auto committed after the function has been executed. Making an SQL Query When making an SQL query it must follow a certain format and the order of the columns in the query must remain the same in the statement as in the where_clause . Example - Statement example Select A,B,C from Test_Table The where_clause argument for the sqlBulkPrepareStatement . For further information, see the section below, sqlBulkPrepareStatement. A=? and B=? and C=? The function adds a "WHERE" to the end of the statement and an "AND" between the static_where_clause and the where_clause statements. An "OR" is added between each where_clause statement. The lookup SQL query next shows one static_where_clause and two where_clause . Select A,B,C FROM Test_Table WHERE (A=? and B=? and C=?) AND ((A=? and B=? and C=?) OR (A=? and B=? and C=?)) If the where_clause in the SQL statement contains a range condition instead of an exact lookup key, the intended result cannot directly be associated back to the UDRs. Instead a result based on the significant columns will be returned. The result rows matching the range condition must be associated back to the UDRs using APL code. For further information, see the lookup query example below. The following functions for Database Bulk described here are: 1 Making an SQL Query 2 sqlBulkExecuteQuery 3 sqlBulkResultGetContext 4 sqlBulkResultGetSize 5 sqlBulkResultGetValue 6 sqlBulkElapsedNanoTime 7 sqlBulkClose 8 Example Workflow sqlBulkPrepareStatement This function prepares the the query. A JDBC connection is created and the bulkSize is set. The returned object is a mandatory parameter to the sqlBulkExecuteQuery() function and is needed for the execution of the lookup SQL query. any sqlBulkPrepareStatement (string dbProfile , string statement , string static_where_clause , //set to null if not present string where_clause , int bulkSize , int significantColumns , int totalColumns , int timeout , //Optional boolean disableCommit , //Optional) Parameter Description Parameter Description dbProfile Name of the database where the table resides statement Statement to send to the database static_where_clause The static_where_clause of the SQL statement stays the same throughout the batch mode execution where_clause The where_clause of the SQL statement principal. The where_clause columns that are to be considered significant must correspond with the columns in the select statement. For example, when statement reads "select A, B and C from X", where A and B is significant, the where_clause must begin with "A=? and B=?". bulkSize The size of the bundled lookup SQL query, that is the number of UDRs with a unique UDR key to be bundled. The ideal bulkSize depends on database table characteristics such as structure and number of rows. significantColumns This parameter indicates which columns in the select statement are significant to tie a result row to its context (UDR). All columns to be used as significant columns must be included in SQL search condition, and they must be used in the same order as in the search condition. For example, when using an incoming UDR as context and a search condition matching its IMSI field, using significant columns = 1 ties all matching rows to this UDR, namely, all rows with the same IMSI as that carried by the UDR. totalColumns The total number of columns in the statement timeout The least time interval, in milliseconds, the workflow will allow before a database bulk lookup will be done disableCommit (Deprecated from MediationZone 9.3.0.1) An optional parameter to disable the commit statement from being performed at the end of every SQL transaction for this particular function. Setting this parameter to false will result in the commit statement to be performed at the end of every SQL transaction for this particular function. By default, the system has the disableCommit set to true unless otherwise changed via this parameter. Info! It should be noted that on recent Oracle versions, the DBLink SQL transaction behaviour has changed, where every single SQL statement for remote database transaction requires a commit or rollback statement in order to close a connection. Returns: The returned object is a Prepared Statement object containing the added parameters, a prepared result list and a maintained contexts list. This object is a mandatory parameter to the sqlBulkExecuteQuery() function and is needed for the execution of the SQL query. Example - Lookup query Lookup query with one of the where_clause conditions without an exact lookup key. To prepare a query: SELECT Column1, Column2, Column3 FROM Test_Table WHERE Column1=? AND Column2=? AND Column3 <=?; The call to the function and the values for the above example: significantColumns = 2 totalColumns = 3 where_clause = "Column1=? and Column2=? and Column3 <=?" static_where_clause = null bulksize = 100 dbprofile = "myFolder.myProfile" statement = "select Column1, Column2, Column3 from Test_Table" The call to the APL function: initialize { any pStatement = sqlBulkPrepareStatement("myFolder.myProfile", "select Column1, Column2, Column3 from Test_Table", null, "Column1=? and Column2=? and Column3 <=?", 100, 2,3); } sqlBulkExecuteQuery When a UDR enters sqlBulkExecuteQuery the first met criteria of bulkSize or timeout triggers the database bulk lookup. The start of the timeout interval will be reset when a database query is done regardless if the last query was due to reached bulkSize or timeout . Next timeout occasion is calculated by adding the time of the last database lookup to the current timeout value. list <any> sqlBulkExecuteQuery(any ps, any context , any value1, any value2, ...) Parameter Description Parameter Description ps The object returned from a call to the sqlBulkPrepareStatement() context A context string, usually the UDR routed to the node values A number of values to populate the query Returns: A list containing objects that in their turn contains a context object and a result list. This object is a mandatory parameter to the sqlBulkResult* functions. Example - Using sqlBulkExecuteQuery The call to the function and the values for the example above, Example - Lookup Query: ps = pStatement object from sqlBulkPrepareStatement() context = myUDR values = myValues1, myValue2, myValue3 Call to the APL function: consume{ list <any> result = sqlBulkExecuteQuery(pStatement, myUDR, 10,2,3); } The function executes the SQL query before the bulkSize is reached. list <any> sqlBulkDrain(any ps) Parameter Description Parameter Description ps A preparedStatement object returned by the sqlBulkPrepareStatement() , containing among others a result list and a maintained contexts list. Returns: A list containing objects that in their turn contain a context object and a list with results. sqlBulkResultGetContext The function finds the context object from one result object in the list returned either by the sqlBulkExecuteQuery() or the sqlBulkDrain() functions. any sqlBulkResultGetContext(any presult) Parameter Description Parameter Description presult A result object from the list returned by the sqlBulkExecuteQuery() or the sqlBulkDrain() functions Returns: The context object associated with the presult parameter sqlBulkResultGetSize The function states the size of a result object in the list returned from the sqlBulkExecuteQuery() or the sqlBulkDrain() functions. int sqlBulkResultGetSize(any presult) Parameter Description Parameter Description presult A result object from the list returned by the sqlBulkExecuteQuery() or the sqlBulkDrain() functions Returns: An integer representing the size of the result sqlBulkResultGetValue The function gets a result value from a result object in the list returned by either the sqlBulkExecuteQuery() or the sqlBulkDrain() functions. any sqlBulkResultGetValue(any presult, int index, int column) Parameter Description Parameter Description presult A result object from the list returned by the sqlBulkExecuteQuery() or the sqlBulkDrain() functions index The index of the result table column The column number Returns: The value of the result object sqlBulkElapsedNanoTime This function accumulates the time of the execution of the database queries that is end time of execution minus start time of execution. long sqlBulkElapsedNanoTime() Parameter Description Parameter Description Returns: A long integer representing the accumulated nanoseconds. sqlBulkClose The function closes down the database connection as well as the SQL statement. If the sqlBulkClose is not called the connection will be closed when the workflow stops. void sqlBulkClose(any ps ) Parameter Description Parameter Description ps A preparedStatement object returned by the sqlBulkPrepareStatement() , containing among others a result list and a maintained contexts list Returns: Nothing Example Workflow The example shows a basic workflow where a Database Bulk lookup with a range condition is performed. Example workflow Prerequisites To use the sqlBulk related APL commands there must be a database profile configuration prepared. For further information, see Database Profile in the Desktop user's guide. Open Database profile example Decoder_1 Agent The incoming UDRs contains name and number to 10 people. Katerine,Stenberg,0046123456 Kalle,Andersson,0046789123 Mia,Karlsson,0046999111 Karina,Hansson,0046222333 PerErik,Larsson,0046111999 Mikael,Grenkvist,0046333444 Jonas,Bergsten,0046555666 Petra,Sjoberg,0046777888 Karl,Kvistgren,0046444555 FiaLotta,Bergman,0046666222 Analysis_1 Agent The Analysis agent does the database bulk lookup. In this case, the number of calls made by the people listed in the incoming UDRs. When the bulksize is reached (in this case 10) the query to the database selected in the database profile is made. // A preparedStatement object any pStatementObj; // Default.ExampleTable - the name of the database profile initialize { pStatementObj = sqlBulkPrepareStatement( "Default.ExampleTable", "SELECT first_name, last_name, telephone_no, usage_min FROM EXAMPLE_TABLE", null, "first_name=? and last_name=? and telephone_no=? ", 10, 3, 4); } consume { debug("In consume adding queries to the bulk execute"); processResults( sqlBulkExecuteQuery( pStatementObj, input, input.first_name, input.last_name, input.telephoneno)); } drain { processResults( sqlBulkDrain (pStatementObj)); } void processResults( list <any> resultList ) { if( resultList == null ) { // Do nothing return; } int i=0; // Iterate the results returned from the database while( i < listSize( resultList )) { any result = listGet( resultList, i ); i=i+1; // A string to populate with results from the database query string myTotalValue; int resultSize = sqlBulkResultGetSize(result); // At end of the iteration the myTotalValue will contain a // comma separated usageMin value string with values meeting int index = 0; while(index < resultSize){ // Populate myTotalValue with result if it met range condition int usageMinValue = (int) sqlBulkResultGetValue(result, index, 3); // In this test the range condition is set to a constant value. if( usageMinValue >= 10 ){ myTotalValue = myTotalValue+","+usageMinValue; } index = index +1; } InternalUDR iUdr = (InternalUDR) sqlBulkResultGetContext( result ); // Assign the populated array to the usageMin iUdr.usagemin = myTotalValue; udrRoute( iUdr ); } } The database lookups are in this example done in a database table with a content shown here: Open Database Table Encoder_1 Agent When the encoder has encoded the information from the analysis agent the result sent to the disk out agent is shown here: Katerine,Stenberg,46123456,,10,10 Kalle,Andersson,46789123,,10 Mia,Karlsson,46999111,,10 Karina,Hansson,46222333,,10 PerErik,Larsson,46111999,,11,11 Mikael,Grenkvist,46333444,,10 Jonas,Bergsten,46555666,,10 Petra,Sjoberg,46777888,,10 Karl,Kvistgren,46444555,,10 FiaLotta,Bergman,46666222,,10
+
+---
+
+# Document 381: Kafka Real-Time Forwarding Agent Configuration - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/608010302/Kafka+Real-Time+Forwarding+Agent+Configuration
+**Categories:** chunks_index.json
+
+To open the Kafka real-time forwarding agent: Click Configuration  New Configuration. Select Workflow from the Configurations dialog. When prompted to select a workflow type, select Batch. Click Add agent and select Kafka from the Processing tab in the Agent Selection dialog. Unlike the other Kafka agents, you do not need to configure the Kafka profile in the Workflow properties for the real-time forwarding agent. Instead, you configure it directly in the agents configuration. Open Kafka real-time forwarding agent configuration Configuration setting Descrtiption Configuration setting Descrtiption Kafka Profile The Kafka profile that is to be linked to the agent. There are no other configuration settings for the Kafka real-time forwarding agent. The agent must be preceded by an Analysis or Aggregation Agent that produces KafkaRecord UDRs.
+
+---
+
+# Document 382: SAP CC UDRs - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204609134/SAP+CC+UDRs
+**Categories:** chunks_index.json
+
+The SAP CC UDR types are designed to formalize the exchange between workflows and the SAP Convergent Charging Core Server. There are 4 classifications of SAP CC UDRs for MediationZone and these are divided into the SAP CC Online agents, SAP CC Batch agents, SAP CC Notification agents, and common SAP CC UDRs that are used by the SA P CC agents. The section contains the following subsections: SAP CC Batch UDRs SAP CC Online UDRs Notification UDRs Common SAP CC UDRs
+
+---
+
+# Document 383: Web Service Example - Running the Workflows - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205654713/Web+Service+Example+-+Running+the+Workflows
+**Categories:** chunks_index.json
+
+To run the workflows and watch their operation, open Workflow Monitor and follow the instructions below: In the Workflow Monitor view, select the Debug option in the Edit . The text "Debug Active (Event)" will appear at the bottom left corner of the Workflow Monitor . Click on the Start button. Once both workflows are running, to establish a connection port, run the following command from a command line view: telnet localhost 3210 From the telnet view enter data to the Provider workflow. To trigger the Analysis agent and have it route WSCycle_charge UDRs to the Web Service Requester agent, press ENTER repeatedly, and expect the following: Prior to every request, the debug event message "About to send" appears at the bottom of the Workflow Monitor view, and the Requester then sends the request to the Web Service Provider. In the Web Service Provider workflow, the Analysis agent first generates a debug message with the content of the param field and then creates a response. Analysis_1 sends the response to the Web Service Requester agent. The Web Service Requester generates the debug event "Done" and routes the WSCycle_charge UDR to Analysis_2. In the debug event pane, Analysis_2 announces the contents of the WSCycle_charge UDR.
+
+---
+
+# Document 384: Release Information - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204647417
+**Categories:** chunks_index.json
+
+Open Search this document: This page contains release information for the different releases of MediationZone 9.3 For each release the following information is available: Release Notes - Contains information about the contents of the release, important information and known issues. You must read through this information before starting any installation or upgrade. Bug Fix Appendix - Contains information about bug fixes included in the release. To obtain your release, please, visit Our Download site . Note! A new license is required to access new features in a minor version update. Please log a case to request your updated license. MediationZone 9.3 Version Date of Release Release Notes Bug Fix Appendix 9.3.0.0 Sep 24, 2024 MediationZone 9.3 Release Bug Fixes 9.3.0.1 Oct 3, 2024 MediationZone 9.3 Release Bug Fixes 9.3.0.2 Oct 18, 2024 MediationZone 9.3 Release Bug Fixes 9.3.0.3 Nov 1, 2024 MediationZone 9.3 Release Bug Fixes 9.3.0.4 Nov 21, 2024 MediationZone 9.3 Release Bug Fixes 9.3.1.0 Nov 29, 2024 MediationZone 9.3 Release Bug Fixes 9.3.1.1 Dec 10, 2024 MediationZone 9.3 Release Bug Fixes 9.3.1.2 Jan 10, 2025 MediationZone 9.3 Release Bug Fixes 9.3.1.3 Jan 29, 2025 MediationZone 9.3 Release MediationZone 9.3 Release 9.3.1.4 Feb 28, 2025 MediationZone 9.3 Release MediationZone 9.3 Release 9.3.1.5 Mar 14, 2025 MediationZone 9.3 Release MediationZone 9.3 Release 9.3.1.6 Mar 26, 2025 MediationZone 9.3 Release MediationZone 9.3 Release 9.3.1.7 Apr 9, 2025 MediationZone 9.3 Release MediationZone 9.3 Release 9.3.2.0 Recalled! Upgrades cannot be made to this release, use the 9.3.2.1 release or later instead. Apr 11, 2025 MediationZone 9.3 Release MediationZone 9.3 Release 9.3.2.1 Apr 15, 2025 MediationZone 9.3 Release MediationZone 9.3 Release 9.3.2.2 Apr 30, 2025 MediationZone 9.3 Release MediationZone 9.3 Release 9.3.2.3 May 9, 2025 MediationZone 9.3 Release MediationZone 9.3 Release 9.3.2.4 May 16, 2025 MediationZone 9.3 Release MediationZone 9.3 Release 9.3.2.5 May 30, 2025 MediationZone 9.3 Release MediationZone 9.3 Release 9.3.2.6 Jun 5, 2025 MediationZone 9.3 Release MediationZone 9.3 Release
+
+---
+
+# Document 385: Suspend Execution Event - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204638861/Suspend+Execution+Event
+**Categories:** chunks_index.json
+
+This event is triggered whenever the execution of a workflow, or of a workflow group, is either suspended or enabled for execution in the Suspend Execution configuration. This event type includes the following fields: Groups - A comma separated list of names of suspended or enabled workflow groups. SuspendExecutionAction - (Boolean) True for enabled, and False for suspended. SuspendExecutionConfiguration - (string) The name of the Suspend Execution configuration which scheduling settings triggered this event. Workflows - A comma separated list of names of suspended or enabled workflows. Fields inherited from the Base event The following fields are inherited from the Base event, and described in more detail in Base Event : category contents eventName origin receiveTimeStamp severity timeStamp
+
+---
+
+# Document 386: SFTP Collection Agent Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205654006/SFTP+Collection+Agent+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Input/Output Data The Input/Output data is the type of data an agent expects and delivers. The agent produces bytearray types. MIM For information about the MIM and a list of the general MIM parameters, see Administration and Management in Legacy Desktop . Publishes MIM Parameter Description Source Filenames This MIM parameter contains a list of file names of the files that are about to be collected from the current collection directory. Note! When the agent collects from multiple directories, the MIM value is cleared after collection of each directory. Then, the MIM value is updated with the listing of the next directory. Source Filenames is of the list<any> type and is defined as a header MIM context type. File Retrieval Timestamp This MIM parameter contains a timestamp, indicating when the file transfer starts. File Retrieval Timestamp is of the date type and is defined as a header MIM context type. Source File Count This MIM parameter contains the number of files that were available for collection at startup in this instance. The value is static throughout the execution of the workflow, even if more files arrive during the execution. The new files will not be collected until the next execution. Source File Count is of the long type and is defined as a global MIM context type. Source Filename This MIM parameter contains the name of the currently processed file, as defined at the source. Source Filename is of the string type and is defined as a header MIM context type. Source Files Left This MIM parameter contains the number of source files that are yet to be collected. This is the number that appears in the Execution Manager backlog. Source Files Left is of the long type and is defined as a header MIM context type. Source File Size This MIM parameter provides the size of the file that is about to be read. The file is located on the server. Source File Size is of the long type and is defined as a header MIM context type. Source Host This MIM parameter contains the name of the host from which files are collected, as defined in the Host field in the Connection tab. Source Host is of the string type and is defined as a global MIM context type. Source Pathname This MIM parameter contains the path from where the currently processed file was collected, as defined in the Directory field in the Source tab. Source Pathname is of the string type and is defined as a global MIM context type. Source Username This MIM parameter contains the login username to the host from which the file was collected, as defined in the Username field in the Connection tab. Source Username is of the string type and is defined as a global MIM context type. Accesses The agent does not itself access any MIM resources.
+
+---
+
+# Document 387: Exceptions for Python - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205653558/Exceptions+for+Python
+**Categories:** chunks_index.json
+
+The following exceptions apply for all of the Python agents. The list of exceptions are: 1 DRException 2 DRRuntimeException 3 DRUnwindException DRException If this exception is raised it is logged in System Log and the workflow may continue processing. class DRException(Exception) DRRuntimeException If this exception is raised it aborts the workflow. class DRRuntimeException(Exception) DRUnwindException You should never need to catch or throw DRUnwindException . class DRUnwindException(BaseException)
+
+---
+
+# Document 388: Event Types - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204736991
+**Categories:** chunks_index.json
+
+This section describes the event types and their fields and includes the following subsections: Azure Application Insight Event Base Event DB Ref Event Alarm Event Code Manager Event Diameter Dynamic Event Group State Event Suppressed Event Suspend Execution Event System Event Security Event System External Reference Event User Event SharedTables Event Workflow Event Agent Event Agent Failure Event Agent Message Event User Agent Message Event Agent State Event Diameter Peer State Changed Event ECS Insert Event ECS Statistics Event Debug Event Dynamic Update Event Workflow State Event Workflow External Reference Event Supervision Event CC Monitoring Event <User Defined> Event
+
+---
+
+# Document 389: GCP Storage Collection Agent Transaction Behavior - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204641528/GCP+Storage+Collection+Agent+Transaction+Behavior
+**Categories:** chunks_index.json
+
+The transaction behaviour for the GCP Storage collection agent is described here. Emits The agent emits commands that change the state of the file currently processed. Command Description Command Description Begin Batch Emitted before the first part of each collected file is fed into a workflow. End Batch Emitted after the last part of each collected file has been fed into the system. Retrieves The agent retrieves commands from other agents and based on them generates a state change of the file currently processed. Command Description Command Description Cancel Batch If a Cancel Batch message is received, the agent sends the batch to Data Veracity. Note! If the Cancel Batch behaviour defined on the workflow level is configured to abort the workflow, the agent will never receive the last Cancel Batch message. In this situation, Data Veracity will not be involved, and the file will not be moved, but left at its current place. Hint End Batch If a Hint End Batch message is received, the collector splits the batch at the end of the current block processed (32 kB), If the block end occurs within a UDR, the batch will be split at the end of the preceding UDR. After a batch split, the collector emits an End Batch message, followed by a Begin Batch message (provided that there is data in the subsequent block).
+
+---
+
+# Document 390: HDFS Collection Agent Transaction Behavior - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204673444/HDFS+Collection+Agent+Transaction+Behavior
+**Categories:** chunks_index.json
+
+The transaction behavior for the HDFS collection agent is presented here. For more information about general transaction behavior please refer to the section Transa ctio ns Workflow Monitor . Input/Output Data The agent emits commands that change the state of the file currently processed. Command Description Begin Batch Emitted before the first part of each collected file is fed into a workflow. End Batch Emitted after the last part of each collected file has been fed into the system. The agent acquires commands from other agents and based on them generates a state change of the file currently processed. Command Description Cancel Batch If a Cancel Batch message is received, the agent sends the batch to ECS. Note If the Cancel Batch behavior defined on workflow level is configured to abort the workflow, the agent will never receive the last Cancel Batch message. In this situation ECS will not be involved, and the file will not be moved, but left at its current place. Hint End Batch If a Hint End Batch message is received, the collector splits the batch at the end of the current block processed (32 kB), If the block end occurs within a UDR, the batch will be split at the end of the preceding UDR. After a batch split, the collector emits an End Batch message, followed by a Begin Batch message (provided that there is data in the subsequent block).
+
+---
+
+# Document 391: HTTP Server Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204677957/HTTP+Server+Functions
+**Categories:** chunks_index.json
+
+This section describes the server functions that are used to to manage requests (UDRs) from the HTTPD collector agent. The following functions for HTTP Server described here are: 1 httpGetRequestCookie 2 httpGetRequestCookieNames 3 httpSetResponseCookie httpGetRequestCookie This function searches for a cookie name in the httpdUDR and returns the contents. string httpGetRequestCookie ( any httpdUDR , string cookieName ) Parameter Description Parameter Description httpdUDR The request cookieName A cookie is made up of a key:value data object, where cookieName is the key. Note! The value can be "null". Returns The contents (value) of the cookie. httpGetRequestCookieNames This function retrieves a list of cookie names (keys) from the request (UDR). list <string> httpGetRequestCookieNames ( any httpdUDR ) Parameter Description Parameter Description httpdUDR The request Returns A list of cookie names httpSetResponseCookie This function sets the response cookie (UDR) fields. void httpSetResponseCookie ( any httpdUDR, string name, string value, boolean discard, string domain, long maxAge, string path, boolean secure ) Parameter Description Parameter Description httpdUDR The response name The name of the cookie (the key in the key:value cookie object) value The contents of the cookie (the value in the key:value cookie object) discard Set to "true" to discard the cookie at browser close, or "false", to keep it. domain The domain to which the cookie should be sent maxAge The life-length of the cookie in seconds path The path within the domain that triggers the cookie secure Set to "true" for sending the cookie only to secure sites, or "false", for sending the cookie to any site within the domain. Returns Nothing
+
+---
+
+# Document 392: Cassandra - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205031152/Cassandra
+**Categories:** chunks_index.json
+
+This section contains information that is specific to the database type Cassandra. Supported Functions The Cassandra database can be used with: SQL Collection/Forwarding Agents Preparations No specific preparations are required for using the Cassandra database type.
+
+---
+
+# Document 393: Extracting Files for Execution Container - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204736170/Extracting+Files+for+Execution+Container
+**Categories:** chunks_index.json
+
+Extract additional files from the packages using the following command session. It is assumed that the temporary installation directory is the working directory when the command session below is executed. Enter the release content directory : $ cd ./<staging directory>/<release content directory> Extract the packages: $ ./setup.sh create Any additional files should now have been extracted.
+
+---
+
+# Document 394: Access Controller - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204737438
+**Categories:** chunks_index.json
+
+To be able to operate the system, you need to be defined as a user in the system, and these permissions are configured in the Access Controller. Your access to various applications is defined by the access group that you are assigned to. The Execute permission means that members of an access group can view and read the information in that application. While the Write permission means that the members can perform change or create action in that application. Note! By default, members of the predefined group Administrator have full permissions for the Access Controller. You can enable these permissions for other groups as well. When no members belong in the Administrator group, all users with full permissions for the Access Controller will have Administration access. It is not possible to disable or delete the last active user with full permissions for the Access Controller. This is to prevent system lockout. Members that are not part of the Administrator group will not be able to remove or modify the Administrator group and any of its group members. Only one user may use the Access Controller with write permissions at any given time. It is not possible to delete the last group with members that have full permissions for the Access Controller. This is to prevent system lockout. It is possible to use SCIM via the REST HTTP interface to POST, GET, DELETE, PUT and PATCH user and group configurations. To open the desktop online Access Controller, Go to Manage  Tools & Monitoring and then select Access Controller . System Logging Activity Below are a list of activities that will trigger a system log entry related to Access Controller. Create new user. Update user details. Change user password. Create new SSO user upon first initial login. SSO users group changes from group sync. This section contains the following sub-sections: Users Tab Groups Tab Advanced Tab
+
+---
+
+# Document 395: Batch-Based Real-Time Agents - Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204675708/Batch-Based+Real-Time+Agents+-+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Input/Output Data The Input/Output data is the type of data an agent expects and delivers. The agent produces UDRs in accordance with the Decoder tab, along with BeginBatch, EndBatch, and CancelBatch UDRs (see Batch-Based Real-Time Agents - UDR Types ). MIM For information about the MIM and a list of the general MIM parameters, see Administration and Management in Legacy Desktop . Publishes The following MIM parameters are published at the agent level: MIM Parameter Description MIM Parameter Description Batch Cancelled This MIM parameter states if the current batch has been cancelled. Batch Cancelled is defined as a global MIM. Batch Count This MIM parameter contains a unique sequence number that will be associated with each batch processed by the workflow. This value is increased by 1 up to 2 63 and is saved between workflow invocations. Batch Count is defined as a global MIM. Batch Duration This MIM parameter contains the time it took to process a batch. This value is updated during processing. Batch Duration is defined as a global MIM. Batch End Time This MIM parameter contains the end time for the processing of a batch. Batch End Time is defined as a global MIM. Batch Start Time This MIM parameter contains the start time for the processing of a batch. Batch Start Time is defined as a global MIM. Transaction ID Each batch closed will receive a unique transaction ID, cancelled batches as well. This MIM parameter contains the unique transaction ID. Transaction ID is defined as a global MIM. Accesses The agent does not itself access any MIM resources.
+
+---
+
+# Document 396: FTP Forwarding Agent Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205033100/FTP+Forwarding+Agent+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Input/Output Data The agent consumes bytearray or MultiForwardingUDR types. MIM For information about the MIM and a list of the general MIM parameters, see Administration and Management in Legacy Desktop . Publishes MIM Parameter Description MultiForwardingUDR's FNTUDR This MIM parameter is only set when the agent expects input of MultiForwardingUDR type. The MIM value is a string representing the sub path from the output root directory on the target file system. The path is specified by the fntSpecification field of the last received MultiForwardingUDR . For further information on using input of MultiForwardingUDR type, refer to FTP Forwarding Agent MultiForwardingUDR Input . This parameter is of the string type and is defined as a batch MIM context type. File Transfer Timestamp This MIM parameter contains a timestamp, indicating when the target file is created in the temporary directory. File Transfer Timestamp is of the date type and is defined as a trailer MIM context type. Target Filename This MIM parameter contains the target filename, as defined in Filename Template. Target Filename is of the string type and is defined as a trailer MIM context type. Target File Size This MIM parameter provides the size of the file that has been written. The file is located on the server. Target File Size is of the long type and is defined as a trailer MIM context type. Target Hostname This MIM parameter contains the name of the target host, as defined in the Target or Advanced tab of the agent. Target Hostname is of the string type and is defined as a global MIM context type. Target Pathname This MIM parameter contains the path to the target file, as defined in the FTP tab of the agent. Target Pathname is of the string type and is defined as a global MIM context type. Target Username This MIM parameter contains the login name of the user connecting to the remote host, as defined in the FTP tab of the agent. Target Username is of the string type and is defined as a global MIM context type. Accesses Various resources from the Filename Template configuration to construct the target filename.
+
+---
+
+# Document 397: Automatic Scale Out and Rebalancing - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/301137967/Automatic+Scale+Out+and+Rebalancing
+**Categories:** chunks_index.json
+
+Multiple workflows in the same Workflow configuration can be executed in parallel, and collect messages from the same topics, provided that there are several partitions configured for a topic, and the same consumer group is specified. If the number of running workflows changes, the Kafka cluster will automatically trigger rebalancing. You can only have one workflow per partition. If you start more workflows than partitions, the workflows not assigned any partition will run as active stand-by workflows. Open Multiple identical workflows can collect messages from the same topic. Example - Collect Messages from 2 Topics with 3 Configured Partitions You want to collect messages from 2 Kafka topics called example1 and example2 which have 3 configured partitions each. In the Kafka collection agent configuration, you only need to state the names of the topics and consumer group, and the agent will automatically manage the assignment of partitions within the consumer group. Open Kafka collection agent configuration You will get the following behavior and debug in the executing workflows: If only one workflow is started, it will collect messages from all three partitions. The debug output from the collector will look like this: *** Assignment *** Topic(s): example1, example2 Partition(s): 0-2 If a second workflow is started, an automatic rebalance is triggered, and the first workflow will collect messages from two partitions, and the second from the third partition. The debug output from the collectors of the two workflows will look like this: *** Rebalance *** Topic(s): example1, example2 Partition(s): 0-1 *** Assignment *** Topic(s): example1, example2 Partition(s): 2 If a third workflow is started, an automatic rebalance is triggered, and each workflow will collect messages from one partition. The debug output from the collectors of the three workflows: *** Rebalance *** Topic(s): example1, example2 Partition(s): 0 *** Rebalance *** Topic(s): example1, example2 Partition(s): 1 *** Assignment *** Topic(s): example1, example2 Partition(s): 2 If a fourth workflow is started, it will not be assigned any partitions since there are no partitions left and there can only be one workflow collecting from one partition. The fourth workflow will act as an active stand-by workflow. If a workflow aborts, a new automatic rebalance is triggered and the active stand-by workflow can be used.
+
+---
+
+# Document 398: wfstop - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205657221/wfstop
+**Categories:** chunks_index.json
+
+usage: wfstop [ -immediate ] <pattern match expression for workflow names> ... This command stops one or more workflows. With this command you compare a single pattern match expression, or several, with the full workflow name, <folder>.<workflowconfigurationname>.<workflowname> , of all the workflows. The command accepts wild cards, such as '*' and '?'. For further information see Textual Pattern Matches . The command does not kill all processes, but rather sends a message to all the agents to stop. If the workflow cannot be stopped, an error message will be shown stating why it was not stopped. The command accepts the following option: Option Description [-immediate] The workflow is stopped without waiting for a batch to finish. Return Codes Listed below are the different return codes for the wfstop command: Code Description 0 Will be returned if the command was successful or if the argument count is incorrect. 1 Will be returned if no user is logged in. 1-> The number of non-matching workflow names as parameters, or the number of failed workflow stops. Loading
+
+---
+
+# Document 399: mzcli - system - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/547980363/mzcli+-+system
+**Categories:** chunks_index.json
+
+usage: system <subcommand> <options> This command starts the Platform if it is not running, and then starts/stops pico instances on containers set up for remote execution. Note! This command is valid only for the MZ_HOME owner. You can specify which pico instances should be started, stopped, or restarted by adding a target path to the subcommands. The target path is specified as follows: container:<container>/pico:<pico> or container:<container> Note! Set your desired environment variables in $MZ_HOME/bin/mzclir.env as this file will be loaded with local variables. Add the desired profiles, such as ". /home/mzadmin/.profile_mz". You can specify both the container and pico instance as a regular expression. Example - Regular expression in target paths container:.*/pico:.* By adding tag attributes you can perform additional filtering of the pico instances: Example - Adding tags to pico instances $ mzcli topo set -l pico:ec1 'settings.tags=[tag1,tag2]' $ mzcli topo set -l pico:ec2 'settings.tags=[tag1]' Run the following command to start the pico instances with the tag tag1 . $ mzcli system start -t tag1 The following subcommands are available with mzcli system : help restart start stop help Usage: system help [<subcommand>] Use system help to retrieve a description of the help command or its subcommands. Run the following command for an overview of the various subcommands: $ mzcli system help Run the following command for a description of a specific subcommand: $ mzcli system help <command> restart Usage: system restart [--dry-run] [-l, --local] [-services] [-t, --tag <tag>] [--timeout-seconds] [-v, --verbose] [<target path>] Use system restart to stop and start pico instances in one or more containers. The Platform will be started if it is not already running. However, the command does not stop the Platform. Option Description Option Description [--dry-run] Lists the picos instances that are addressed by the command, but the command is not executed. [-l, --local] Use this option to select the local container, unless another container is specified in the target path. [-t, --tag <tag>] Filter that excludes all pico instances that do not contain the specified tag. [--timeout-seconds] Sets the maximum allowed time for all calls to complete. The default value is 300 seconds. [-v, --verbose] Use this option for detailed output from the command. start Usage: system start [--dry-run] [-l, --local] [-t, --tag <tag>] [--timeout-seconds] [-v, --verbose] Use system start to start pico instances in one or more containers. The Platform will be started if it is not already running. Option Description Option Description [--dry-run] Lists the picos instances that are addressed by the command, but the command is not executed. [-l, --local] Use this option to select the local container, unless another container is specified in the target path. [-t, --tag <tag>] Includes pico instances in the target path that contain the specified tag. [--timeout-seconds] Sets the maximum allowed time for all calls to complete. The default value is 300 seconds. [-v, --verbose] Use this option for detailed output from the command. stop Usage: system stop [--dry-run] [-t, --tag <tag>] [--timeout-seconds] [-v, --verbose] [<target path>] Use system stop to stop pico instances in one or more containers. Option Description Option Description [--dry-run] Lists the picos instances that are addressed by the command, but the command is not executed. [-l, --local] Use this option to select the local container, unless another container is specified in the target path. -t, --tag <tag>] Includes pico instances in the target path that contain the specified tag. [--timeout-seconds] Sets the maximum allowed time for all calls to complete. The default value is 300 seconds. [-v, --verbose] Use this option for detailed output from the command. Return Codes Listed below are the different return codes for the system command: Code Description Code Description -1 Will be returned if there is an old process running or if the remote (../temp/.remote) file cannot be deleted. 0 Will be returned if the command was successful, or if there are no startable processes defined. 1 Will be returned if the JVM fails to start. (The JVM has logged too much on stderr.) 102 Will be returned if the JVM fails to start. (The timeout on the callback from the JVM was exceeded.) 103 Will be returned if the command has been interrupted with CTRL-C. 104 Will be returned if the JVM fails to start. (The JVM started with one or more critical errors.)
+
+---
+
+# Document 400: Legacy Desktop and Desktop Launcher - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204647395/Legacy+Desktop+and+Desktop+Launcher
+**Categories:** chunks_index.json
+
+The following OS and third-party software are required by the Desktop and the Desktop Launcher: Windows 10/11 Java Platform Standard Edition (JRE) 17 is required.
+
+---
+
+# Document 401: ECS Collection Workflow (batch) - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205000109/ECS+Collection+Workflow+batch
+**Categories:** chunks_index.json
+
+The collection workflow needs a Decoder agent, since batches are saved in their original format when sent to the ECS. Open A workflow collecting batches from the ECS Workflow Properties The Error tab can be configured to handle cancelBatch behavior, however, it will never be valid for ECS batch collection workflows. Any call to cancelBatch will cause the workflow to abort immediately. ECS Collection Agent All batches conforming to the collection criteria are selected. If a batch contains historic UDRs, that is UDRs belonging to old, not used format definitions, they are automatically converted by default to the latest format. The automatic conversion can be disabled from the Ultra Format Converter. In this case the workflow aborts, and logs an informative message in the System Log. Analysis Agent Calls to cancelBatch must not be made in APL because it will cause the workflow to abort immediately and send nothing to the ECS.
+
+---
+
+# Document 402: Parquet Decoder Example - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204739774/Parquet+Decoder+Example
+**Categories:** chunks_index.json
+
+This example illustrates typical use of the Parquet Decoder agent in a batch workflow. In this example, complete records are processed using the embedded document schema. The following configurations will be created: An Ultra Format A Batch Workflow that makes use of a Parquet Decoder agent that parses Parquet documents. Define an Ultra Format A simple Ultra Format needs to be created for the incoming UDRs. For more information about the Ultra Format Editor and the UFDL syntax, refer to the Ultra Reference Guide . Example - Ultra Create an Ultra Format as defined below: external BOOK_HEADER : identified_by(strREContains(HEADER, "title,name,organization,copyrightYear")), terminated_by(0xA) { ascii HEADER : terminated_by(0xA); }; external BookRecord { ascii title : terminated_by(","); ascii authorName : terminated_by(","); ascii organization : terminated_by(","); ascii copyrightYearString : terminated_by(","); ascii numberOfPages : terminated_by(0xA); }; internal BookRecord { string title; string authorName; string organization; string copyrightYearString; int numberOfPages; // enriched date copyrightYear; }; // decoder in_map BOOK_HEADER_InMap : external(BOOK_HEADER), target_internal(BOOK_HEADER), discard_output { automatic; }; in_map BookRecord_InMap : external(BookRecord), internal(BookRecord) { automatic; }; decoder BOOK_HEADER_Decode : in_map(BOOK_HEADER_InMap); decoder BookRecord_Decode : in_map(BookRecord_InMap); decoder DECODER { decoder BOOK_HEADER_Decode; decoder BookRecord_Decode *; }; // encoder out_map BookRecord_OutMap : external(BookRecord), internal(BookRecord) { automatic; }; encoder ENCODER : out_map(BookRecord_OutMap); Create a Batch Workflow In this workflow, Parquet files on disk are retrieved that are then decoded into UDRs that are written into a CSV file. The workflow is illustrated here: Open Example workflow with Parquet Encoder Walking through the example workflow from left to right, we have: A Disk agent named Disk_Source that reads in the source file (which contains a Parquet document) as a byte array. A Parquet Decoder agent that parses the bytes from the file as Parquet, passing ParquetDecoderUDRs to the Analysis agent. An Analysis agent named Analysis that transforms these incoming ParquetDecoderUDRs into BookRecord UDRs. An Encoder agent named CSV_Encoder that encodes the BookRecord UDRs as CSV bytes. The Disk_Destination forwarding agent receives the bytearray data and writes out a CSV document. This section walks through the steps of creating such a batch workflow. Disk Disk_Input is a Disk C ollection agent that collects data from an input file and forwards it to the Decoder agent. Double-click on the Disk_Source agent to display the configuration dialog for the agent: Open Example of a Disk agent configuration Parquet Decoder The Parquet Decoder agent collects the bytes from the Disk Collector into a complete Parquet document (with an embedded schema). The Parquet Decoder creates ParquetDecoderUDRs - one for each row - and forwards them on to the next agent. Double-click on the Parquet Decoder agent to display the configuration dialog. Open The Parquet Decoder agent with no Parquet Profile specified. In this dialog, note that no Parquet Profile is specified. In this case, the ParquetDecoderUDRs will include all columns in the file. You can specify a Parquet Profile with a schema to subset the columns to increase performance. Analysis The Analysis Agent transforms the data from each ParquetDecoderUDR into a BookRecord UDR as defined above in the Ultra. In particular, the ParquetDecoderUDR includes a payload map with contents that mirror the Parquet schema defined in the profile - that data is available when constructing well-typed UDRs (for example, BookRecord). Double-click on the Analysis agent to display the configuration dialog. Open The Analysis agent dialogue with the APL code defined. In this dialog, the APL code for handling input data is written. In the example, each ParquetDecoderUDR is transformed into a BookeRecord UDR. Adapt the code according to your requirements. You can also see the UDR type used in the UDR Types field, in this example it is a ParquetDecoderUDR . Example - Parquet APL The APL code below shows an example of processing ParquetDecoderUDR : import ultra.Sandbox_Parquet_Autotest.Autotest_Ultra; consume { switch (input) { case (ParquetDecoderUDR decoderUDR) { // payload map<string,any> payload = decoderUDR.payload; map<string,any> author = (map<string,any>) mapGet(payload, "author"); // extract BookRecord record = udrCreate(BookRecord); record.title = (string) mapGet(payload, "title"); record.authorName = (string) mapGet(author, "name"); record.organization = (string) mapGet(author, "organization"); record.copyrightYear = (date) mapGet(payload, "copyrightYear"); record.numberOfPages = (int) mapGet(payload, "numberOfPages"); // normalize dateToString(record.copyrightYearString, record.copyrightYear, "yyyy"); // route udrRoute(record); } } } The data in the payload map in the ParquetDecoderUDR conforms to the embedded schema. Encoder The En coder agent receives the BookRecord UDRs from the Analysis agent and generates byte arrays in CSV format - one byte array for each UDR. Double-click on the En coder agent to display the configuration dialog. Example of an Encoder agent configuration In this dialog, choose the Encoder that you defined in your Ultra Format. Disk Forwarder Disk_Destination is a Disk Forwarding agent that writes bytes to an output file on disk. Double-click on the Disk_Destination agent to display the configuration dialog for the agent: Open Example of a Disk agent configuration Running the Workflow When you run the Workflow, it processes Parquet files from the input directory and writes out corresponding CSV files in the configured output directory.
+
+---
+
+# Document 403: MQTT Agent Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205001037/MQTT+Agent+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Input/Output Data The Input/Output data is the type of data an agent expects and delivers. The MQTT agent produces MQTT UDRs of the type: Error PublishAck SubscribeResponse The MQTT agent expects MQTT UDRs of the type: Publish Subscribe Unsubscribe See MQTT UDRs for further information. MIM The MQTT agent does not have any agent-specific MIM parameters. For information about the MIM and a list of the general MIM parameters, see MIM .
+
+---
+
+# Document 404: Teradata - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205031183/Teradata
+**Categories:** chunks_index.json
+
+This section contains information that is specific to the database type Teradata. Supported Functions The Teradata database can be used with: Database Table Related Functions (APL) Database Collection Agent Prepared Statements SQL Collection Agents Preparations The Teradata driver has to be downloaded to the Platform in order to connect to a Teradata database from MediationZone. You must proceed as follows: Go to the Teradata web page and download the jdbc driver. Place the downloaded jar file in the $MZ_HOME/3pp directory . Restart the Platform and ECs.
+
+---
+
+# Document 405: Disk Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204640914/Disk+Agents
+**Categories:** chunks_index.json
+
+This section describes the Disk collection and forwarding agents. These agents are available in batch and real-time workflow configurations. The Disk agents collect and forward batches of files on local file systems and are available in batch and real-time workflow configurations. The configuration of the Disk agents is different in real-time workflows compared to batch workflows since the former do not have built-in batch boundaries. Batch workflows also provide built-in support for transaction safety and enable additional features in the Disk agents that are not available in real-time workflows. However, you can include the collection and forwarding agents that are based on batch agents in real-time workflows. This allows you to use various file-oriented protocols, and access your batch data directly from a real-time workflow. The collection and forwarding agents that are available are: Disk FTP SCP SFTP When you have selected to create a real-time workflow, you can select these agents from the lists of collection and forwarding agents in the agent pane. A real-time workflow with a batch-based agent: Can process several UDRs simultaneously, but the order of UDR processing is not guaranteed. The Begin and End Batch are signaled to the workflow. Decoder, error management, and scheduling are defined as part of the collection agent configuration. If the agent encounters an error that would cause a batch workflow to abort, instead behavior depends on how the agent is configured in the Execution tab. For more information about the difference between batch and real-time workflows, see Workflow Types . The section contains the following subsections: Disk Agents in Batch Workflows
+
+---
+
+# Document 406: metric - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204676958/metric
+**Categories:** chunks_index.json
+
+The metric objects represent values that are extracted from KDR UDRs and aggregated according to the tree structure in the model. Expressions are applied on the various fields in the UDRs to calculate a value, e g a sum, average, or min/max value. The following JSON schema describes the data format of the metric object type: Loading Property Description fun fun must contain a string that identifies one of the following aggregation functions: avg - This function yields the average result of the expression . min - This function yields the minimum result of the expression . max - This function yields the maximum result of the expression . sum - This function yields the sum of results from expression . expr expr must contain an arithmetic or relational expression (or combination thereof) based on the fields in the KDR input and/or constant values. Syntax: "<KDR.type>" : "<expression>" The functions and operators that you can use in expressions are described below. Conditional functions: isSet(<field>) - Returns 1 if the field is set to a value, otherwise 0 isNotSet(<field>) - Returns 1 if the field is not set to a value, otherwise 0 Operators: + - Addition - - Subtraction/negation * - Multiplication / - Division Relational operators: = - Equal != - Not equal > - Greater than < - Less than A relational expression or sub-expression evaluates to 1 if it is true, or 0 if it is false. You can use parentheses to modify the order of the operations, i e apply precedence rules. Example. Expressions Arithmetic expression: "expr": { "kdr_record_type_a": "field2-field1", "kdr_record_type_b": "field3" } Expression using conditional function: "expr": { "kdr_record_type_a": "isSet(field1)" } Relational expression: "expr": { "kdr_record_type_a": "field2<(field1+10)" } In the case of division by zero, the value of the output of the expression will be positive infinity, negative infinity, or NaN (Not a Number) as defined in the JVM specification. Example - JSON Representation "metric": { "TotalNumber": { "fun": "sum", "expr": { "kdr_record_type_a": "isSet(field1)" } }, "TotalSuccessful": { "fun": "sum", "expr": { "kdr_record_type_a": "field1=200" } }, "AvgDuration": { "fun": "avg", "expr": { "kdr_record_type_a": "field2-field1", "kdr_record_type_b": "field3" } } }
+
+---
+
+# Document 407: Data Hub Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205783782/Data+Hub+Functions
+**Categories:** chunks_index.json
+
+
+
+---
+**End of Part 18** - Continue to next part for more content.
