@@ -1,0 +1,393 @@
+# RATANON/MZ93-DOCUMENTATION - Part 33/112
+
+---
+**Dataset:** ratanon/mz93-documentation
+**Part:** 33 of 112
+**GitHub:** https://github.com/ratan0n/docs/tree/main/mz93-documentation
+**Size:** ~68.2 KB
+---
+
+To open the SQL Forwarding agent configuration dialog from a workflow configuration, you can do either one of the following : double-click the agent icon select the agent icon and click the Edit button The Agent Configuration contains configuration data that is related to the target database and the UDR Type. Open The SQL forwarding agent configuration dialog Setting Description Setting Description Database Profile defining the database that the agent is supposed to connect and forward data to. When selecting the Browse button next to the field it will open a browser where one and only one database profile can be selected. For further information about database profile setup, see Database Profile . UDR Type The UDR type the agent accesses as input type. When selecting the Browse button next to the field it will open the UDR Internal Format Browser and one and only one UDR type can be selected. SQL Statement The user enters an SQL statement that the system should send to the database. By right clicking in the pane, selecting MIM Assistance... , the MIM Browser appears. The user can select a MIM value to be used in the SQL query. The value of the MIM will be used in the SQL query during execution. The name of the MIM Value for example "Workflow.Batch Count" will be displayed in blue color as "$(Workflow.Batch Count)" in the text field. By right clicking in the pane, selecting UDR Assistance... , the UDR Internal Format Browser appears. The user can select a field from the UDR specified in the UDR Type selector. The name of the UDR field name for example "UDR.Fieldname" will be displayed in green color as "$(UDR.Fieldname)" in the text field. If the input type UDR is changed after writing the SQL syntax the GUI validation will fail (unless the different UDR's have identical field names). The field value will be used as an input variable in the SQL Statement in the same way as MIM values do. There is support for Stored Procedures. When using the forward agent use JDBC to call a stored procedure in the same way as a normal call. The exact supported syntax for stored procedures varies between databases. An example of a procedure with two input arguments could have a SQL statement looking like this: Example CALL test_proc($(UDR.field1), $(UDR.field2)) Note! The statement syntax of the statement will not be validated in the GUI, but references to MIM values are validated. If an incorrect SQL statement is entered this will generate an exception during runtime. Commit Criteria Use Prepare Call Enable this checkbox to allow the SQL Forwarding agent to use prepareCall when using the agent to conduct the SQL operations. When left unchecked, the SQL Forwarding agent will use preparedStatement for all its SQL operations. Commit Window Size The number of UDRs to be processed between each database commit command. This value may be used to tune the performance. If tables are small and contain no Binary Objects, the value may be set to a higher value than the default. The default is 1000. A number field where it is possible to enter an integer number. If the check box is enabled the agent will call commit on the database after reaching the specified number of successful executions. It will also call commit when receiving endBatch. If the check box is disabled, the agent inserts every 500 UDRs and only does a commit when receiving endBatch. Info! When you set the commit window size value to 0, it will disable the check box. This change will be reflected when you re-open the configuration window. Exception Handling Route on SQL Exception Check to prevent the workflow from aborting when selected exceptions occur. Such exceptions are filtered by the rule that you specify in the Regular Expression Criteria editing pane. Instead of aborting the workflow due to these exceptions, the workflow proceeds to the agent to which you now can route the selected exceptions. Note! Since the error message contains line feed, the regular expression has to be adjusted according to this. Start the regular expression with "(?s)" to ignore linefeed, for example: (?s).*ORA-001.* Clear to abort the workflow on the occurrence of any exception. Upon Exception, route the entire executed batch instead of single UDR Select this check box to prevent the workflow from retrying each UDR if prepareStatement.execute fails, causing an Exception. If you select this check box, an errorUDRList is routed instead of an errorUDR. Regular Expression Criteria Use the Java Regular Expression syntax convention when you enter the expression that selects the SQL error messages. The SQL errors that match these criteria, enable the agent to identify the data that should be routed further along the workflow. When the agent identifies erroneous data it generates an Agent Message Event. For further information, see Agent Event . Note! MediationZone specific database tables from the Platform database should never be utilized as targets for output as this might cause severe damage to the system in terms of data corruption that in turn might make the system unusable.
+
+---
+
+# Document 713: NumberField UDR - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204643735/NumberField+UDR
+**Categories:** chunks_index.json
+
+The NumberField UDR is used to create a input field that only accept numbers. To create a number field that only accept numbers of 0.5 between 0.0 and 100.0. NumberField num = udrCreate(NumberField); num.label = "Only x.5 or x.0 number is accepted"; num.step = 0.5d; num.min = 0.0d; num.max = 100.0d; The following fields are included in the NumberField UDR : Field Description attributes (map<string,string>) This field may contain extra attributes to be added. cssClasses (list<string>) This field may contain a list of extra values added to class attribute. This is typically used to style the component. Please read more on Bootstrap . disabled (boolean) This field may contain a boolean if the component should be disabled or enabled. id (string) This field may contain the id of the component label (string) This field may contain the label for the number field. labelCssClasses (list<string>) This field may contain a list of extra values added to class attribute of the label. This is typically used to style the component. Please read more on Bootstrap . max (double) This field may contain a max value. Need to use data type double , set trailing d. min (double) This field may contain a min value. Need to use data type double , set trailing d. name (string) This field may contain the name of the component. If the component is present in a Form UDR , the name will be submitted with the form as the key in the Params Map in Request UDR . placeholder (string) This field may contain a placeholder can be used as a help text. readonly (boolean) This field may contain a boolean if the field is readonly. required (boolean) This field may contain a boolean if the component is required. Typically used inside a Form UDR. step (double) This field may contain a value to specifies the legal number intervals Need to use data type double , set trailing d. value (double) This field may contain a value. Need to use data type double , set trailing d.
+
+---
+
+# Document 714: Legacy Kafka UDRs - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/301138666/Legacy+Kafka+UDRs
+**Categories:** chunks_index.json
+
+The Kafka UDR types are designed to exchange data between the workflows and can be viewed in the UDR Internal Format Browser . Legacy KafkaUDR Legacy KafkaExceptionUDR Legacy KafkaOffsetUDR Legacy KafkaResponseUDR
+
+---
+
+# Document 715: wfgroupdisable - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205657156/wfgroupdisable
+**Categories:** chunks_index.json
+
+This command disables one or more workflow groups. usage: wfgroupdisable <pattern match expression for workflow group names> ... [ -mode < a >] With this command, you compare a single pattern-matching expression -or several- with the full workflow group name of all the workflow groups. Example - wfgroupdisable <folder>.<workflowgroupconfigurationname>.<workflowgroupname> The command accepts wild cards, such as '*' and '?'. For further information see Textual Pattern Matches . It also accepts the following options: Option Description Option Description [ -mode < a > ] Disable only workflow groups marked with a specified mode: a - Only Autostart groups are disabled. Return Codes Listed below are the different return codes for the wfgroupdisable command: Code Description Code Description 0 Will be returned if the command is successful. 1 Will be returned if the argument count is incorrect. 2 Will be returned if the user is not found or not logged in. 3 Will be returned if no matching workflow group is found. 4 Will be returned if the user does not have permission to access the workflow group.
+
+---
+
+# Document 716: SAP RFC Agent Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204609256/SAP+RFC+Agent+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Input/Output Data The SAP RFC Processor agent consumes and emits UDRs, the type of which is determined by the the RFC function selected in the SAP RFC profile used. See SAP RFC Processor Agent Example for an example of a generated UDR. If an error occurs, the agent emits an RfcErrorUDR . The following fields are included in the RfcErrorUDR : Field Description errorKey (string) This field provides the JCoException error key. errorMessage (string) This field provides detailed information on the error that has occurred. inputUDR (DRUDR) The input UDR that causes the error. For any SAP RFC UDR generated by the profile, th e isTwoPhaseCommit is added as part of the BAPI_TRANSACTION_COMMIT. Field Description isTwoPhaseCommit (boolean) By setting this value to true, the SAP RFC agent will enable the two phased commit for the particular RFC. MIM For information about the MIM and a list of the general MIM parameters, see Administration and Management in Legacy Desktop . Publishes MIM Parameter Description Average Response Time (long) The average response time (in milliseconds) for each execution and commit. No of Executions (long) The total number of executions towards the SAP System. Queue Size (int) The number of pending items in the queue. Accesses The agent does not itself access any MIM resources.
+
+---
+
+# Document 717: UDR File Editor and Ultra Format Converter - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204737474/UDR+File+Editor+and+Ultra+Format+Converter
+**Categories:** chunks_index.json
+
+UDR File Editor For information about the UDR File Editor, see the Ultra Reference Guide . Ultra Format Converter For information about the Ultra Format Converter, see the Ultra Reference Guide . Loading
+
+---
+
+# Document 718: Appendix A - Oracle Home Settings - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204670130
+**Categories:** chunks_index.json
+
+Below are examples of configurations in listener.ora and tnsnames.ora . Example - Oracle Listener Configuration File LISTENER = (DESCRIPTION_LIST = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP) (HOST = example_hostname) (PORT = 1521) ) ) ) ) SID_LIST_LISTENER = (SID_LIST = (SID_DESC = (GLOBAL_DBNAME = mz) (ORACLE_HOME = /opt/oracle/product/12.2.1.0) (SID_NAME = MZ) ) ) Example - tnsnames.ora Configuration MZ = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP) (HOST = example_hostname) (PORT = 1521) ) ) (CONNECT_DATA = (SERVICE_NAME = mz) ) )
+
+---
+
+# Document 719: Backup and Maintenance for PCC - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204744775/Backup+and+Maintenance+for+PCC
+**Categories:** chunks_index.json
+
+This chapter describes the backup and maintenance routines for a PCC System. This chapter includes the following sections: Backup Routines for [CZ] and [EZ] Backup Routines for the Data Repository Daily Maintenance
+
+---
+
+# Document 720: Inter Workflow Real-Time Collection Agent Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204641776/Inter+Workflow+Real-Time+Collection+Agent+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Input/Output Data The agent generates data types according to the decoder configuration. MIM For information about the MIM and a list of the general MIM parameters, see the section Meta Information Model in in Administration and Management in Legacy Desktop . Publishes MIM Parameter Description <any> Any named MIM in the Inter Workflow Profile Editor. All imported MIMs are automatically converted to the type string, regardless of the original type. APL provides functions to convert strings to other data types. For further information about conversion functions, see the APL Reference Guide . Note! MIMs of list and map type cannot be imported. For information about how to add and map named MIMs, see the section Profile Configuration in Inter Workflow Profile . Accesses The agent does not access any MIM resources.
+
+---
+
+# Document 721: Archiving Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205031948/Archiving+Agents
+**Categories:** chunks_index.json
+
+This section describes the Archive profile and the Archiving agents. The agents are forwarding agents for batch workflow configurations. With the Archiving agents, it is possible to archive data batches for a configurable period of time. There are two agents: The Archiving agent stores the data on the platform machine. The Local Archiving agent stores the data locally on the Execution Context machine. Note that local data cannot be exported. The Archiving agents can be configured to archive all received data batches. Each data batch is saved as a file in a user-specified repository. The Archiving agent also saves a corresponding reference in the database, enabling the Archive Inspector to browse and purge the data batch files. Depending on the selected profile, the Archive services are responsible for the naming and storing of each file, and the purging of outdated files on a regular basis. Utilizing the Directory Templates and base directories specified in the Archive profile, directory structures are dynamically built when files are stored. The system administrator defines what structure is suitable for each profile. For instance, setting the directory structure to be changed with respect to the collecting agent name on a daily basis. The Archive services automatically create all directories needed in the base directory or directories. Configuration You configure an ar chiv ing agent in three steps: Define an Archive profile. Configure the agent. Set MultiForwardingUDR in pu t The section contains the following subsections: Archive Profile Archiving Agents MultiForwardingUDR Input Archive Inspector Maintaining Archives Archiving Agents Transaction Behavior, Input/Output Data and MIM Archiving Agents Events Archiving Agent Local Archiving Agent
+
+---
+
+# Document 722: Periods Data Model Buckets - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204677354
+**Categories:** chunks_index.json
+
+The UDRs in PCC.Periods contain information about different time periods used for products and their associated buckets. If all the fields (except StartTime and StopTime) are left empty, the product, and its associated buckets, will be active the entire time between the StartTime and StopTime. Usage should only be counted in buckets connected to products that are active, and enforcements should only be checked and applied for products that are active. Periods UDR Field Description Field Description ID (int) The unique ID of the period. Name (string) The name of the period. StartTime (date) Defines the start date and time for this period. This is the overall start time for the period and this field is mandatory for all periods. StopTime (date) Defines the end date and time for this period. This is the overall end time for the period and if it is left empty, the period will have no end. StartTimeOfDay (date) Defines the start time of the day in hours and minutes for the this period. The products using this period will start being active at this time of day. The format should be HH:MM. StopTimeOfDay (date) Defines the end time of the day in hours and minutes for this period. The products using this period will stop being active at this time of day. The format should be HH:MM. Weekdays (list <int>) Determines which weekdays the period should be active. The days are stated with integer values; 0 - Monday, 1 - Tuesday, 2 - Wednesday, 3 - Thursday, 4 - Friday, 5 - Saturday, and 6 - Sunday. Any combination is possible. IncludedPeriods (list <Period (PCC.Periods)>) Contains a list with other periods that should be included in this period. Since the list contains periods, they can in turn include or exclude other periods in their respective IncludedPeriods and ExcludedPeriods settings, which can be useful for creating a more complex inclusion setup. ExcludedPeriods (list<Period (PCC.Periods)>) Contains a list with other periods that should be excluded from this period. Since the list contains periods, they can in turn include or exclude other periods in their respective IncludedPeriods and ExcludedPeriods settings, which can be useful for creating a more complex exclusion setup. Below is a screenshot of the UDR Assistance displaying the Periods UDR: Open Periods UDR Configuring a Period A period configuration can consist of either a single period or a period including or excluding one or several other periods. To configure a period: Configure each period with StartTime and StopTime and any included/excluded periods. For periods that are not supposed to be active 24 h a day, 365 days a year, configure the fields StartTimeOfDay , StopTimeOfDay , and Weekdays . If no Weekdays are defined, the period will be active every day of the week. If no StartTimeOfDay or StopTimeOfDay are defined, the period will be active all the time that the included periods are active. Add periods that you want to include and exclude for the period in the IncludedPeriods and ExcludedPeriods fields. Note! If a period includes other periods, that should all be active during the same hours/minutes and days, you only have to configure the StartTimeOfDay , StopTimeOfDay , and Weekdays fields in the top level period. However, if the included periods should be active during different hours/minutes or days, the StartTimeOfDay , StopTimeOfDay , and Weekdays fields should be configured for each included period and not for the top level period. Using the settings for including and excluding periods will create a tree structure with one period at the top with one or several periods included and excluded beneath. In order for a configured period to be active, all three of the following criteria must met: The current time stamp must be within the set StartTime and StopTime of the top level period. If any periods are included, the current time stamp must be within the set StartTimeOfDay and StopTimeOfDay of at least one included period. If any periods are excluded, the current time stamp cannot be within the StartTimeOfDay or StopTimeOfDay of any of the excluded periods. Example of a Period Configuration In this example, we have a period including and excluding five other periods, configured as follows: "Top Level" Period StartTime 2012-01-01 08:00 StopTime 2015-12-31 08:00 Included periods Weekdays, Weekends Excluded periods Midsummer "Weekdays" Period StartTime 2012-01-01 07:00 StopTime 2013-01-01 06:00 StartTimeOfDay 08:00 StopTimeOfDay 16:00 Weekdays Monday(0), Tuesday(1), Wednesday(2), Thursday(3), Friday(4) "Weekends" Period StartTime 2012-01-01 07:00 StopTime 2013-01-01 06:00 StartTimeOfDay 08:00 StopTimeOfDay 16:00 Included periods Ordinary, Christmas "Midsummer" Period StartTime 2012-06-22 12:00 StopTime 2012-06-23 00:00 StartTimeOfDay 12:00 StopTimeOfDay 16:00 Weekdays Friday(4), Saturday(5) "Christmas" Period StartTime 2012-12-24 06:00 StopTime 2012-12-26 00:00 StartTimeOfDay 12:00 StopTimeOfDay 23:00 "Ordinary" Period StartTime 2012-01-01 06:00 StopTime 2013-01-01 00:00 StartTimeOfDay 08:00 StopTimeOfDay 16:00 Weekdays Saturday(5), Sunday(6) Open Example configuration of Periods If current date and time is 2012-06-08 10:00 ( a Friday) the period will be active. If current date and time is 2012-12-25 23:20 ( a Tuesday )the period will not be active.
+
+---
+
+# Document 723: FTP Forwarding Agent Events - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205000209/FTP+Forwarding+Agent+Events
+**Categories:** chunks_index.json
+
+Agent Message Events An information message from the agent, stated according to the configuration done in the Event Notification Editor. For further information about the agent message event type, see Agent Event . Ready with file: filename Reported, along with the name of the target file, when the file is successfully written to the target directory. Debug Events Debug messages are dispatched in debug mode. During execution, the messages are displayed in the Workflow Monitor. You can configure Event Notifications that are triggered when a debug message is dispatched. For further information about the debug event type, see Debug Event . The agent produces the following debug events: Command trace A printout of the control channel trace either in the Workflow Monitor or in a file. Loading
+
+---
+
+# Document 724: Data Masking UDRs - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204672431/Data+Masking+UDRs
+**Categories:** chunks_index.json
+
+The Data Masking agent has one UDR type; LookupFailure Open This UDR is routed on selected route when you have selected the Route Error option in the Data Masking agent configuration. Field Description Field Description Messages (list<string>) This field contains a list of the error messages. UDR (DRUDR) These are the unmatching UDRs.
+
+---
+
+# Document 725: SQL Statements - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205034720/SQL+Statements
+**Categories:** chunks_index.json
+
+The format of the SQL statements differs depending on which database type you are using. For MySQL, Netezza, PostgreSQL, SybaseIQ and Vertica, the path to the file (stated as <path to file> in the code blocks below) can be entered in three different ways: Entering the path explicitly, e g 'Users/mine/mypath' Stating the UDR field containing the path by entering $(UDR.fullpath) Stating the MIM value containing the path, e g $(Source_Pathname) for the Disk agent MySQL For remote loading (the file resides in a local directory) LOAD DATA LOCAL INFILE <path to file> INTO TABLE TABLENAME FIELDS TERMINATED BY ',' LINES TERMINATED BY 'n'; For server-side loading (file resides in the server file system of the database) LOAD DATA INFILE <path to file> INTO TABLE TABLENAME FIELDS TERMINATED BY ',' LINES TERMINATED BY 'n'; Netezza For remote loading (the file resides in a local directory) INSERT INTO TABLENAME SELECT * FROM EXTERNAL <path to file> USING (delim ',' REMOTESOURCE 'JDBC') For server-side loading (file resides in the server file system of the database) INSERT INTO TABLENAME SELECT * FROM EXTERNAL <path to file> USING (delim ',') PostgreSQL For server-side loading (file resides in the server filesystem of the database) COPY table_name [(column1,colunm2,...,columnN)] FROM <path to file> DELIMITER ',' csv; Stating columns is optional. Note! Postgres does not support remote file loading. SAP HANA For server-side loading (file resides in the server file system of the database) Create a control file containing code below (this example ctl file name is abc.ctl, abc.txt is the csv file): import data into table SYSTEM."TEST_LOADER" from 'abc.txt' record delimited by 'n' fields delimited by ',' optionally enclosed by '"' error log 'abc.err' Run the workflow with the following command: import from '/<path>/abc.ctl' Note! SAP HANA does not support remote file loading. Sybase IQ For server-side loading (file resides in the server file system of the database) LOAD TABLE TABLENAME (COLUMNNAME, COLUMNNAME2) USING FILE <path to file> FORMAT BCP ESCAPES OFF DELIMITED BY ',' Note! The Sybase JConnect driver does not support remote file loading. Vertica For server-side loading (file resides in the server file system of the database) COPY <table name> FROM LOCAL '<path to file>' DELIMITER AS '<character>'; If the file contains a header, you can add SKIP 1 to the SQL query, like so: COPY <table name> FROM LOCAL '<path to file>' DELIMITER AS '<character>'SKIP 1;
+
+---
+
+# Document 726: Database Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204640343/Database+Agents
+**Categories:** chunks_index.json
+
+This section describes the Database collection and Database forwarding agents. These agents are for batch workflow configurations. The Database agents are supported for use with the following databases: Oracle PostgreSQL SAP HANA Sybase SQL Server databases Unless specified otherwise, Oracle is the standard and default database. Prerequisites The reader of this information should be familiar with: Structured Query Language (SQL) UDR structure and contents The section contains the following subsections: Database Agents General Information Database Collection Agent Database Forwarding Agent
+
+---
+
+# Document 727: ConsumeCycleUDR - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204644189
+**Categories:** chunks_index.json
+
+The ConsumeCycleUDR is the UDR that the Workflow Bridge forwarding agent populates with data and routes to the Workflow Bridge real-time collection agent. The ConsumeCycleUDR must always be acknowledged and sent back from an Analysis agent to the Workflow Bridge real-time collection agent if the ConsumeCycleUDR was initially sent by a Workflow Bridge batch forwarding agent. See the section, Analysis, for the real-time collection Workflow in Workflow Bridge Example Batch to Real-Time Scenario with Action UDR for an example.
+
+---
+
+# Document 728: Real-Time Disk_Deprecated Forwarding Agent Configuration - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204644712/Real-Time+Disk_Deprecated+Forwarding+Agent+Configuration
+**Categories:** chunks_index.json
+
+To open the real-time Disk_Deprecated forwarding agent configuration dialog from a workflow configuration, you can do one of the following: right-click the agent icon and select Configuration... double-click the agent icon Disk_Deprecated Tab General Tab Open Disk_Deprecated forwarding agent - General tab Setting Description Setting Description Input Type The agent can act on two input types: bytearray (default) MultForwardingUDR If nothing else is stated the documentation refers to input of bytearray. If you select MultiForwardingUDR , the behavior of the agent will be different. For further information, see Real-Time Disk_Deprecated Forwarding Agent MultiForwardingUDR Input . File Information Setting Description Setting Description Directory Enter the path of the target directory on the local file system of the EC, where the forwarded files will be stored. The path can be absolute or relative to the $MZ_HOME environment variable. Create Directory Select this check box to create the directory path that you specify in Directory . The directories are created when the workflow is executed. Compression Select Gzip to decompress files before collection and insertion into the workflow. If the collected files are not compressed, select No Compression . File Closing Criteria When any of the following criteria is fulfilled, the current file will be closed and an output file will be generated. The time and volume counters that are evaluated against the criteria are reset each time a batch is closed. Enter 0 (zero) in a field to disable a criterion. Setting Description Setting Description Volume (bytes) Enter a file closing criterion based on the processed UDR volume in bytes. The size of the output file will not exceed the value in this field unless it is set to 1 (one byte). Volume (UDRs) Enter a file closing criterion based on the number of processed UDRs. Timer (sec) Enter a file closing criterion based on time. File Synchronization Criteria When any of the following criteria is fulfilled, the agent will synchronize a disk buffer with the batch data that is stored the in-memory. The synchronized data is stored in a subdirectory named DR_TMP_DIR under the target directory. If an error occurs that causes the workflow to abort, the synchronized data will be processed at restart of the workflow. The time and volume counters that are evaluated against the criteria are reset each time synchronization occurs. Enter 0 (zero) in a field to disable a criterion. Setting Description Setting Description Volume (bytes) Enter a synchronization criterion based on the processed UDR volume in bytes. Volume (UDRs) Enter a synchronization criterion based on the number of processed UDRs. Interval (sec) Enter the length of synchronization interval in this field. Advanced Tab Open Disk_Deprecated forwarding agent - Advanced tab Each batch is handled by a separate worker process with its own processing queue. If the queue size or maximum number of concurrent batches is exceeded, the agent immediately sends the received data to error handling by routing an ErrorUDR to the workflow. This UDR contains the original data and error information. If a worker fails to write or move data, the agent will retry the last operation for a configurable number of times. As a last resort, it will send the data to error handling. Data that is received while the agent is attempting to recover from an error is immediately sent to error handling. For more information about error handling, see Closing Batches from APL and Error Handling . Use the settings below to define the worker queue size and how the agent should behave when error conditions occur. Setting Description Setting Description Concurrent Batches Limit Enter the number of open batches that can be handled by the agent. Use the value zero (0) for an unlimited number of batches. It is recommended to use a non-zero when there is a high throughput of small batches, e g containing a single UDR. This will prevent out-of-memory errors. Worker Queue Limit Enter the maximum number of incoming UDRs that can be queued by worker processes. Error Buffer Limit The error buffer contains data will be routed to the workflow via ErrorUDR types in case of failures. Enter the maximum number of bytearray UDRs that can be stored in the buffer, and in the routed UDR. Error Buffer Timeout (sec) Enter the maximum time in seconds that worker processes should wait for new data, assuming that the error buffer is not empty, before routing an ErrorUDR to the workflow. Retries on Failure Enter the maximum number of times worker processes should attempt synchronization on failure, e g when writing to the file stream. Retries for Moving Files Enter the maximum number of times that worker processes should attempt to move the synchronized data in DR_TMP_DIR to the target destination. Recovery Attempt Interval (sec) Enter the number of seconds between retry attempts. Orphan File Suffix Enter a suffix that should be appended to the target file names when the agent recovers temporary files after a workflow restart. FileName Template Tab The names of the created files are determined by the settings in the Filename Template tab. For a detailed description of the Filename Template tab, see Workflow Template(old) .
+
+---
+
+# Document 729: GCP PubSub Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204607700/GCP+PubSub+Agents
+**Categories:** chunks_index.json
+
+This section describes the GCP PubSub agents. These agents are available in real-time workflow configurations. The GCP PubSub stands for Publisher/Subscriber. The Publisher sends while the Subscriber receives events (messages) of the subscribed topics. Each subscription can represent a group of single or multiple users as illustrated below: Messages published before a subscription was created for a topic will not be delivered for that subscription. Each message is typically delivered once and in the order, as it is published based on the configuration. The section contains the following subsections: GCP PubSub Publisher Agent GCP PubSub Subscriber Agent
+
+---
+
+# Document 730: FTPS Forwarding Agent Memory Management - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205685665/FTPS+Forwarding+Agent+Memory+Management
+**Categories:** chunks_index.json
+
+A global memory buffer is allocated per EC. The size of the buffer is specified using an Execution Context property in the EC's configuration file located in the relevant container. Note that this global backlog memory buffer is used and shared by this and any other forwarding agent that transfers files to a remote server. The same memory buffer is used for all ongoing transactions on the same EC. When several workflows are scheduled to run simultaneously, and the forwarding agents are assigned with the backlog function, there is a risk that the buffer may be too small. In such a case, it is recommended that you increase the size of this property. Example - Setting a property to increase the maximum memory To increase a maximum memory to 20 MB: mzsh topo set topo://container:<container>/pico:<pico>/val:config.properties.mz.forwarding.backlog.max_memory 20 You must restart the EC for the property to apply. If no property is set, the default value of 10 MB is used. The amount allocated is printed out in the EC's log file. This memory does not affect the Java heap size and is used by the agent when holding a copy of the file being transferred.
+
+---
+
+# Document 731: HTTP Encryption - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204647257
+**Categories:** chunks_index.json
+
+The HTTP communication can be protected using TLS (Transport Layer Security), resulting in communication via the HTTPS protocol. Once the properties for secure communication are configured, TLS will automatically be switched on for the Execution Context Web Interface and the Platform Web Interface. Crypto algorithms are in place in the system to ensure secure data communication. The default crypto algorithms used are AES. If you require to modify the default crypto algorithms, see Platform Properties . This section includes the following sections: HTTP Configuration Properties Configuring a Keystore HTTP Standard Setup
+
+---
+
+# Document 732: Persistent Variables - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204739974/Persistent+Variables
+**Categories:** chunks_index.json
+
+Note! This section is only relevant for Python agents in batch workflows. Persistent variables are variables that are persisted after the endBatch function block has been executed for the processing agent, or after the endBatch() function has been called for the collection agent. They are read from the persistence store just before the initialize block is executed. Use persistent variables if you have any transaction state that must be available in the commit or rollback function blocks to finalize a transaction. A persistent variable must be defined as a global variable. You can specify a default value in the constructor, otherwise the default value is None . A persistent variable has the property value , which you use to get or set the persistent variable value. The value of a persistent variable must be compatible with drany . For further information, see APL and Ultra Field Types for Python . Note! A persistent variable is not the same as a normal Python global variable. A normal global variable is not persisted between executions of a workflow. Do not rely on normal global variables for any state necessary to finalize a transaction. Example - Persistent variables for Python collection agent counter = persistent(0) # Defines a persistent variable with default value 0 start = persistent(drdate.now()) # Defines another persistent variable with the start date def initialize(): if counter.value == 0: debug('This is the first time this workflow has processed batches') else: debug('This workflow has processed batches before') def execute(): debug('execute') beginBatch() # Starts a new batch counter.value += 1 endBatch() # Ends the batch, all persistent variables have been persisted when this call returns def commit(): debug('commit') # The persistent variables are available in commit during both normal and recovery commits debug(counter) debug(start) Example - Persistent variables for Python processing agent counter = persistent(0) # Defines a persistent variable with default value 0 def endBatch(): debug('endBatch') counter.value += 1 # The persistent variable is persisted after this function block has been executed def commit(): debug('commit') # The persistent variable is available in commit during both normal and recovery commits debug(counter)
+
+---
+
+# Document 733: Properties for SAP HANA - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204996769/Properties+for+SAP+HANA
+**Categories:** chunks_index.json
+
+For a SAP HANA database, set the following properties in install.xml. SAP recommends that SAP HANA be set up with TLS/SSL encryption enabled. For one way TLS/SSL, you only need to configure the install.sap.ssl.encrypt , install.sap.ssl.truststore , install.sap.ssl.truststorepassword , and install.sap.ssl.hostnameincertificate properties. For mutual authentication, you have to configure all the TLS/SSL properties. For information on how to generate the certificate for SAP HANA, refer to: https://help.sap.com/viewer/0eec0d68141541d1b07893a39944924e/2.0.04/en-US/02f21560bbc1495483373d266f7e1fc7.html Property Description Property Description install.sap.host Default value: 127.0.0.1 This property specifies the IP address or hostname of the database instance. install.sap.db.name Default value: MZ This property specifies the name of the SAP HANA database. install.sap.port.hdbsql Default value: 39013 This property specifies the port that will be used for hdbsql client while provisioning the SAP HANA database. i nstall.sap.port.jdbc Default value: 39044 This property specifies the port that will be used during runtime for jdbc connections towards the SAP HANA database. install.sap.instance.number Default value: 90 This property specifies the SAP HANA instance number. install.sap.systemdb.name Default value: SYSTEMDB This property specifies the SAP HANA System Database name. install.sap.tb.space.tab Default value: row This property specifies the name of the tablespace to use to create the table in. install.sap.ssl.encrypt Default value: true This property enables SAP HANA TLS/SSL encryption. If set to true , you must configure install.sap.ssl.truststore, install.sap.ssl.truststorepassword, and install.sap.ssl.hostnameincertificate. install.sap.ssl.truststore Default value: "" This property specifies the location and filename of the java keystore format truststore file. This property needs to be configured for both one way or mutual authentication. install.sap.ssl.truststorepassword Default value: "" This property specifies the truststore password. If no password is configured, you can set "" (empty string) as the value. This property needs to be configured for both one way or mutual authentication. install.sap.ssl.hostnameincertificate Default value: * This property specifies the hostname in the truststore certificate. You can use "*" as the value if there is no hostname configured. This property needs to be configured for both one way or mutual authentication. install.sap.ssl.keystore Default value: "" This property specifies the location and filename of the keystore file. This property is only used when enabling mutual authentication. install.sap.ssl.keystoretype Default value: "" This property specifies the keystore type. It can be JKS or PKCS12. This property is only used when enabling mutual authentication. install.sap.ssl.keystorepassword Default value: "" This property specifies the password of the keystore. This property is only used when enabling mutual authentication. install.sap.ssl.sslcryptoprovider Default value: "" This property specifies the TLS/SSL provider for keystores such as OpenSSL. This property is only used when enabling mutual authentication.
+
+---
+
+# Document 734: SFTP Forwarding Agent Memory Management - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204643052/SFTP+Forwarding+Agent+Memory+Management
+**Categories:** chunks_index.json
+
+A global memory buffer will be allocated per EC. The size of the buffer is specified using an Execution Context property in the EC's configuration file located in the relevant container. Note! This global backlog memory buffer is used and shared by this and any other forwarding agent that transfers files to a remote server. The same memory buffer is used for all ongoing transactions on the same execution context. When several workflows are scheduled to run simultaneously, and the forwarding agents are assigned with the backlog function, there is a risk that the buffer may be too small. In that case, it is recommended that you increase the size of this property. Example - Setting a property to increase the maximum memory To increase a maximum memory to 20 MB: mzsh topo set topo://container:<container>/pico:<pico>/val:config.properties.mz.forwarding.backlog.max_memory 20 You must restart the EC for the property to apply. If no property is set the default value of 10 MB will be used. The amount allocated will be printed out in the EC's log file. This memory will not affect the Java heap size and is used by the agent when holding a copy of the file being transferred.
+
+---
+
+# Document 735: Time Zone Settings - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204647287/Time+Zone+Settings
+**Categories:** chunks_index.json
+
+This section contains recommendations related to configuration of database connections and usage. Time Zone Settings When processing data relating to a different time zone from the local time zone, you may want to use the original time zone for the time information stored. To store a date object with the attached time zone in the database, set the Execution Context and Platform property mz.use.date.timezone to true . This will instruct the system to use the attached time zone when SQL input originates from a date object. In most cases, it is sufficient to set the property in the pico configuration of the EC. However, in case of audit processing, you must also set the property in the pico configuration of the Platform. Example - APL code when inserting date in audit table This example shows how APL code may look when inserting a date in an audit table using a certain time zone. dateSetTZ(myDate,"GMT-6"); auditSet("Default.MyAuditProfile","MY_AUDIT_TAB", "MY_DATE_COLUMN",mydate); Note! If the mz.use.date.timezone property is used for setting dates with another time zone, the actual time zone is not stored in the database, and you may have to manually convert the date during selection. When you store dates in Oracle, you can use the type TIMESTAMP WITH TIME ZONE to keep track of the attached time zone.
+
+---
+
+# Document 736: Documentation Generator - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204676088/Documentation+Generator
+**Categories:** chunks_index.json
+
+Using the Documentation Generator, you can create documentation for the configurations that you have created. Generating Automated Documentation To open the Documentation Generator, click the Tools button in the upper left part of the Desktop window, and then select Documentation Generator from the menu. Open The Documentation Generator To generate documentation on the configurations in the system, select the Output Target directory in which you want to generate the documentation. To select a directory click the Browse... button, select the target directory, and click the Save button. Click the Generate button. You can then open the generated HTML file (index.html) in your web browser from the selected target directory. Open Documentation displayed in web browser Content of the Documentation The documentation generated includes up-to-date information on the saved configurations. The sections included vary according to the type of configuration documented and how it is used. The possible sections included are the following: Section Description Section Description Workflow An image of the configuration. This section is only included for workflow configurations. Globals The variables and constants are declared globally. This section is only included for APL Code configurations. Functions The APL functions. This section is only included for APL Code configurations. Description The content is provided by the user in the configuration profile, using the Documentation dialog. For example, you can provide a description and the purpose of the configuration in the dialog. For further information on how to populate this section, see the Documentation section in Desktop User Interface . Uses A list of all the configurations that the configuration uses, for example, APL code or Ultra format. Used By A list of all the configurations using the configuration. Access A list of the users who have access to the configuration.
+
+---
+
+# Document 737: Desktop Overview - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204604466/Desktop+Overview
+**Categories:** chunks_index.json
+
+Desktop is the user interface that enables you to manage, navigate, and monitor MediationZone deployments, including the ability to create and manage workflows. A workflow is a set of agents that are connected to each other and represent data flow processing. This Desktop interface provides Accessibility access options allowing easy access to all functionality, including screen reader support and keyboard shortcuts. The user interface is designed to be easy to use and provides an elegant way of managing a wide range of tasks. It is suitable for executing common tasks and accessing important information in a convenient way. MediationZone also features a Legacy Desktop view that allows access to parts of the system not yet available in Desktop, see Legacy Desktop . This chapter describes the different parts of Desktop and contains the following sections: Desktop User Interface Desktop Accessibility Options User Settings Search
+
+---
+
+# Document 738: APL - PCC BucketData Support - Buckets - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204743224
+**Categories:** chunks_index.json
+
+The BucketData APL functions are used for managing the storage of bucket data objects. The BucketData Support functions include: pccBeginBucketDataTransaction Creates a transaction object that can be called when using transaction lock. any pccBeginBucketDataTransaction() Parameters Parameter Description Returns: A transaction object. Example any myTransaction = pccBeginBucketDataTransaction (); will create a transaction object named myTransaction . pccBucketDataLookup Retrieves the BucketDataHolder object with the stated key from storage. BucketDataHolder pccBucketDataLookup( string key, any txn ) Parameters Parameter Description key The key that uniquely identifies the BucketDataHolder object. txn States the transaction object to be used when using transaction lock. If transaction lock is not used, this parameter should be set to null . Returns: The BucketDataHolder object, if it was found in the storage, otherwise null. Example pccBucketDataLookup ("555", myTransaction); will retrieve a BucketDataHolder object with key 555 from storage and apply transaction lock with the transaction object myTransaction . pccBucketDataLookupMany Retrieves a number of BucketDataHolder objects included in the stated list from storage. map<string, BucketDataHolder> pccBucketDataLookupMany ( list<string> keys, any txn ) Parameters Parameter Description keys The list of keys that uniquely identify the BucketDataHolder objects. txn States the transaction object to be used when using transaction lock. If transaction lock is not used, this parameter should be set to null . Returns: The BucketDataHolder objects, if they were found in the storage, otherwise an empty map. Example pccBucketDataLookupMany(myList, myTransaction); will retrieve the BucketDataHolder objects stated in the myList list from storage and apply transaction lock with the transaction object myTransaction . pccBucketDataStore Stores the BucketDataHolder object to storage. boolean pccBucketDataStore ( string key, BucketDataHolder bdh, any txn [, boolean throwException, int expiration] ) To avoid race conditions during the creation of a new bucket data holder object it is recommended to use a transaction object. If it is not used and there are two parallel requests for object creation, the second request will overwrite the first. Parameters Parameter Description key The key that uniquely identifies the BucketDataHolder object. bdh The BucketDataHolder object to store. txn States the transaction object to be used when using transaction lock. If a transaction without a lock is used, this parameter should be set to null . It is also important to commit (see pccCommitBucketDataTransaction) the transaction when txn is used. throwException An optional parameter that can be set to false to be able to handle any storage errors. In this case the return value has to be checked and the pccLastError* functions to get the actual error (see APL - PCC Provisioning Plugins - Buckets ). expiration An optional parameter that can be set to an integer value in seconds. This value is the TTL (Time-To-Live) for the BucketDataHolder object passed along with it. This parameter is only supported for Couchbase data store, versions 5.5 and above. Note! If you use the expiration parameter, it is mandatory to set five (5) parameters for the pccBucketDataStore function. If the expiration parameter is not set, TTL will be zero (0) per default / bucket default. Zero is interpreted as infinity. If only three or four parameters are supplied to the pccBucketDataStore function, TTL will be 0. If transaction ( txn ) is used, TTL start time will be from the time of transaction commit (pccCommitBucketDataTransaction). Returns: True if the operation succeeded. This will always be the case unless throwException is set to false . Example pccBucketDataStore("777", myBucket, myTransaction, true, 60); In the case of using a Couchbase data store, the above function stores the myBucket BucketDataHolder object with 60 seconds TTL and key 777 , while adding the BucketDataHolder object into the transaction object myTransaction . In the case of any other data store, the above function stores the myBucket BucketDataHolder object with key 777 , while adding the BucketDataHolder object into the transaction object myTransaction . pccCommitBucketDataTransaction Commits the changes that have been made to the BucketDataHolder objects that are using the stated transaction object. void pccCommitBucketDataTransaction( any txn ) Parameters Parameter Description txn The transaction object for which changes should be committed. Example pccCommitBucketDataTransaction (myTransaction); will commit the changes made to the BucketDataHolder objects using the myTransaction transaction object. pccRollbackBucketDataTransaction Removes any changes that have been made to the BucketDataHolder objects that are using the stated transaction object. void pccRollbackBucketDataTransaction( any txn ) Parameters Parameter Description txn The transaction object for which changes should be rolled back. Example pccRollbackBucketDataTransaction (myTransaction); will rollback the changes made to the BucketDataHolder objects using the myTransaction transaction object. pccBucketDataRemove Removes a BucketDataHolder object from storage. void pccBucketDataRemove( string key, any txn ) Parameters Parameter Description key The key that uniquely identifies the BucketDataHolder object. txn The transaction when transaction lock is used. Example pccBucketDataRemove ("754", myTransaction); will remove the BucketDataHolder object with key 754> from storage and apply transaction lock with the transaction object >myTransaction . pccCreateBucketDataKeyIterator Creates an iterator which is used for moving from key to key in the database. any pccCreateBucketDataKeyIterator( [string startKey [, string stopKey]] ) Parameters Parameter Description startKey Optional parameter for stating which key to start with. This key will also be included. stopKey Optional parameter for stating which key to end with. This key will also be included. Returns: The iterator that has been created. Example any myIterator = pccCreateBucketDataKeyIterator( ); will create an iterator named myIterator . pccDestroyBucketDataKeyIterator Removes the stated iterator and returns all the resources that are being used. void pccDestroyBucketDataKeyIterator( any iterator ) Parameters Parameter Description iterator The iterator you want to remove. Example pccDestroyBucketDataKeyIterator(myIterator); will remove the iterator named myIterator . pccHasNextBucketDataKey Asks the iterator if there are more keys to retrieve. boolean pccHasNextBucketDataKey( any iterator ) Parameters Parameter Description iterator The iterator you want to ask. Returns: Information whether there is more data to retrieve or not. If true is returned, there is more data to be retrieved with the pccGetNextBucketDataKey function. If false is returned, there is no more data and the function pccGetNextBucketDataKey should not be called again. Example pccDestroyBucketDataKeyIterator(myIterator); will return the next key from the iterator named myIterator if the iterator has next key. pccGetNextBucketDataKey Retrieves the next key from the iterator. string pccGetNextBucketDataKey( any iterator ) Parameters Parameter Description iterator The iterator you want to retrieve the key from. Returns: The next key, or null if no more keys are available. Example string key = pccGetNextBucketDataKey(myIterator); will return the next key from the iterator named myIterator . pccGetNextBucketDataKeys Retrieves several keys from the iterator. list<string> pccGetNextBucketDataKeys( any iterator [, int count] ) Parameters Parameter Description iterator The iterator you want to retrieve the keys from. count Optional parameter for controlling the maximum number of keys to retrieve. Returns: A list containing the retrieved keys. Example list<string> keys = pccGetNextBucketDataKeys(myIterator, 5); will return a list of maximum 5 keys with the name keys from the iterator named myIterator .
+
+---
+
+# Document 739: Distributed Storage - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205816487/Distributed+Storage
+**Categories:** chunks_index.json
+
+Distributed Storage allows for data access from several workflows at the same time. The use of the Distributed Storage profile and profiles for specific distributed storage types, like Couchbase or Redis, makes it easy to change the database setup with a minimum of impact on the configured business logic. This simplifies the process of creating flexible real-time solutions with high availability and performance. Open Workflow access to Distributed Storage
+
+---
+
+# Document 740: SAP JCo Uploader Agent Input/Output Data and MIM - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204642915/SAP+JCo+Uploader+Agent+Input+Output+Data+and+MIM
+**Categories:** chunks_index.json
+
+Input/Output Data The Input/Output data is the type of data an agent expects and delivers. The SAP JCo Uploader agent consumes UDRs of the SAP_JCO type, and does not emit anything. For further information, see SAP JCo Uploader Agent UDRs . MIM For information about the MIM and a list of the general MIM parameters, see MIM . Publishes MIM Parameter Description Average Response Time (long) The average response time (in milliseconds) for each execution and commit. No of Executions (long) The total number of executions towards the SAP System. Accesses The agent does not itself access any MIM resources.
+
+---
+
+# Document 741: Constants for Python - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204642182/Constants+for+Python
+**Categories:** chunks_index.json
+
+These constants apply for all of the Python agents. Constant Description Example Constant Description Example WORKFLOW_NAME The full name of the workflow MyFolder.MyWorkflow.workflow_1 AGENT_NAME The name of the agent Python_1
+
+---
+
+# Document 742: 5G UDRs - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205685916/5G+UDRs
+**Categories:** chunks_index.json
+
+The 5G UDR types are designed to exchange data between the workflows and can be viewed in the UDR Internal Format Browser . NRFSpecificationUDR When an HTTP/2 Server agent has the custom specification for the 5G profile enabled, the agent expects to receive the NRFSpecificationUDR in order to perform the NF (Network Function) registration, heartbeat and de-registration. The following fields are included in NRFSpecificationUDR : Field Description Field Description registerCycleUDR This field is populated by the contents of RequestCycle UDR, and body of RequestCycle UDR should using NFProfile as a payload. heartbeatCycleUDR This field is populated by the contents of RequestCycle UDR, and body of RequestCycle UDR should using List of PatchItem as a payload. deregisterCycleUDR This field is populated by the contents of RequestCycle UDR. nfInstanceIdFieldName Field mapping for nfInstanceId in NFProfile. This is an optional field. If the field is left unpopulated, the value in nfInstanceId will be used. nfTypeFieldName Field mapping for nfType in NFProfile. This is an optional field. If the field is left unpopulated, the value in nfType will be used. heartBeatFieldName Field mapping for heartbeatTimer in NFProfile. This is an optional field. If the field is left unpopulated, the value in heartbeatTimer will be used. nfProfileChangesSupportIndFieldName Field mapping for nfProfileChangesSupportInd in NFProfile. This is an optional field. If the field is left unpopulated, the value in nfProfileChangesSupportInd will be used.
+
+---
+
+# Document 743: Remote Access to Containers - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204613074/Remote+Access+to+Containers
+**Categories:** chunks_index.json
+
+Remote access to Execution Containers makes it possible to start and stop all pico instances from the Platform Container. When you install a new Execution Container, remote access is enabled by default. Follow the steps below to manually enable remote access: Login as mzadmin on the host where the Execution Container is installed. Make sure that that the SSH is installed on the container host and that the SSH daemon is enabled. Make sure that the container is registered in the STR: $ mzsh topo register Run mzsh topo setupremote. $ mzsh topo setupremote Validate the content of the container: $ mzsh topo get topo://container:<container>/obj:remote The following attributes and objects should be included: java-home ssh-address ssh-hostkeys ssh-port ssh-username For further information about the mzsh topo command, see topo .
+
+---
+
+# Document 744: Inter Workflow Batch Collection Agent Transaction Behavior - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205033588/Inter+Workflow+Batch+Collection+Agent+Transaction+Behavior
+**Categories:** chunks_index.json
+
+This section includes information about the Inter Workflow collection agent transaction behavior. For information about the general transaction behavior, see the section Transactions in Workflow Monitor . Emits The agent emits commands that change the state of the file currently processed. Command Description Begin Batch Emitted before the first byte of the collected file(s) are fed into a workflow. End Batch Emitted after the last byte of last collected file has been fed into the system. Retrieves The agent retrieves commands from other agents, and based on them generates a state change of the file currently processed. Command Description Cancel Batch If Never Abort has been configured on workflow level, in Workflow Properties, and a Cancel Batch message is received, the agent sends the batch (the UDRs that have been successfully read) to ECS. The batch will be closed and moved immediately, regardless of the criteria defined in the Merge Definition and the Workflow will continue executing. If, on the other hand, the Cancel Batch behavior has been configured to abort the workflow (default), the batch will not be sent to ECS. For further information please refer to Workflow Properties . Note! If the Cancel Batch behavior defined on workflow level is configured to abort the workflow, the agent will never receive the last Cancel Batch message. In this situation ECS will not be involved, and the file will not be moved.
+
+---
+
+# Document 745: Data Veracity Maintenance System Task - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204640538
+**Categories:** chunks_index.json
+
+The DataVeracity_Maintenance system task removes outdated Data Veracity data, provided that the state is REPROCESSED or DELETE_APPROVED The number of days to keep data is set in the DataVeracity_Maintenance configuration dialog. It is also possible to fully turn off the cleanup of Reprocessed, Delete_Approved or all of the UDRs. When the DataVeracity_Maintenance System Task is executed, the following event will happen: UDRs will be removed from the various Data Veracity tables according to the configurations in the Cleanup tab. See the Cleanup Tab in Data Veracity Maintenance System Task Configuration for further information. If the number of days after which data should be removed has been configured to 0 (zero) days, data will be removed every time the DataVeracity_Maintenance System Task is executed, with a minimum time interval of one hour. Loading
+
+---
+
+# Document 746: Python Interpreter Profile - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204739912
+**Categories:** chunks_index.json
+
+With Python Interpreter profiles, you can configure which Python interpreter to use. Open Interpreter profile configuration The Interpreter profile is loaded when you start a workflow that depends on it. Changes to the profile become effective when you restart the workflow. To open the editor, click the New Configuration button in the upper left part of the Desktop window, and then select Python Interpreter Profile from the menu. Setting Description Setting Description Use Default Select this checkbox if you want to use the default interpreter as defined in the Python Manager tool. Use Named Select this checkbox to select a predefined interpreter listed in the Python Manager tool. Use This Select this checkbox to specify the actual location and working directory of a Python interpreter executable directly.
+
+---
+
+# Document 747: Session UDR Type - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204998908/Session+UDR+Type
+**Categories:** chunks_index.json
+
+Each Aggregation profile stores sessions of a specific session UDR Type, defined in Ultra. You define a Session UDR Type in the same way as you define internal Ultra types, with only one difference; replace the keyword internal with session . Example - Defining a Session UDR type session SessionUDRType { int intField; string strField; list<drudr> udrList; }; Note! Take particular care when updating the Ultra formats. It is not possible to collect data from the Aggregation session storage if the correponding UDR has been renamed. If the format definition has changed, you can still collect the data. Changes to the formats are handled as follows: Added or renamed fields will be assigned default values. Removed fields will be ignored. Fields that have changed data types will be assigned default values. Note! In general, the session UDR should be kept as small as possible. A larger UDR decreases performance compared to a small one. For further information about Ultra formats, see the Ultra Reference Guide .
+
+---
+
+# Document 748: SAP CC Online UDRs - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204642828/SAP+CC+Online+UDRs
+**Categories:** chunks_index.json
+
+The SAP CC UDR types are designed to formalize the exchange between workflows and the SAP Convergent Charging Core Server. The SAP CC agents translate the received charging request UDRs into the corresponding SAP Convergent Charging API call, and translate the response into a charging answer UDR to emit a CCCycleUDR which becomes available in the workflow. The UDRs are grouped into two main categories: The Charging Request UDRs. There is one dedicated UDR for each charging API available on SAP Convergent Charging (for example, BlankChargeUDR , and StartSessionUDR ). The Charging Answer UDRs. There is one dedicated UDR for each charging answer returned by SAP Convergent Charging (for example, PurchaseOrderUDR , StartSessionResultUDR , and CCExceptionUDR ). In addition, a container UDR called CCCycleUDR is used to correlate a charging request with the corresponding charging answer received from SAP Convergent Charging. The SAP CC UDR types can be viewed in the UDR Internal Format Browser in the sapcc folder. To open the browser, open an APL Editor, and, in the editing area, righ t-click and select UDR Assistance . The section contains the following subsections: CCCycleUDR Charging Answer UDRs Charging Request UDRs Spending Status UDRs
+
+---
+
+# Document 749: Constants - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204743548/Constants
+**Categories:** chunks_index.json
+
+The following predefined constants are available in the APL language. Constant Description Example Constant Description Example null Can be used to evaluate if a field has been assigned a value. if ( NumFld != null ) true / false Value of a boolean variable myBool = true; WORKFLOW_NAME The workflow configuration name. Note! If used in a workflow with name Default.MyWorkflow.workflow_1 , this constant will hold the value Default.MyWorkflow. If the full name is needed, i.e. Default.MyWorkflow.workflow_1 , use mimGet("Workflow", "Workflow Name") instead. debug("Name of workflow:" + WORKFLOW_NAME); AGENT_NAME The Agent name where the variable is called from. debug("Name of Agent:" + AGENT_NAME);
+
+---
+
+# Document 750: System Exporter - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204605469/System+Exporter
+**Categories:** chunks_index.json
+
+
+
+---
+**End of Part 33** - Continue to next part for more content.
