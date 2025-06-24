@@ -1,0 +1,25 @@
+{
+  "id": "wiki__spaces__MD93__pages__204613545__Processing_Agents",
+  "title": "Processing Agents - MediationZone Documentation 9.3 - InfoZone",
+  "url": "https://infozone.atlassian.net/wiki/spaces/MD93/pages/204613545/Processing+Agents",
+  "categories": [
+    "space:MD93"
+  ],
+  "text": "A processing agent expects to be fed data and is expected to deliver data on one or several outgoing routes. A processing agent could be as simple as a counter that counts the throughput. It could also be more complex in that it aggregates, correlates and consolidates the data and depending on the result, delivers it on different routes. Amongst the processing agents so called transformer agents can be identified. A transformer agent is responsible for translating an incoming byte stream into a UDR object or the opposite. For file distribution the Encoder Agent can be used to create header/trailer records containing metadata of the file, e.g. record counter, check sum etc. This is commonly referred to as Decoding and Encoding, which the MediationZone Ultra format system will handle.",
+  "chunks": [
+    {
+      "chunk_id": 1,
+      "text": "A processing agent expects to be fed data and is expected to deliver data on one or several outgoing routes. A processing agent could be as simple as a counter that counts the throughput. It could also be more complex in that it aggregates, correlates and consolidates the data and depending on the result, delivers it on different routes. Amongst the processing agents so called transformer agents can be identified. A transformer agent is responsible for translating an incoming byte stream into a UDR object or the opposite. For file distribution the Encoder Agent can be used to create header/trailer records containing metadata of the file, e.g. record counter, check sum etc. This is commonly referred to as Decoding and Encoding, which the MediationZone Ultra format system will handle.",
+      "title": "Processing Agents - MediationZone Documentation 9.3 - InfoZone",
+      "url": "https://infozone.atlassian.net/wiki/spaces/MD93/pages/204613545/Processing+Agents",
+      "word_count": 129,
+      "char_count": 793
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2025-06-24T03:53:05.071446",
+    "word_count": 129,
+    "char_count": 793,
+    "chunk_count": 1
+  }
+}
