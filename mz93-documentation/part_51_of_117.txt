@@ -1,0 +1,383 @@
+# RATANON/MZ93-DOCUMENTATION - Part 51/112
+
+---
+**Dataset:** ratanon/mz93-documentation
+**Part:** 51 of 112
+**GitHub:** https://github.com/ratan0n/docs/tree/main/mz93-documentation
+**Size:** ~69.5 KB
+---
+
+Input/Output Data The input/output data is the type of data an agent expects and delivers. The agent produces bytearray types. MIM For information about the MIM and a list of the general MIM parameters, see Administration and Management in Legacy Desktop . Publishes MIM Parameter Description Source URL This MIM parameter contains the full absolute URL to the resource that is being collected. Source Filename This MIM parameter contains the filename from the URL Path-part. In case the URL points to a directory (a path that ends with a slash) then an empty string is returned. Source File Count If Index Based Collection is enabled this MIM parameter contains the number of files that will be collected from the index, otherwise it returns 1. Source Files Left This MIM parameter contains the number of files remaining to be collected. File Retrieval Timestamp This MIM parameter contains the time when the HTTP file retrieval started. Accesses The agent does not access any MIM resources.
+
+---
+
+# Document 1186: GenericInputField UDR - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204675132/GenericInputField+UDR
+**Categories:** chunks_index.json
+
+The GenericInputField UDR is used to create other types of input. To create a date input picker the GenericInputField can be used like this: GenericInputField dateField = udrCreate(GenericInputField); dateField.name = "date"; dateField.type = "date"; dateField.label = "A GenericInput"; The following fields are included in the GenericInputField UDR : Field Description attributes (map<string,string>) This field may contain extra attributes to be added. cssClasses (list<string>) This field may contain a list of extra values added to class attribute. This is typically used to style the component. Please read more on Bootstrap . disabled (boolean) This field may contain a boolean if the component should be disabled or enabled. id (string) This field may contain the id of the component label (string) This field may contain the label for the generic input field. labelCssClasses (list<string>) This field may contain a list of extra values added to class attribute of the label. This is typically used to style the component. Please read more on Bootstrap . name (string) This field may contain the name of the component. If the component is present in a Form UDR , the name will be submitted with the form as the key in the Params Map in Request UDR . placeholder (string) This field may contain a text that can be used as a help text. readonly (boolean) This field may contain a boolean if the field is readonly. required (boolean) This field may contain a boolean if the component is required. Typically used inside a Form UDR. type (string) This field contain the input type. For example: date, file, email value (int) This field may contain a value.
+
+---
+
+# Document 1187: Kafka Batch Collection Agent Configuration - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/301138158/Kafka+Batch+Collection+Agent+Configuration
+**Categories:** chunks_index.json
+
+You open the Kafka collection agent configuration dialog from a workflow configuration. Click Build  New Configuration. Select Workflow from the Configurations dialog. When prompted to Select workflow type , select Batch. Click Add agent and select Kafka from the Collection tab in the Agent Selection dialog. Double-click on the agent in the workflow template. Open Kafka batch collection agent configuration Setting Description Setting Description Consumer Group The name of the consumer group which is defined by the group.id property. Batch Size The number of messages to collect per batch. Note that a workflow will remain in a running state even when all data has been consumed and you have to trigger a stop either using mzsh, or the operations REST interface, or in the workflow configuration by using a MIM like Estimated Lag or Workflow Throughput , for example. The Batch Size must be greater than 0. Note! For performance reasons, it is important to set a reasonable batch size. If the batch size is set too low, this will affect the performance negatively. Deactivate on idle If enabled, the agent will deactivate the workflow if it has no more batches to collect. Assignment Messages can be collected from one or several topics. You define how the topics should be identified by selecting either; Topic Pattern Enter a regular expression for the names of the topics you want to collect data from. https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/util/regex/Pattern.html Topic Names Select this option to display a list and an Add button. Add one or several topic names that you want to collect data from. The exact names must be entered. Regular expressions cannot be used. Topic Partitions Select this option to display a list and an Add button. Add one or several topic names and partitions that you want to collect data from. The exact names must be entered. Regular expressions cannot be used. Below are a few examples of valid partition declarations: Example of collection from partition 0: Partitions: 0 Example of collection from the three partitions 0, 8 and 12: Partitions: 0,8,12 Example of collection from the six partitions 0, 3, 4, 5, 6, and 7: Partitions: 0,3-7 Note! If you select Topic Partitions , automatic rebalancing will not take place, and you will have to handle potential rebalancing manually if needed. Note! You must configure a Kafka Profile in the Execution tab in Workflow Properties for the workflow configuration to be valid.
+
+---
+
+# Document 1188: SharedTables Event - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204997890/SharedTables+Event
+**Categories:** chunks_index.json
+
+When using Shared Tables, there will be three different types of operations; Create, Refresh and Released, which have different actions. The SharedTables event will be triggered each time one of these actions occur. Create operation The Create operation has three different actions: Create Started - which is triggered when a workflow calls the tableCreateShared function. Create Finished - which is triggered when the shared table has been loaded from the database. Create Failed - which is triggered if the table fails to be created. A Create operation will always consist of two actions; either Create Started and Create Finished, or Create Started and Create Failed. Refresh operation The Refresh operation has three different actions: Refresh Started - which is triggered when a workflow calls the tableRefreshShared function or when the Shared Table profile has been configured with a Refresh Interval . Refresh Finished - which is triggered when the shared table has been refreshed. Refresh Failed - which is triggered if the table fails to be refreshed. A Refresh operation will always consist of two actions; either Refresh Started and Refresh Finished, or Refresh Started and Refresh Failed. Released operation The Released operation only has one action, i e to release the table when no references to the table has existed for a certain time interval. See Shared Table Profile for further information about shared tables. Filtering In the Event Setup tab, the values for all the event fields are set by default to All in the Match Value(s) column, which will generate event notifications every time data a SharedTables event is triggered. Double-click on the field to open the Match Values dialog where you can click on the Add button to add which values you want to filter on. If there are specific values available, these will appear in a drop-down list. Alternatively, you can enter a hard coded string or a regular expression. The following fields are available for filtering of SharedTables events in the Event Setup tab: SharedTables event specific fields actionType - With this field you can configure notifications to be sent only for certain actions. Use regular expressions to filter on this field. agentName - This field contains the name of the agent issuing the action. In case a Refresh or Create action is initiated based on the Refresh Interval setting in the Shared Tables profile, this field will be empty. You can use this field to specify notifications to be generated only for certain agents. Use regular expressions to filter on this field. duration - The duration is the amount of time in milliseconds it takes to perform a Create or Refresh operation, and this field is included in the Create Finished and Refresh Finished actions. If you select to filter on this field, you can specify to only generate notifications for a certain duration. This will also mean that notifications will only be generated for Create Finished and Refresh Finished actions. Use regular expressions to filter on this field. errorMessage - In case a Create Failed, or a Refresh Failed action is triggered, this field will contain an error message. If you select to filter on this field, you can specify to only generate notifications for certain error messages, or just select to have notifications generated for actions containing error messages. This will also mean that notifications will only be generated for Create Failed and Refresh Failed actions. Use regular expressions to filter on this field. workflowName - This field contains the name of the workflow issuing the action. In case a Refresh or Create action is initiated based on the Refresh Interval setting in the Shared Tables profile, this field will be empty. You can use this field to specify notifications to be generated only for certain workflows. Use regular expressions to filter on this field. workflowVersion - This field contains the version number of the workflow issuing the action. In case a Refresh or Create action is initiated based on the Refresh Interval setting in the Shared Tables profile, this field will be "0". Use regular expressions to filter on this field. rowCount - This indicates the number of rows that were created or refreshed in the database. Use regular expressions to filter on this field. ShareTablesProfileName - This field contains the name of the SharedTablesProfile issuing the action. You can use this field to specify notifications to be generated only for workflows using a certain SharedTablesprofile. Use regular expressions to filter on this field. Fields inherited from the Base event The following fields are inherited from the Base event, and can also be used for filtering, described in more detail in Base Event : category - If you have configured any Event Categories, you can select to only generate notifications for SharedTables events with the selected categories. See Event Category for further information about Event Categories. contents - The contents field contains a hard coded string with event specific information. If you want to use this field for filtering you can enter a part of the contents as a hard coded string. eventName - This field can be used to specify which event types you want to generate notifications for. This may be useful if the selected event type is a parent to other event types. However, since the SharedTables event is not a parent to any other event, this field will typically not be used for this event. However, if you have several different event types configured for generating notifications in the same event notification configuration, it may be useful to include this field in the notification itself to differentiate between the event types. origin - If you only want to generate notifications for events that are issued from certain Execution Contexts, you can specify the IP addresses of these Execution Contexts in this field. receiveTimeStamp - This field contains the date and time for when the event was inserted into the Platform database. If you want to use timeStamp for filtering, it may be a good idea to enter a regular expression, for example, "2012-06.*" for catching all SharedTables events from 1st of June, 2012, to 30th of June, 2012. severity - With this field you can determine to only generate notifications for events with a certain severity; Information, Warning, Error or Disaster. For the SharedTables event, the actions Create Started, Create Finished, Refresh Started, Refresh Finished, and Released have severity Information, and the actions Create Failed and Refresh Failed have the severity Error. timeStamp This field contains the date and time for when the Execution Context generated the event. If you want to use timeStamp for filtering, it may be a good idea to enter a regular expression, for example, "2012-06-15 09:.*" for catching all SharedTables events from 9:00 to 9:59 on the 15th of June, 2012. Note! The values of these fields may also be included in the notifications according to your configurations in the Notifier Setup tab.
+
+---
+
+# Document 1189: mzcli - vcexport - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/547980405/mzcli+-+vcexport
+**Categories:** chunks_index.json
+
+Usage usage: vcexport [options] Options Options Description Options Description [-d, --directory] Use this option to specify in which directory you want to place the exported data. If the directory does not exist, it will be created. [-es, --excludesysdata] Use this option to exclude system data from the export. For example, you can exclude ECS related data, event categories, and workflow alarm values. [-f, --folders] Use this option to specify which folders you want to include in the export. For example, mzcli <user name>/<password> vcexport -d MyDirectory/ -f Default Alarms will export the configurations in the folders Default and Alarms to the directory MyFolder. If this option is not used, the configurations in all folders will be exported. [-im, --includemeta] Use this option to include meta data in the export. This will not be done by default, since not including meta data will make it easier to make a file compare between the exports. [-o, --overwrite] Use this option to enable existing exports in the stated directory to be overwritten. This command exports configurations in a format that is adapted for version control systems. The vcexport command exports the configurations into a flat structure, i e with file extensions instead of directories. For each exported configuration, a .xsd file will be generated in which the structure of the data is stored, which will produce a more compact format than the other export commands can offer. Return Codes Listed below are the different return codes for the vcexport command: Code Description Code Description 0 Will be returned if the export was successful. 1 Will be returned if the command could not be interpreted, e g if a option that does not exist has been entered. 2 Will be returned if the export failed. 3 Will be returned if the folder you want to export to, stated with the -d, --directory option, could not be created. 5 Will be returned if the folder(s) stated, when using the -f, --folders option, does not exist.
+
+---
+
+# Document 1190: UI Builder Agent Configuration - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204609761/UI+Builder+Agent+Configuration
+**Categories:** chunks_index.json
+
+You open the UI Builder collection agent configuration dialog from a workflow configuration. To open the UI Builder collection agent configuration, click Build  New Configuration . Select Workflow from the Configurations dialog. When prompted to Select workflow type , select Realtime . Click Add agent and select UI Builder from the Collection tab of the Agent Selection dialog. The UI Builder settings consist of the General and the CSS Config tabs. Open UI Builder collection agent configuration - General tab Setting Description Setting Description Connection Details Local Address The local address that the server will bind to. If the value is set to 0.0.0.0, the server will bind to all interfaces. Port The port the server will listen to. Default port is 80. UI Title Specify the User Interface title. Start Page Specify the start page URL. TLS Details Use TLS If enabled, the communication channels will be encrypted. You must select this option for the Security Profile , Enable 2-way Authentication as well as the Additional Certificate Validation option to be made available. Security Profile Click Browse to select a security profile with certificate and configuration to use, if you prefer to use a secure connection. Refer to Security Profile for more information. Enable 2-way Authentication Enables two-way authentication for the communication channels. Additional Certificate Validation If enabled, the agent will perform certificate chain validation and revocation status checks. You must configure CRL (Certificate Revocation List) file path or CRLDP (Certificate Revocation List Distribution Points) if this is enabled. CRL File Path Path to the Certificate Revocation List (CRL) file that has been downloaded locally. Enable CRLDP will be greyed out when configuring the file path. Enable CLRDP Enable Certificate Revocation List Distribution Points (CRLDP) extension support. CRL File Path will be greyed out when enabling CRLDP. Request Handling Server Timeout The number of seconds before the server closes a request. If the timeout is set to 0 (zero) no timeout will occur. Default value is 5. In the CSS Config tab you can designate custom CSS code to customize the output.
+
+---
+
+# Document 1191: mzcli - wfgroupmodify - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/547980091/mzcli+-+wfgroupmodify
+**Categories:** chunks_index.json
+
+Usage usage: wfgroupmodify -group <name> (-memberwf <wf> | -membergrp <grp>) [-prereqwf <wf> ...] [-prereqgrp <grp> ...] [q] This command enables you to modify the prerequisites list for an entry in a workflow group. The workflow group name and workflow group member name are required parameters. Only one workflow group member at a time can be modified by the command. Options Options Description Options Description [-group <group name>] Enter the name of the workflow group that you want to modify. (-memberwf wf | -membergrp GRP) Enter the name of the member that you want to modify, either a workflow or a workflow group. [-prereqwf wf...] Enter a list of workflows that the prerequisites list should include. Note! Excluding this parameter sets the workflow prerequisites list of the workflow group to be empty. [-prereqgrp grp...] Enter a list of workflow groups that the prerequisites list should include. Note! Excluding this parameter sets the workflow-groups prerequisites list of the workflow group to be empty. [q] Quiet mode. Use this parameter to eliminate the display of any report during execution. Examples Example - Workflow Packages A group with workflows inside a package or several prerequisites in a package as shown respectively: $ mzsh mzadmin/dr wfgroupmodify -group XE-7088.GroupOfPackageWFs -memberwf testworkflows_1.0@XE-7088.AsciiProcessingWF.workflow_1 -prereqwf testworkflows_1.0@XE-7088.DiskToArchivingTemplate.workflow_1 Modifying testworkflows_1.0@XE-7088.AsciiProcessingWF.workflow_1 Prerequisites set to - Workflow testworkflows_1.0@XE-7088.DiskToArchivingTemplate.workflow_1 $ mzsh mzadmin/dr wfgroupmodify -group XE-7088.GroupOfPackageWFs -memberwf testworkflows_1.0@XE-7088.AsciiProcessingWF.workflow_1 -prereqwf testworkflows_1.0@XE-7088.DiskToArchivingTemplate.workflow_2 testworkflows_1.0@XE-7088.DiskToArchivingTemplate.workflow_3 testworkflows_1.0@XE-7088.DiskToArchivingTemplate.workflow_4 Modifying testworkflows_1.0@XE-7088.AsciiProcessingWF.workflow_1 Prerequisites set to - Workflow testworkflows_1.0@XE-7088.DiskToArchivingTemplate.workflow_2 - Workflow testworkflows_1.0@XE-7088.DiskToArchivingTemplate.workflow_3 - Workflow testworkflows_1.0@XE-7088.DiskToArchivingTemplate.workflow_4 In this example: The group being modified is named GroupOfPackageWFs , inside the folder XE-7088 . The member workflows in this case are both called workflow_1 , one belonging to the template AsciiProcessingWF and the prerequisite one belonging to the template DiskToArchivingTemplate , both located in the folder XE-7088 . And both workflows are part of the package testworkflows_1.0. Above example sets workflow_2, workflow_3 and workflow_4. If you previously had workflow_1 as prerequisite as in the previous example, that would be replaced. This means that any prerequisites you want to set all have to be specified in the same run. You cannot modify a workflow group if it is part of a package and this is the reason that the GroupOfPackageWFs is not inside the package. Example - Execution $ mzsh mzadmin/dr wfgroupmodify -group TestWorkflows.AsciiWFBToRtPreprocessingGroup -memberwf TestWorkflows.IWFDecodeToWFBridge.workflow_1 -prereqwf TestWorkflows.DiskAsciiCollToWFBridge.workflow_1 Modifying TestWorkflows.IWFDecodeToWFBridge.workflow_1 Prerequisites set to - Workflow TestWorkflows.DiskAsciiCollToWFBridge.workflow_1 In this example: AsciiWFBToRtPreprocessingGroup is the name of the workflow group. TestWorkflows is the folder where the Workflow group is present. You have specified that the workflow IWFDecodeToWFBridge.workflow_1 should not start until DiskAsciiCollToWFBridge.workflow_1 has finished running. Example - No Workflow Above $ mzsh mzadmin/dr wfgroupmodify -group TestWorkflows.CollAndProcGroup -memberwf TestWorkflows.AsciiProcessingWF.workflow_1 -prereqwf TestWorkflows.DiskToArchivingTemplate.workflow_1 TestWorkflows.DiskToArchivingTemplate.workflow_2 TestWorkflows.DiskToArchivingTemplate.workflow_3 In this example: There is no member TestWorkflows.DiskToArchivingTemplate.workflow_1 (Workflow) above TestWorkflows.AsciiProcessingWF.workflow_1 to have as prerequisite. Even though the command sets workflows as prerequisites of other workflows, it depends on the order specified in the workflow group editor, which you cannot change from the terminal. Example - Multiple Workflows You can set several workflows (or groups) to be prerequisites of one workflow, for example: $ mzsh mzadmin/dr wfgroupmodify -group XE-7088.CollAndProcGroup -memberwf XE-7088.AsciiProcessingWF.workflow_1 -prereqwf XE-7088.DiskToArchivingTemplate.workflow_1 XE7088.DiskToArchivingTemplate.workflow_2 XE-7088.DiskToArchivingTemplate.workflow_3 Modifying XE-7088.AsciiProcessingWF.workflow_1 Prerequisites set to - Workflow XE-7088.DiskToArchivingTemplate.workflow_1 - Workflow XE-7088.DiskToArchivingTemplate.workflow_2 - Workflow XE-7088.DiskToArchivingTemplate.workflow_3 Example - Group of Workflow Groups A group of workflow groups work same as group of workflows: $ mzsh mzadmin/dr wfgroupmodify -group XE-7088.GroupOfGroups -membergrp TestWorkflows.AsciiTestWFGroup -prereqgrp TestWorkflows.AsciiWFBToRtPreprocessingGroup XE-7088.CollAndProcGroup Modifying TestWorkflows.AsciiTestWFGroup Prerequisites set to - Workflow Group TestWorkflows.AsciiWFBToRtPreprocessingGroup - Workflow Group XE-7088.CollAndProcGroup Example - No Workflow Group Above And just like for workflows, the sequence is important: $ mzsh mzadmin/dr wfgroupmodify -group XE-7088.GroupOfGroups -membergrp TestWorkflows.AsciiFromRTProcToBillingGroup -prereqgrp TestWorkflows.AsciiWFBToRtPreprocessingGroup XE-7088.CollAndProcGroup There is no member TestWorkflows.AsciiWFBToRtPreprocessingGroup (workflow group) above TestWorkflows.AsciiFromRTProcToBillingGroup to have as prerequisite. Note! All the members mentioned need to be members when the command is used. For example, if you set workflow_4 as a prerequisite for workflow_3 , it only works if both workflow_4 and workflow_3 are members of the group. Return Codes Listed below are the different return codes for the wfgroupmodify command: Code Description Code Description 0 Will be returned if the command was successful. 1 Will be returned if the command was unsuccessful.
+
+---
+
+# Document 1192: Data Veracity Forwarding Example - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204640586
+**Categories:** chunks_index.json
+
+This section contains one example for the Data Veracity Forwarding agent. Example Workflow and Data: DV_Forwarding_Example.zip In this workflow example for the Data Veracity Forwarding agent Data Veracity Forwarding workflow example The workflow will collect an input file, decode it and then send it forward into the Analysis_1 agent. The Data Veracity Forwarding agent then receives the erroneous UDR (TT UDR in the example) from the Analysis agent. The Analysis agent contains the following code: Analysis_1 int i = 0; consume { i = i +1; if (i < 20){ udrAddError(input, "my_error_code", "error occured"); }else{ udrAddError(input, "my_second_error_code", "error occured"); } udrRoute(input); } Should there be any existing error code associated to a particular UDR, any new error code added to the UDR will be included along with the existing code. However, the first error code associated with the UDR will be the one to be displayed on the Data Veracity Search result. To clear any existing error code, you can use the udrClearError plugin. With this code, the Analysis agent will: Send 20 UDRs to Data Veracity with the error code my_error_code while using the APL plugin, udrAddError. Send subsequent UDRs will be sent to Data Veracity with the error code my_second_error_code
+
+---
+
+# Document 1193: Configuring a Keystore - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205848706/Configuring+a+Keystore
+**Categories:** chunks_index.json
+
+This section provides information on how to configure a keystore with a Trusted Certificate and private key. The following instructions assume the following: A private key for the certificate in PEM (Privacy Enhanced Mail) format. In the example this private key is named private-key.pem . An X.509 trusted certificate configured with an FQDN (Fully Qualified Domain Name). In the example this trusted certificate is named server.crt . A file containing the CA certificate chain. Both root and intermediate certificates must be present. In the example this file is named ca.crt . Convert the X.509 certificate and private key to pkcs12 format: $ openssl pkcs12 -export -chain -in server.crt -inkey private-key.pem -out server.p12 -name amc-server -CAfile ca.crt Enter Export Password: <export-password> Verifying - Enter Export Password: <export-password> Convert the pkcs12 file to a keystore. Execute the following command, making sure that the keystore-password and key-password match the HTTP configuration settings, see HTTP Standard Setup . $ keytool -importkeystore  -deststorepass <keystore-password> -destkeypass <key-password>  -destkeystore containter.keys -srckeystore server.p12  -srcstoretype PKCS12 -srcstorepass <export-password> -alias platform Note! The default keystore alias for the certificate is platform but can be reconfigured, see HTTP Configuration Properties . If this has been done, change the alias in the command provided above. You can now use the keystore file, container.keys, as described in the section HTTP Standard Setup .
+
+---
+
+# Document 1194: FTPS Forwarding Agent MultiForwardingUDR Input - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205685683
+**Categories:** chunks_index.json
+
+When the agent is set to use MultiForwardingUDR input, it accepts input of the UDR type MultiForwardingUDR declared in the package FNT. The declaration follows: internal MultiForwardingUDR { // Entire file content byte[] content; // Target filename and directory FNTUDR fntSpecification; }; The MultiForwardingUDR content is stored at the path set in the fntSpecification field. Use the APL functions fntAddString and fntAddDirDelimiter to set the value of this field. For more information, see FNTUDR Functions in APL Reference Guide . When the files are received they are written to temp files in the DR_TMP_DIR directory in the root output folder. The files are moved to their final destination when an end batch message is received. A runtime error occurs if any of the fields have a null value or if the path is invalid on the target file system. A UDR of the type MultiForwardingUDR which has a target filename that is not identical to its precedent is saved in a new output file. Note! After a target filename that is not identical to its precedent is saved, you cannot use the first filename again. For example: Saving filename B after saving filename A, prevents you from using A again. Instead, you should first save all the A filenames, then all the B filenames, and so forth. Non-existing directories are created if the Create Non-Existing Directories checkbox in the Filename Template tab is selected. If not selected, a runtime error occurs if a previously unknown directory exists in the FNTUDR of an incoming MultiForwardingUDR . Every configuration option referring to bytearray input is ignored when MultiForwardingUDR s are expected. For more information about Filename Template, see Workflow Template . Example - APL code to send MultiForwardingUDRs This example shows the APL code used in an Analysis agent connected to a Forwarding agent expecting input of type MultiForwardingUDR s. import ultra.FNT; MultiForwardingUDR createMultiForwardingUDR (string dir, string file, bytearray fileContent){ //Create the FNTUDR FNTUDR fntudr = udrCreate(FNTUDR); fntAddString(fntudr, dir); fntAddDirDelimiter(fntudr);//Add a directory fntAddString(fntudr, file);//Add a file MultiForwardingUDR multiForwardingUDR = udrCreate(MultiForwardingUDR); multiForwardingUDR.fntSpecification = fntudr; multiForwardingUDR.content = fileContent; return multiForwardingUDR; } consume { bytearray file1Content; strToBA (file1Content, "file nr 1 content"); bytearray file2Content; strToBA (file2Content, "file nr 2 content"); //Send MultiForwardingUDRs to the forwarding agent udrRoute(createMultiForwardingUDR ("dir1", "file1", file1Content)); udrRoute(createMultiForwardingUDR ("dir2", "file2", file2Content)); } The Analysis agent sends two MultiForwardingUDR s to the Forwarding agent. Two files with different contents are placed in two separate subfolders in the root directory. The Create Non-Existing Directories checkbox in the Filename Template tab in the configuration of the Forwarding agent must be selected if the directories do not previously exist.
+
+---
+
+# Document 1195: Encryption Agent Events - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205032814/Encryption+Agent+Events
+**Categories:** chunks_index.json
+
+Agent Message Events An information message from the agent, generated according to the configuration in the Event Notification Editor. For further information about the agent message event type, see Agent Event . Debug Events Debug messages are dispatched in debug mode. During execution, the messages are displayed in the Workflow Monitor. You can configure Event Notifications that are triggered when a debug message is dispatched. For further information about the debug event type, see Debug Event .
+
+---
+
+# Document 1196: Amazon Profile - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204998951/Amazon+Profile
+**Categories:** chunks_index.json
+
+The Amazon Profile is a generic profile used for setting up Amazon S3 credentials and properties that can be used by various other profiles or agents. Currently, the profile can be used with the File System Profile, with Notifications of SNS Topic type, and supports External References. Configuration When selecting Amazon S3 as a file system, you will see two tabs; General and S3 . Open General Tab The following settings are available in the General tab in the File System profile (see screenshot above): Setting Description Setting Description Access Key Enter the access key for the user who owns the Amazon S3 account in this field. Secret Key Enter the secret key for the stated access key in this field. Region Enter the name of the Amazon S3 region in this field. IAM Role Selection Select how you want IAM role to be selected; Without role , Role from environment , Enter role name manually , Enter role ARN manually , or Inherit from AWS EC2 . Role from environment - If you select this option, run either: export AWS_IAM_ROLE=<role name> or export AWS_IAM_ROLE=<role ARN> in the environment, and then restart the EC. Enter role name manually - If you select this option, enter the name in the IAM Role field, and ensure to have "Action": "iam:GetRole", defined in your AWS console. Enter role ARN - If you select this option, enter the name in the IAM Role field. Inherit from AWS EC2 - If you select this option, no further actions are required. S3 Tab In the S3 tab, you can configure the S3 bucket and properties for the Amazon S3 client. Open Setting Description Setting Description Bucket Enter the name of the Amazon S3 bucket in this field. Advanced Properties Configure what property to use. For information on how to configure the properties for the Amazon S3 File System client, please refer to https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl . The contents of the buttons in the button bar may change depending on which configuration type has been opened. The Amazon Profile uses the standard menu items and buttons that are visible for all configurations, and these are described in Common Configuration Buttons . The Amazon Profile profile uses the standard menu items and buttons that are visible for all configurations. The Edit button is specific to the Amazon profile configurations. Item Description Item Description External References Select this menu item to enable the use of External References in the Amazon profile. This can be used to configure the following fields: Access Key Secret Key Region IAM Role IAM Role Selection Bucket Advanced Properties For further information, see Using External Reference in Agent Profile Fields and External Reference Profile .
+
+---
+
+# Document 1197: Pico Manager - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205658339/Pico+Manager
+**Categories:** chunks_index.json
+
+All servers, processes, and threads related to an executing MediationZone instance are controlled and monitored using the Pico Manager. It also enforces potential restrictions in regards to hardware configurations that might apply for workflows and applications. Using the Pico Manager, the system administrator can: Register new picos. Start, stop, delete and change configuration of existing picos. Examples of configuration for an Execution Context (EC) pico are memory allocation, date formats, ports, java and security settings. Open Example of Pico Management usage The EC picos can also be assigned to groups. These groups simplify transfer of configurations between systems by providing an added layer of abstraction. For instance, the execution settings of a workflow configuration can be setup for a group instead of several individual ECs. This is useful since the name and number of ECs may differ between systems. Open Example of Pico Viewer usage To improve security, MediationZone can be configured to deny any new Desktop client access to the system until the system administrator has registered the IP address in the Pico Manager.
+
+---
+
+# Document 1198: SQL Agents - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205034686/SQL+Agents
+**Categories:** chunks_index.json
+
+This section describes the SQL collection and forwarding agents. The collection agent is available for batch workflows. The forwarding agents are available for batch and real-time workflows. Prerequisites MediationZone supports a number of different database types for example Oracle, SQL Server and Derby. In this user guide the user is assumed to know the specifics of the SQL syntax needed to retrieve the information from the database. The reader of this information should also be familiar with: Structured Query Language (SQL) UDR structure and contents The section contains the following subsections: SQL Collection Agent in Batch Workflows SQL Forwarding Agent in Batch Workflows SQL Processing Agent in Real-Time Workflows
+
+---
+
+# Document 1199: Appendix B - Third Party Software Requirements - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205881980/Appendix+B+-+Third+Party+Software+Requirements
+**Categories:** chunks_index.json
+
+Refer to System Requirements . Loading
+
+---
+
+# Document 1200: Extracting Files for Platform - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204637853/Extracting+Files+for+Platform
+**Categories:** chunks_index.json
+
+Extract any additional files from the packages using the following command session. It is assumed that the temporary installation directory is the working directory when the command session below is executed. Enter the release content directory : $ cd ./<staging directory>/<release content directory> Extract the packages: $ ./setup.sh create Any additional files should now have been extracted.
+
+---
+
+# Document 1201: PKCS7 Functions - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204612422/PKCS7+Functions
+**Categories:** chunks_index.json
+
+These functions support the signing of data using CMS signature. See the JDK product documentation for information about using keytool in different scenarios. The following functions for PKCS7 described here are: 1 loadPKCS7Certificate 2 signPKCS7 loadPKCS7Certificate Loads the stated PKCS7 certificate. void loadPKCS7Certificate ( string keyStorePath, string keyAlias, string keyStorePassword, string signatureAlgorithm ) Parameter Description Parameter Description keyStorePath The path to the Java keystore file to be used keyAlias The alias for the certificate keyStorePassword The password for the keystore signatureAlgorithm The algorithm to be used for signing Returns Nothing Hint! It is recommended that you use this function in the initialize function block. signPKCS7 Signs a bytearray using the previously loaded PKCS7 certificate. bytearray signPKCS7 ( bytearray content) Parameter Description Parameter Description content A byte array of the content to be signed with the certit i cate loaded by the loadPKCS7Cer tificate function. Returns A bytearray with the signed content. Example - Using signPKCS7 initialize { loadPKCS7Certificate("/etc/keystores/keystore.jks", "certificateA", "keystoreAndAliasPassword", "SHA1withRSA") } consume { bytearray baToSign; strToBA(baToSign, "Hello World!"); input.response = signPKCS7(baToSign); udrRoute(input) }
+
+---
+
+# Document 1202: KafkaRecord - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/301138500/KafkaRecord
+**Categories:** chunks_index.json
+
+KafkaRecords are produced by Kafka collections agents, and consumed by Kafka forwarding agents. Field Description Field Description context (any) An optional field for user-defined information. errorMessage (string) Automatically populated if an error occurs during forwarding of the message. headers (list<RecordHeader (Kafka)>) An optional list of headers. key (bytearray) An optional field for the key. offset (long) A read-only field with the offset of the collected message. outstandingRecordCnt (int) A read-only field indicating how many records are left to send. partition (int) The partition the message was collected from or will be forwarded to. Automatically set. timestamp (long) The collection or forwarding time which is set automatically. topic (string) The topic the message was collected from or will be forwarded to. value (bytearray) The contents of the message. Note! When forwarding a message to Kafka, all fields are optional, except for topic and value .
+
+---
+
+# Document 1203: Backup and Disaster Recovery Procedures - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204613213/Backup+and+Disaster+Recovery+Procedures
+**Categories:** chunks_index.json
+
+Backup and disaster recovery procedures are recommended tasks to be carried out at a regular basis to avoid performance degradation. Complete system backups to an external disk should be performed at regular time intervals, and preferably at times when the traffic load is low, e.g. at night. The reasonable time interval might be depending on how the system is configured, the amount of traffic, etc, and may vary from installation to installation. General Requirements Regardless of the method chosen for the provisioning of backup and restore operations, there are requirements that must be met: When an instance is restored from a backup image, the database backup must be older than the disk backup. The reason for this is to avoid database references to non-existing data. Temporary files must be excluded from the backups. This is to avoid inconsistent or partial data. Temporary files can be identified by various identifiers that form the file names: Temporary files  Prefixed with "TEMP." DupUDR function temporary files  They are in a separate folder called "tmp". InterWorkFlow temporary files  Stored in a separate folder called "DR_TMP_DIR". Archiving function files  Stored in a separate folder called "pending". This chapter includes the following sections: Derby Database Backup and Restore Oracle Database Online Backup and Restore Oracle Database Online Backup and Restore in Amazon Web Services
+
+---
+
+# Document 1204: Workflow Bridge UDR Types - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205035349/Workflow+Bridge+UDR+Types
+**Categories:** chunks_index.json
+
+The Workflow Bridge UDR types are designed to exchange data between the workflows. The Workflow Bridge UDR types can be viewed in the UDR Internal Format Browser in the 'wfb' folder. To open the browser, first, open an APL Editor, and, in the editing area, right-click and select UDR Assistance . The section contains the following subsections: ConsumeCycleUDR ErrorCycleUDR User Defined Action UDRs Workflow Execution State UDRs
+
+---
+
+# Document 1205: ECS Inspection - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204607337/ECS+Inspection
+**Categories:** chunks_index.json
+
+The ECS Inspector allows the user to inspect and maintain UDRs and batches located in the ECS, view and edit their content, and add them to Reprocessing Groups . The latter is a prerequisite for the data to be collected by an ECS collection agent. You may also restrict certain fields from being edited in the ECS. Apart from simply sending a UDR or batch to the ECS, a workflow can be configured to associate user-defined information with the ECS data. For UDRs, the Error Code and MIM information may contain user-defined information. For canceled batches, the Error UDR and Cancel Message may contain user-defined information. Note! The data itself is not saved to the database, only a reference to the data. Physically, the ECS data is saved in the directory defined by the property mz.ecs.path found in platform.conf . The default path is MZ_HOME/ecs . If the mz.ecs.path parameter is changed, the changes will take effect the next time data is inserted into the ECS. Existing ECS data is left at its current location and must not be moved. If required to do so anyway, move the content of the old mz.ecs.path directory to the new, and create a soft link in the old directory pointing out the new location. Note! Take special precautions when updating the Ultra formats. It is not possible to collect data from the ECS if the corresponding UDR has been renamed. If the format definition has changed, you can still collect the data. Changes to the formats are handled as follows: Added or renamed fields are assigned default values. Removed fields are ignored. Fields that have changed data types are assigned default values. The section contains the following subsections: ECS Inspector ECS Changing State Configuring Searchable Fields in the ECS ECS Restricted Fields Configuration Searching the ECS ECS Inspector Table ECS Error Codes ECS Reprocessing Groups
+
+---
+
+# Document 1206: Desktop Launcher - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205655011
+**Categories:** chunks_index.json
+
+This section describes how you start and manage the Desktop Launcher, and includes the following subsections: Installing the Desktop Launcher Adding Instances and Login Updating Instance Settings Removing Instances and Runtime Data Adding a Launcher Service Updating Launcher Services Settings Removing and Refreshing Launcher Services
+
+---
+
+# Document 1207: UICycle UDR - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204609779/UICycle+UDR
+**Categories:** chunks_index.json
+
+The UICycle UDR is used for input and output to the UI Builder Agent. The following fields are included in the UICycle UDR : Field Description Field Description request (RequestUDR) This field contains the request from the client application to the UI Builder agent. response (ResponseUDR) This field contains the response from the UI Builder agent to the client application. In the event of an internal error scenario, this field may contain the suggested response from the UI Builder agent to the client application. error (ErrorUDR) This field contains information related to internal processing errors.
+
+---
+
+# Document 1208: Properties for PostgreSQL - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204637835/Properties+for+PostgreSQL
+**Categories:** chunks_index.json
+
+You need to set the following properties in install.xml for a PostgreSQL database: Property Description Property Description install.pg.owner Default value: mzowner This property specifies the PostgreSQL username for the database owner. This user will own all the data definitions in the PostgreSQL instance to be created. This property also use as database schema. Note! The installation fails if the same username is configured for both the database owner, install.pg.owner , and the mz.jdbc.user . install.pg.password Default value: mz This property specifies the password for the database owner, defined with the install.pg.owner variable described above. install.pg.db.name Default value: mz This property specifies the name of the PostgreSQL database name. Note! The name has to be stated in lower case since PostgreSQL does not support names in upper case. install.pg.host Default value: 127.0.0.1 This property specifies IP address or hostname of the database instance. install.pg.port Default value: 5432 This property specifies the PostgreSQL database port. install.pg.tb.space.tab Default value: pg_default This property specifies the name of the tablespace to use to create the table in. install.pg.tb.space.idx Default value: pg_default This property specifies the name of the tablespace to use for the index.
+
+---
+
+# Document 1209: mzcli - sldreg - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/547979732/mzcli+-+sldreg
+**Categories:** chunks_index.json
+
+Usage usage: sldreg [outputFilePath] This command allows you to generate the SLD (System Landscape Directory) configuration data for registration in the SAP Solution Manager. It is possible to configure additional parameters for the output file by setting system properties for the platform, using the prefix "user.sap.sld". So for example to setting the "default-domain" can be done by setting the system property "user.sap.sld.default-domain". The values used will shown in the command line when the command is run. Example - sldreg $ mzsh sldreg The file cluster-sld.conf will be generated in the directory /opt/mz /sap-sldreg/ on the platform pod . Return Codes The different return codes for the sldreg command are listed below: Code Description Code Description 0 Will be returned if the command is successful. 1 Will be returned if writing the temporary topology file fails. 2 Will be returned if converting to the sld topology file fails. 7 Will be returned if the command is not executed on the machine where the Platform is running.
+
+---
+
+# Document 1210: HTTP Batch Appendix - Database Requirements for Duplicate Check - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205033447/HTTP+Batch+Appendix+-+Database+Requirements+for+Duplicate+Check
+**Categories:** chunks_index.json
+
+The Duplicate Check feature stores the collected URLs in an external database pointed out by a Database profile. The schema of this database must contain a table definition that matches the needs of the agent. Table and Column Names The schema table name must be "duplicate_check". It must contain all the columns from this table: Table column Description txn The transaction id of the batch that collected the URL (in the case the file is split into several chunks using hintEndBatch, it is the last and final transaction id.) tstamp The timestamp when the URL was committed by the workflow. workflow_key A uniquely identifying id of the workflow collecting the URL. It allows workflows to be renamed without changing the table data. url The full absolute URL collected. Column Types The column types are defined by how the specific JDBC driver converts JDBC types to the database. The txn column is a JDBC VARCHAR. The tstamp column is a JDBC TIMESTAMP type. The workflow_key and url columns are of JDBC VARCHAR type. Oracle Example Oracle Example <![CDATA[-- Table definition usable for ORACLE CREATE TABLE duplicate_check( txn long, tstamp timestamp, workflow_key varchar2(32), url varchar2(256) ); ]]>
+
+---
+
+# Document 1211: Installation and Setup - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204676475
+**Categories:** chunks_index.json
+
+In the instructions below, you will prepare the development environment setup for your Legacy Desktop. The following file will be downloaded: File Description Source File Description Source devkit_ <version> .zip Desktop devkit package on the platform Download the devkit package to the PC where you will use Legacy Desktop and do the DTK work either from the Downloads dialog that you open from User Settings in Desktop or from: http(s)://<platform host>:9000/download/devkit Create an installation directory for the DTK. $ mkdir <devkit dir> Extract the devkit package to your installation directory <devkit dir> $ unzip devkit_<version>.zip Setting Up the Environment Variables for the DTK. In your development environment or build scripts, you must include the devkit.jar in the class path. that was extracted above, in devkit_<version>/lib in the class path. For example: $ javac -cp <devkit dir>/lib/devkit.jar -sourcepath . com/mycompany/myplugin/*.java Where: com/mycompany/myplugin/, is your the code that you will build
+
+---
+
+# Document 1212: Event Notification Configuration - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205849227/Event+Notification+Configuration
+**Categories:** chunks_index.json
+
+MediationZone includes an internal event broker, which is configured using the Event Notification feature. It catches, formats, and forwards events in real-time. All types of events and alarms generated in the system can be caught, both automatically generated as well as customized: Code Server events Node failures Node messages Node state changes System startup, shutdown, and failures Task Executor messages Task state changes User actions Workflow state changes Many different target types are available; for instance SNMP Trap, Mail, and Azure Application Insight. Open Example of Event Notification configuration
+
+---
+
+# Document 1213: Web Service UDR Type Structure - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204643965/Web+Service+UDR+Type+Structure
+**Categories:** chunks_index.json
+
+When you save a WS profile , a number of UDR types are created and mapped according to specifications in the WSDL file. To see a structured list of these UDR types you open the APL editor, right-click on the text pad, and select UDR Assistance. Scroll down the UDR types list to the WS folder. The UDR types that are created once you save a WS profile are: Abstract [port type name] WSCycle: is created for every WS profile WSCycleUDR(s): is generated for every WSDL operation The UDR type that might be created once you save a WS profile is: UDR type: describes the complex types that are defined in the XML Schema The UDR types that are stored in WS folder by default are: AbstractWSCycle: The type of the input UDR ws.QName: This UDR type matches a qname data type in an XML Schema. There can only be one ws.QName UDR type under ws. XML Element: A wrapper type that is defined as "nullable" in the XML Schema. The section contains the following subsections: Web Service UDR Type Folder Structure The Web Service AbstractWSCycle UDR Type The Web Service WSCycle UDR Type
+
+---
+
+# Document 1214: Pico Viewer - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204741981/Pico+Viewer
+**Categories:** chunks_index.json
+
+The Pico Viewer displays a list of all Pico clients currently online in the system. Pico clients are grouped in pico-started instances. For instance, ec1 in the figure below is a pico-started instance. To open the Pico Viewer, click the Tools button in the upper left part of the Desktop window, and then select Pico Viewer from the menu. Open Pico Viewer Columns Description Columns Description Group / Instance Name of the group and pico instance. For each pico instance, they will be assigned to a default group for that particular pico instance. For example, any Desktop will be assigned to the Desktop group. For any ECs that are not assigned to an EC Group, they will be assigned into the Execution Contexts group by default. For more details about EC group and what it is used for, refer to EC Groups . Delete Open Allows the user to remove a pico instance from the system in case it is unreachable. The Platform does not automatically unregister such an instance since it is accepted that it can reside on an unreliable network. Secure Indicates if the Pico instance is SSL secured or not. Start Time The time the pico instance was started. Memory Used, available, and maximum memory on the hosting JVM. Response [ms] The time it took in milliseconds for the local Desktop to invoke a ping on the pico instance. Marked for Shutdown A warning sign in this column indicates that a pico instance is marked for shutdown, via the mzsh command pico , and should not be assigned workflows. This column is only applicable to ECs. For further information about the pico command, see pico . Tool-Tip Information Hover the mouse over any pico instances folder in the Group / Instance column to display information on the OS, JVMs, architecture, and processors on which it is running, as well as the username and services. Open The tooltip of a pico instance Hover the mouse over any pico instances folder in the Memory column to display detailed information on the memory usage of the hosting JVM. Open The tooltip of memory usage
+
+---
+
+# Document 1215: Installation - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205029520
+**Categories:** chunks_index.json
+
+This section contains a general installation overview as well as separate instructions for installing a Platform Container and optional Execution Container, and for installing an Execution Container only. Installation Overview Platform Container Installation Execution Container Installation
+
+---
+
+# Document 1216: Disk Collection Agent Transaction Behavior  - Batch - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204738560/Disk+Collection+Agent+Transaction+Behavior+-+Batch
+**Categories:** chunks_index.json
+
+The transaction behavior for the Disk collection agent is presented here. For more information about general transaction behavior please refer to the section Transactions in Workflow Monitor . Input/Output Data The agent sends out commands that change the state of the file currently processed. Command Description Begin Batch Emitted before the first part of each collected file is fed into a workflow. End Batch Emitted after the last part of each collected file has been fed into the system. The agent acquires commands from other agents and based on them generates a state change of the file currently processed. Command Description Cancel Batch If a Cancel Batch message is received, the agent sends the batch to ECS. Note! If the Cancel Batch behavior defined on the workflow level is configured to abort the workflow, the agent will never receive the last Cancel Batch message. In this situation, ECS will not be involved, and the file will not be moved but left at its current place. Hint End Batch If a Hint End Batch message is received, the collector splits the batch at the end of the current block processed (32 kB), If the block end occurs within a UDR, the batch will be split at the end of the preceding UDR. After a batch split, the collector emits an End Batch message, followed by a Begin Batch message (provided that there is data in the subsequent block).
+
+---
+
+# Document 1217: Installation of MySQL Cluster - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/205029868/Installation+of+MySQL+Cluster
+**Categories:** chunks_index.json
+
+Installing MySQL Cluster involves installation of software on all of the machines that are going to be part of the cluster. The software for the Management Nodes can be installed on the Platform or Execution Container hosts. However, the software for the Data Nodes should be installed on separate machines. For the Platform host, you also need to copy the clusterj-<version>.jar file into the MZ_HOME/3pp directory on the Platform. Installing MySQL Cluster Access to MySQL Cluster from the Execution Zone requires a client library (API) to be installed for the workflow to be able to communicate with the cluster. To make an installation of MySQL Cluster you first have to purchase a copy from Oracle and then follow the official installation instructions provided by Oracle, https://docs.oracle.com/cd/E37745_01/html/E38170/ciajejfa.html . Note! To make it easier when making upgrades, and other changes, we recommend that you create a symbolic link to the software folder named mysql . When the installation is finished, and the cluster started, you need to follow the steps below to configure it for PCC: Creating the tables, see Creating Tables . Configuring properties, see Configuring PCC Properties . For information about how to dimension the database, see Dimensioning of the Database . This section includes the following subsections: Creating Tables Configuring PCC Properties Dimensioning of the Database
+
+---
+
+# Document 1218: Data Hub Query - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204610846
+**Categories:** chunks_index.json
+
+You can query the data stored in Data Hub via the Selection Screen in Manage menu. This requires that your user account belongs to an access group with execute permissions on Data Hub. For further information about access groups, see Access Controller . Open Data Hub in Data Management Data Hub Panel To query the Data Hub you must first select a Data Hub profile and one of its associated database tables in the Data Hub panel. Click the Filter button to open the Data Hub Profile panel and click Browse to select the relevant Data Hub profile. Open Data Hub selection panel Query Panel When you have selected a database table, you can configure the following: Display fields Search Query Open Data Hub Query Panel Display Fields This shows the database table columns that you would like to display in the Query Results . Open Display Fields selection dialog box Search Query This panel represents an expression based on the columns in the selected table. When you run a query, rows in the table that matches the expression will be displayed in the Query Results . Open Data Hub search query Item Description Item Description AND Open Click this button to apply AND logic on a set of rules or groups. OR Open Click this button to apply OR logic on a set of rules or groups. Field name This drop-down list contains columns in the selected database table that you can use in your query. The query is carried out based on this selection to populate the result for the Display Field. Open Field names Operator This is a comparison operator that is applied to the values in the specified column and the value. The available operators are listed according to the data type of the selected column. Open Operators drop-down Info! Value This field contains a value that is used for comparison with the selected column. When between and not between is the selected operator, two value fields are displayed. When you click this field and the column is of a date type, or a column with a type hint in the selected profile, a date picker will be displayed. Add Open Click this button to add a new rule to the expression. Add Group Open Click this button to add a group of rules within the expression. The groups can be nested. Delete Open Click this button to delete a rule or a group. When you delete a group, the rules contained within it will be deleted as well. Reset Open Click this button to clear all rules and groups from the Search Query panel. OK Open Click this button to run a new query based on the configured rules. Running a Query To run a query: If your query should contain both AND and OR logic, delete the first rule by clicking on the Delete button, then and add a new group by clicking the Add Group button. Groups are not required, if the query contains only AND or OR. If you have created a new group, click the Add rule button to add a new rule. Select a column that you want to use in a rule. Select an operator. Enter a value for comparison with the selected column. Use the Add group and Add buttons to add more group conditions to the expression. Click the OK button. The result will be displayed in the data grid in the Query Results panel. It may take a few seconds or several minutes for the query to complete. Query Results Panel The Query Results panel will display all available rows including columns. The number of rows is indicated on the top right, next to the Export button. Open Data Hub query results Item Description Item Description Displayed Columns This is a list of columns in the selected table that are displayed in the Query Results panel. Export Open Click this button to export the query result content to a CSV file. For further information, see the section below, Exporting Query Result. Exporting Query Result To export a query result follow the steps below: Click the Export button in the Query Results Panel . In the Export search result dialog, enter the following: Filename - The export filename should contain alphanumeric- or dash (-) characters. Do not add a file extension or a path. Delimeter - You can enter a character or string that should represent the separator token, e.g. a comma or a semi-colon. Open Export search result dialog Select the check box Include Header to add the column names to the first row in the file. Click the OK button. The file will be saved as <filename>.csv in your default download folder. All the columns of the table will be included in the file.
+
+---
+
+# Document 1219: ECS Collection Agent - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204999956/ECS+Collection+Agent
+**Categories:** chunks_index.json
+
+The Error Correction System (ECS) collection agent fetches data sent to the internal ECS by workflows configured to do so. Data is sent to the ECS as UDRs or batches. In the latter case, error UDRs may be associated with batches containing the relevant information. When collected by an ECS collection agent, the fields in the UDRs are included as MIM values in the workflow. Open Example of a workflow collecting UDRs from the ECS If batches are collected, the ECS Collection agent produces bytearray data. To determine which UDRs/batches to collect, select a Reprocessing Group (defined in the ECS Inspector). It is only possible to have one active ECS collection workflow per Reprocessing Group at a time. Note! Collecting UDRs from the ECS only changes their states, they are not physically removed from the ECS. Use the predefined system task ECS_Maintenance to automatically remove UDRs. For further information, see ECS Maintenance System Task . You can also manually delete UDRs directly from the ECS Inspector. The section contains the following subsections: ECS Collection Agent Configuration ECS Collection Agent Transaction Behavior ECS Collection Agent Input/Output Data and MIM ECS Collection Agent Events
+
+---
+
+# Document 1220: ADLS2 File Collection Agent Events - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204606083/ADLS2+File+Collection+Agent+Events
+**Categories:** chunks_index.json
+
+Agent Message Events An information message from the agent, stated according to the configuration done in the Event Notification Editor. For further information about the agent message event type please refer to Agent Event . Ready with file: filename Reported along with the name of the source file that has been collected and inserted into the workflow. File cancelled: filename Reported along with the name of the current file, each time a Cancel Batch message is received. This assumes the workflow is not aborted; refer to ADLS2 File Collection Agent Input/Output Data and MIM . Debug Events There are no debug events for this agent.
+
+---
+
+# Document 1221: Duplicate UDR Agent - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204999745/Duplicate+UDR+Agent
+**Categories:** chunks_index.json
+
+This section describes the Duplicate UDR profile and agent. The agent is a processing agent for batch workflow configurations. The Duplicate UDR agent provides duplication control on incoming UDRs. Each new UDR is compared with the UDRs that are already stored, to evaluate if it is a duplicate. If a duplicate is found, a message is automatically logged in the System Log, and the UDR is marked as erroneous and routed on a user-defined route, for instance to ECS. If the UDR is routed to ECS, an automatically generated ECS Error Code, DUPLICATE_UDR , is assigned to the UDR, which enables searching for duplicate UDRs in ECS. Duplication comparison is not based on the content of a complete UDR but on the content of the fields selected by the user. When a UDR arrives, two values are calculated by the agent: Key from indexing field Checksum based on all the fields to check and the indexing field The Duplicate UDR cache is partitioned into containers by the key from the indexing field. The key from the indexing field is used to find the right "container" in the cache. If an entry with the same checksum is found in the container, then this is classified as a duplicate. Note! If a previously processed file is encountered again, all its UDRs will be treated as duplicates. However, should the cache reach a configured capacity when about to reprocess said file, the system initiates a pruning process, starting with the UDRs in the oldest container. This action frees up space in the cache, allowing new UDRs to be added while the corresponding amount cleared will be treated as non-duplicates. If the file contains a considerable number of UDRs, the process of inserting all of them in ECS may be time-consuming. Having a Duplicate Batch agent prior to the Duplicate UDR agent will only make the problem worse. The Duplicate Batch agent will not detect that the batch is a duplicate until the end of the batch. At that point, all UDRs have already passed the Duplicate UDR agent and are inserted, as duplicates, into ECS. Since the Duplicate Batch agent will flag for a duplicate batch, the batch is removed from the stream forcing the Duplicate UDR agent to also remove all UDRs from ECS. Prerequisites The reader of this information should be familiar with: UDR structure and content The section contains the following subsections: Duplicate UDR Profile Duplicate UDR Agent Configuration Duplicate UDR Agent Meta information Model and Events Duplicate UDR Agent Transaction Behavior and Input/Output Data Duplicate UDR Inspector Duplicate UDR Using Indexing Field Instead of System Time Duplicate UDR Locking Mechanism Duplicate UDR SQL Storage Setup Guide
+
+---
+
+# Document 1222: Release Information - MediationZone Documentation 9.3 - InfoZone
+
+**Source:** ratanon/mz93-documentation
+**URL:** https://infozone.atlassian.net/wiki/spaces/MD93/pages/204647417/Release+Information
+**Categories:** chunks_index.json
+
+
+
+---
+**End of Part 51** - Continue to next part for more content.
